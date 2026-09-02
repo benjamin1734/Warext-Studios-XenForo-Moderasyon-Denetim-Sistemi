@@ -6,7 +6,6 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/bootstrap-alpha7.yml'
-      - 'Warext-ModerationAudit-1.0.0-Alpha7.zip.b64'
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -18,59 +17,41 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          cat .bootstrap/part-* > /tmp/alpha6.b64
+          base64 -d /tmp/alpha6.b64 > /tmp/alpha6.zip
+          unzip -tq /tmp/alpha6.zip
           rm -rf upload
-          base64 -d Warext-ModerationAudit-1.0.0-Alpha7.zip.b64 > Warext-ModerationAudit-1.0.0-Alpha7.zip
-          unzip -q Warext-ModerationAudit-1.0.0-Alpha7.zip
-          rm -f Warext-ModerationAudit-1.0.0-Alpha7.zip.b64
-          rm -rf .bootstrap .pack
-          rm -f .github/workflows/bootstrap-alpha7.yml
-          cat > README.md <<'EOF'
-          # Warext Studios | XenForo Moderasyon Denetim Sistemi
-
-          XenForo 2.3 için bağımsız moderasyon denetim eklentisi. Moderasyon işlemlerini değiştirmeden kayıt altına alır; kanıt anlık görüntüleri, kör denetçi ataması, çıkar çatışması yönetimi, çoklu değerlendirme ve yönetim analitiği sunar.
-
-          ## Sürüm
-
-          **1.0.0 Alpha 7**
-
-          ## Gereksinimler
-
-          - XenForo 2.3.0+
-          - PHP 8.1+
-
-          ## Kurulum
-
-          Repo kökündeki `Warext-ModerationAudit-1.0.0-Alpha7.zip` dosyasını XenForo yönetim panelinde **Add-ons → Install/upgrade from archive** alanına yükleyin.
-
-          ## Özellikler
-
-          - Kurulumdan sonraki moderasyon işlemlerinin denetim kaydına alınması
-          - Post, konu, uyarı, kullanıcı yasağı, rapor ve moderatör logu olaylarının yakalanması
-          - İşlem anındaki içerik ve bağlamın kanıt olarak saklanması
-          - Hassas verilerin maskelenmesi ve ayrı izinle görüntülenmesi
-          - SHA-256 kanıt ve rapor bütünlüğü doğrulaması
-          - Salt-okunur `/denetim/` merkezi
-          - Doğru / kısmen doğru / yanlış / kanıt yetersiz değerlendirmesi
-          - Kural uygulaması, ceza orantısı ve yetkili iletişiminin ayrı değerlendirilmesi
-          - Değiştirilemez ve hash'li değerlendirme revizyon geçmişi
-          - Normal, yükseltilmiş ve kritik vakalarda çoklu denetçi desteği
-          - Kör ve tam kör denetim
-          - Çıkar çatışması bildirimi ve vakadan çekilme
-          - Dengeli otomatik denetçi ataması
-          - Haftalık, aylık ve özel dönem yönetim raporları
-          - Yetkili bazlı denetim kapsamı, doğruluk skoru ve sorunlu işlem oranı
-          - Kural, ceza ve iletişim sorunlarının ayrı analizi
-          - Önceki eş dönemle değişim karşılaştırması
-          - Anonimleştirilmiş rapor görünümü
-          - Haftalık ve aylık raporların cron ile otomatik oluşturulması
-
-          ## Durum
-
-          Alpha 7 geliştirme sürümüdür. PHP 8.4 sözdizimi, XML/JSON, ZIP ve SHA-256 manifest kontrollerinden geçirilmiştir. Canlı XenForo 2.3 kurulumu üzerinde runtime testi henüz tamamlanmamıştır.
-          EOF
+          unzip -q /tmp/alpha6.zip
+          base64 -d .alpha7patch.b64 | gzip -d > /tmp/alpha7.patch
+          mkdir -p upload/src/addons/Warext/ModerationAudit/Cron
+          patch -p1 --batch < /tmp/alpha7.patch
+          test "$(php -r '$j=json_decode(file_get_contents("upload/src/addons/Warext/ModerationAudit/addon.json"),true); echo $j["version_string"] ?? "";')" = "1.0.0 Alpha 7"
+          find upload/src/addons/Warext/ModerationAudit -type f -name '*.php' -print0 | xargs -0 -n1 php -l >/dev/null
+          python3 - <<'PY'
+          import hashlib, json, pathlib, xml.etree.ElementTree as ET
+          root = pathlib.Path('upload/src/addons/Warext/ModerationAudit')
+          for p in root.rglob('*.xml'):
+              ET.parse(p)
+          json.loads((root / 'addon.json').read_text(encoding='utf-8'))
+          hashes = json.loads((root / 'hashes.json').read_text(encoding='utf-8'))
+          for rel, expected in hashes.items():
+              p = pathlib.Path('upload') / rel
+              actual = hashlib.sha256(p.read_bytes()).hexdigest()
+              if actual != expected:
+                  raise SystemExit(f'hash mismatch: {rel}')
+          print(f'verified {len(hashes)} hashes')
+          PY
+          rm -f Warext-ModerationAudit-1.0.0-Alpha7.zip Warext-ModerationAudit-1.0.0-Alpha7.zip.b64
+          zip -qr Warext-ModerationAudit-1.0.0-Alpha7.zip upload
+          unzip -tq Warext-ModerationAudit-1.0.0-Alpha7.zip
+          mkdir -p /tmp/clean
+          cp -a README.md Warext-ModerationAudit-1.0.0-Alpha7.zip upload /tmp/clean/
           git config user.name "benjamin1734"
           git config user.email "actions@users.noreply.github.com"
           git checkout --orphan alpha7-clean
+          git rm -rf . || true
+          find . -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
+          cp -a /tmp/clean/. .
           git add -A
           git commit -m "1.0.0-alpha.7"
           git branch -M main
