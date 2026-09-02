@@ -17,7 +17,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          cat .bootstrap/part-* > /tmp/alpha6.b64
+          cat .pack/p* > /tmp/alpha6.b64
           base64 -d /tmp/alpha6.b64 > /tmp/alpha6.zip
           unzip -tq /tmp/alpha6.zip
           rm -rf upload
