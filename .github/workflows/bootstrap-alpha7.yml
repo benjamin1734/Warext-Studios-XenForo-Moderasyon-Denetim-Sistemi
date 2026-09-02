@@ -6,7 +6,7 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/bootstrap-alpha7.yml'
-      - 'Warext-ModerationAudit-1.0.0-Alpha7.zip'
+      - 'Warext-ModerationAudit-1.0.0-Alpha7.zip.b64'
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -19,7 +19,9 @@ jobs:
         run: |
           set -euo pipefail
           rm -rf upload
+          base64 -d Warext-ModerationAudit-1.0.0-Alpha7.zip.b64 > Warext-ModerationAudit-1.0.0-Alpha7.zip
           unzip -q Warext-ModerationAudit-1.0.0-Alpha7.zip
+          rm -f Warext-ModerationAudit-1.0.0-Alpha7.zip.b64
           rm -rf .bootstrap .pack
           rm -f .github/workflows/bootstrap-alpha7.yml
           cat > README.md <<'EOF'
