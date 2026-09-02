@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation>
+  <navigation_entry navigation_id="warextAudit" display_order="950" navigation_type_id="basic" enabled="1"><![CDATA[{"link":"{{ link('denetim') }}","display_condition":"$xf.visitor->hasPermission('general', 'warextAuditView')","extra_attributes":[]}]]></navigation_entry>
+</navigation>
