@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<permissions>
+  <permission permission_group_id="general" permission_id="warextAuditView" permission_type="flag" interface_group_id="warextAudit" display_order="10"/>
+  <permission permission_group_id="general" permission_id="warextAuditReview" permission_type="flag" interface_group_id="warextAudit" display_order="20"/>
+  <permission permission_group_id="general" permission_id="warextAuditReports" permission_type="flag" interface_group_id="warextAudit" display_order="30"/>
+  <permission permission_group_id="general" permission_id="warextAuditSensitive" permission_type="flag" interface_group_id="warextAudit" display_order="40"/>
+  <permission permission_group_id="general" permission_id="warextAuditManage" permission_type="flag" interface_group_id="warextAudit" display_order="50"/>
+</permissions>
