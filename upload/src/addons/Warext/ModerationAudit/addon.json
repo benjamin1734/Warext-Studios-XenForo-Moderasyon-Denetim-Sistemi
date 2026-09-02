@@ -1,0 +1,17 @@
+{
+    "title": "Warext Studios | XenForo Bağımsız Moderasyon Denetim Sistemi",
+    "description": "Independent moderation audit layer with immutable evidence, blind reviewer assignment, conflict recusal, multi-review scoring and management analytics for XenForo.",
+    "version_id": 1000070,
+    "version_string": "1.0.0 Alpha 7",
+    "dev": "Warext Studios",
+    "require": {
+        "XF": [
+            2030000,
+            "XenForo 2.3.0+"
+        ],
+        "php": [
+            "8.1.0",
+            "PHP 8.1.0+"
+        ]
+    }
+}
