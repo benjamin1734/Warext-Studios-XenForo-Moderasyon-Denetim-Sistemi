@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cron_entries>
+  <cron_entry cron_entry_id="warextAuditReports" addon_id="Warext/ModerationAudit" run_rules='{"minutes":[15],"hours":[0],"days_type":"dom","days":[]}'>
+    <title>Warext ModerationAudit: Haftalık ve aylık raporlar</title>
+    <callback class="Warext\ModerationAudit\Cron\Reports" method="run"/>
+    <active>1</active>
+  </cron_entry>
+</cron_entries>
