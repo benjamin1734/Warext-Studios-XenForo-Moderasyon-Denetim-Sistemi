@@ -1,0 +1,41 @@
+name: Expand Alpha7 source tree
+
+permissions:
+  contents: write
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/expand-alpha7.yml'
+
+jobs:
+  expand:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Restore Alpha7 package and source
+        shell: bash
+        run: |
+          set -euo pipefail
+          base64 -d Warext-ModerationAudit-1.0.0-Alpha7.zip.b64 > Warext-ModerationAudit-1.0.0-Alpha7.zip
+          unzip -tq Warext-ModerationAudit-1.0.0-Alpha7.zip
+          unzip -oq Warext-ModerationAudit-1.0.0-Alpha7.zip
+          find upload/src/addons/Warext/ModerationAudit -type f -name '*.php' -print0 | xargs -0 -n1 php -l >/dev/null
+          python3 - <<'PY'
+          import json, pathlib, xml.etree.ElementTree as ET
+          root = pathlib.Path('upload/src/addons/Warext/ModerationAudit')
+          json.loads((root / 'addon.json').read_text(encoding='utf-8'))
+          for p in root.rglob('*.xml'):
+              ET.parse(p)
+          print('Alpha7 source restored and validated')
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add Warext-ModerationAudit-1.0.0-Alpha7.zip upload
+          if git diff --cached --quiet; then
+            echo "No changes"
+          else
+            git commit -m "Restore complete Alpha 7 source tree"
+            git push origin main
+          fi
