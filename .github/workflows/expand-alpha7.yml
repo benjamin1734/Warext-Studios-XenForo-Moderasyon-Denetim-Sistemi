@@ -14,63 +14,52 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Diagnose Alpha7 rebuild chain
+      - name: Test bootstrap recovery candidates
         shell: bash
         run: |
           set +e
-          DIAG=rebuild-alpha7-diagnostic.txt
+          DIAG=bootstrap-recovery-diagnostic.txt
           : > "$DIAG"
-          echo "== Alpha6 package ==" >> "$DIAG"
-          cat .pack/p* > /tmp/alpha6.b64
-          echo "concat-exit=$?" >> "$DIAG"
-          echo "alpha6-b64-size=$(wc -c < /tmp/alpha6.b64)" >> "$DIAG"
-          echo "alpha6-b64-mod4=$(( $(wc -c < /tmp/alpha6.b64) % 4 ))" >> "$DIAG"
-          base64 -d /tmp/alpha6.b64 > /tmp/alpha6.zip 2>> "$DIAG"
-          b64_status=$?
-          echo "alpha6-base64-exit=$b64_status" >> "$DIAG"
-          echo "alpha6-zip-size=$(wc -c < /tmp/alpha6.zip)" >> "$DIAG"
-          file /tmp/alpha6.zip >> "$DIAG" 2>&1
-          unzip -tq /tmp/alpha6.zip >> "$DIAG" 2>&1
-          unzip_test=$?
-          echo "alpha6-unzip-test-exit=$unzip_test" >> "$DIAG"
 
-          echo "== Alpha7 patch ==" >> "$DIAG"
-          echo "patch-b64-size=$(wc -c < .alpha7patch.b64)" >> "$DIAG"
-          echo "patch-b64-mod4=$(( $(wc -c < .alpha7patch.b64) % 4 ))" >> "$DIAG"
-          base64 -d .alpha7patch.b64 > /tmp/alpha7.patch.gz 2>> "$DIAG"
-          patch_b64_status=$?
-          echo "patch-base64-exit=$patch_b64_status" >> "$DIAG"
-          echo "patch-gzip-size=$(wc -c < /tmp/alpha7.patch.gz)" >> "$DIAG"
-          gzip -t /tmp/alpha7.patch.gz >> "$DIAG" 2>&1
-          gzip_test=$?
-          echo "patch-gzip-test-exit=$gzip_test" >> "$DIAG"
-          gzip -dc /tmp/alpha7.patch.gz > /tmp/alpha7.patch 2>> "$DIAG"
-          gzip_decode=$?
-          echo "patch-gzip-decode-exit=$gzip_decode" >> "$DIAG"
-          echo "patch-size=$(wc -c < /tmp/alpha7.patch)" >> "$DIAG"
-          head -n 12 /tmp/alpha7.patch >> "$DIAG" 2>&1
+          test_candidate() {
+            name="$1"; shift
+            out="/tmp/${name}.b64"
+            : > "$out"
+            for f in "$@"; do cat "$f" >> "$out"; done
+            size=$(wc -c < "$out")
+            echo "== $name ==" >> "$DIAG"
+            echo "size=$size mod4=$((size % 4))" >> "$DIAG"
+            base64 -d "$out" > "/tmp/${name}.zip" 2>> "$DIAG"
+            b64=$?
+            echo "base64-exit=$b64 zip-size=$(wc -c < /tmp/${name}.zip)" >> "$DIAG"
+            file "/tmp/${name}.zip" >> "$DIAG" 2>&1
+            unzip -tq "/tmp/${name}.zip" >> "$DIAG" 2>&1
+            uz=$?
+            echo "unzip-test-exit=$uz" >> "$DIAG"
+            if [ "$uz" -eq 0 ]; then
+              rm -rf "/tmp/${name}-x" && mkdir -p "/tmp/${name}-x"
+              (cd "/tmp/${name}-x" && unzip -q "/tmp/${name}.zip")
+              addon="/tmp/${name}-x/upload/src/addons/Warext/ModerationAudit/addon.json"
+              if [ -f "$addon" ]; then
+                echo -n "addon-version=" >> "$DIAG"
+                php -r '$j=json_decode(file_get_contents($argv[1]),true); echo $j["version_string"] ?? "missing";' "$addon" >> "$DIAG" 2>&1
+                echo >> "$DIAG"
+              fi
+              echo "files=$(find /tmp/${name}-x -type f | wc -l)" >> "$DIAG"
+            fi
+          }
 
-          if [ "$unzip_test" -eq 0 ]; then
-            rm -rf /tmp/alpha7-work
-            mkdir -p /tmp/alpha7-work
-            (cd /tmp/alpha7-work && unzip -q /tmp/alpha6.zip)
-            echo "alpha6-extract-exit=$?" >> "$DIAG"
-            if [ -f /tmp/alpha7-work/upload/src/addons/Warext/ModerationAudit/addon.json ]; then
-              echo "alpha6-addon-version=$(php -r '$j=json_decode(file_get_contents("/tmp/alpha7-work/upload/src/addons/Warext/ModerationAudit/addon.json"),true); echo $j["version_string"] ?? "missing";')" >> "$DIAG"
-            else
-              echo "alpha6-addon-version=missing-addon-json" >> "$DIAG"
-            fi
-            if [ "$gzip_test" -eq 0 ]; then
-              (cd /tmp/alpha7-work && patch -p1 --dry-run --batch < /tmp/alpha7.patch) >> "$DIAG" 2>&1
-              echo "patch-dry-run-exit=$?" >> "$DIAG"
-            fi
-          fi
+          common_tail=(.bootstrap/part-02 .bootstrap/part-03 .bootstrap/part-04 .bootstrap/part-05 .bootstrap/part-06)
+          test_candidate c1 .bootstrap/part-00 .bootstrap/part-01 "${common_tail[@]}" .bootstrap/part-07
+          test_candidate c2 .bootstrap/part-00 .bootstrap/part-01-00 .bootstrap/part-01-01 .bootstrap/part-01-02 .bootstrap/part-01-03 .bootstrap/part-01-04 "${common_tail[@]}" .bootstrap/part-07
+          test_candidate c3 .bootstrap/part-00 .bootstrap/part-01 "${common_tail[@]}" .bootstrap/part-07-00
+          test_candidate c4 .bootstrap/part-00 .bootstrap/part-01-00 .bootstrap/part-01-01 .bootstrap/part-01-02 .bootstrap/part-01-03 .bootstrap/part-01-04 "${common_tail[@]}" .bootstrap/part-07-00
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add "$DIAG"
           if ! git diff --cached --quiet; then
-            git commit -m "Diagnose Alpha 7 rebuild chain"
+            git commit -m "Diagnose bootstrap recovery candidates"
             git push origin main
           fi
           exit 0
