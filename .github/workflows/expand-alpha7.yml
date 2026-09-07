@@ -17,27 +17,27 @@ jobs:
       - name: Restore Alpha7 package and source
         shell: bash
         run: |
-          set +e
-          : > expand-alpha7-diagnostic.txt
-          echo "b64-size=$(wc -c < Warext-ModerationAudit-1.0.0-Alpha7.zip.b64)" >> expand-alpha7-diagnostic.txt
-          base64 -d Warext-ModerationAudit-1.0.0-Alpha7.zip.b64 > Warext-ModerationAudit-1.0.0-Alpha7.zip 2>> expand-alpha7-diagnostic.txt
-          echo "base64-exit=$?" >> expand-alpha7-diagnostic.txt
+          set -euo pipefail
+          rm -f expand-alpha7-diagnostic.txt Warext-ModerationAudit-1.0.0-Alpha7.zip
+          cat .alpha7/part-00 .alpha7zip/z00 > /tmp/alpha7-full.b64
+          echo "combined-b64-size=$(wc -c < /tmp/alpha7-full.b64)" > expand-alpha7-diagnostic.txt
+          base64 -d /tmp/alpha7-full.b64 > Warext-ModerationAudit-1.0.0-Alpha7.zip
           echo "zip-size=$(wc -c < Warext-ModerationAudit-1.0.0-Alpha7.zip)" >> expand-alpha7-diagnostic.txt
-          file Warext-ModerationAudit-1.0.0-Alpha7.zip >> expand-alpha7-diagnostic.txt 2>&1
           unzip -tq Warext-ModerationAudit-1.0.0-Alpha7.zip >> expand-alpha7-diagnostic.txt 2>&1
-          unzip_status=$?
-          echo "unzip-test-exit=$unzip_status" >> expand-alpha7-diagnostic.txt
-          if [ "$unzip_status" -eq 0 ]; then
-            unzip -oq Warext-ModerationAudit-1.0.0-Alpha7.zip >> expand-alpha7-diagnostic.txt 2>&1
-            echo "unzip-exit=$?" >> expand-alpha7-diagnostic.txt
-            php_count=$(find upload/src/addons/Warext/ModerationAudit -type f -name '*.php' | wc -l)
-            echo "php-count=$php_count" >> expand-alpha7-diagnostic.txt
-            while IFS= read -r f; do php -l "$f" >> expand-alpha7-diagnostic.txt 2>&1 || true; done < <(find upload/src/addons/Warext/ModerationAudit -type f -name '*.php')
-          fi
+          unzip -oq Warext-ModerationAudit-1.0.0-Alpha7.zip
+          php_count=$(find upload/src/addons/Warext/ModerationAudit -type f -name '*.php' | wc -l)
+          echo "php-count=$php_count" >> expand-alpha7-diagnostic.txt
+          find upload/src/addons/Warext/ModerationAudit -type f -name '*.php' -print0 | xargs -0 -n1 php -l >/dev/null
+          python3 - <<'PY'
+          import json, pathlib, xml.etree.ElementTree as ET
+          root = pathlib.Path('upload/src/addons/Warext/ModerationAudit')
+          json.loads((root / 'addon.json').read_text(encoding='utf-8'))
+          for p in root.rglob('*.xml'):
+              ET.parse(p)
+          print('Alpha7 source restored and validated')
+          PY
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add expand-alpha7-diagnostic.txt Warext-ModerationAudit-1.0.0-Alpha7.zip upload 2>/dev/null || true
-          if ! git diff --cached --quiet; then
-            git commit -m "Diagnose and restore Alpha 7 package"
-            git push origin main
-          fi
+          git add expand-alpha7-diagnostic.txt Warext-ModerationAudit-1.0.0-Alpha7.zip upload
+          git commit -m "Restore complete Alpha 7 source tree"
+          git push origin main
