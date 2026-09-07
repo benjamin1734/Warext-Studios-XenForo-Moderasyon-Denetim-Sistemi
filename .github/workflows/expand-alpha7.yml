@@ -14,44 +14,63 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Rebuild Alpha7 from Alpha6 + patch
+      - name: Diagnose Alpha7 rebuild chain
         shell: bash
         run: |
-          set -euo pipefail
-          rm -rf /tmp/alpha7-build upload
-          mkdir -p /tmp/alpha7-build
-          cat .pack/p* > /tmp/alpha7-build/alpha6.b64
-          base64 -d /tmp/alpha7-build/alpha6.b64 > /tmp/alpha7-build/alpha6.zip
-          unzip -tq /tmp/alpha7-build/alpha6.zip
-          unzip -q /tmp/alpha7-build/alpha6.zip
-          base64 -d .alpha7patch.b64 | gzip -d > /tmp/alpha7-build/alpha7.patch
-          mkdir -p upload/src/addons/Warext/ModerationAudit/Cron
-          patch -p1 --batch < /tmp/alpha7-build/alpha7.patch
-          find upload/src/addons/Warext/ModerationAudit -type f -name '*.php' -print0 | xargs -0 -n1 php -l >/dev/null
-          python3 - <<'PY'
-          import json, pathlib, xml.etree.ElementTree as ET
-          root = pathlib.Path('upload/src/addons/Warext/ModerationAudit')
-          addon = json.loads((root / 'addon.json').read_text(encoding='utf-8'))
-          assert addon.get('version_string') == '1.0.0 Alpha 7', addon
-          for p in root.rglob('*.xml'):
-              ET.parse(p)
-          hashes = json.loads((root / 'hashes.json').read_text(encoding='utf-8'))
-          import hashlib
-          for rel, expected in hashes.items():
-              p = pathlib.Path('upload') / rel
-              actual = hashlib.sha256(p.read_bytes()).hexdigest()
-              if actual != expected:
-                  raise SystemExit(f'hash mismatch: {rel}')
-          print(f'Alpha7 restored; verified {len(hashes)} hashes')
-          PY
-          rm -f Warext-ModerationAudit-1.0.0-Alpha7.zip
-          zip -qr Warext-ModerationAudit-1.0.0-Alpha7.zip upload
-          unzip -tq Warext-ModerationAudit-1.0.0-Alpha7.zip
-          printf 'restore=ok\nphp-count=%s\n' "$(find upload/src/addons/Warext/ModerationAudit -type f -name '*.php' | wc -l)" > expand-alpha7-diagnostic.txt
+          set +e
+          DIAG=rebuild-alpha7-diagnostic.txt
+          : > "$DIAG"
+          echo "== Alpha6 package ==" >> "$DIAG"
+          cat .pack/p* > /tmp/alpha6.b64
+          echo "concat-exit=$?" >> "$DIAG"
+          echo "alpha6-b64-size=$(wc -c < /tmp/alpha6.b64)" >> "$DIAG"
+          echo "alpha6-b64-mod4=$(( $(wc -c < /tmp/alpha6.b64) % 4 ))" >> "$DIAG"
+          base64 -d /tmp/alpha6.b64 > /tmp/alpha6.zip 2>> "$DIAG"
+          b64_status=$?
+          echo "alpha6-base64-exit=$b64_status" >> "$DIAG"
+          echo "alpha6-zip-size=$(wc -c < /tmp/alpha6.zip)" >> "$DIAG"
+          file /tmp/alpha6.zip >> "$DIAG" 2>&1
+          unzip -tq /tmp/alpha6.zip >> "$DIAG" 2>&1
+          unzip_test=$?
+          echo "alpha6-unzip-test-exit=$unzip_test" >> "$DIAG"
+
+          echo "== Alpha7 patch ==" >> "$DIAG"
+          echo "patch-b64-size=$(wc -c < .alpha7patch.b64)" >> "$DIAG"
+          echo "patch-b64-mod4=$(( $(wc -c < .alpha7patch.b64) % 4 ))" >> "$DIAG"
+          base64 -d .alpha7patch.b64 > /tmp/alpha7.patch.gz 2>> "$DIAG"
+          patch_b64_status=$?
+          echo "patch-base64-exit=$patch_b64_status" >> "$DIAG"
+          echo "patch-gzip-size=$(wc -c < /tmp/alpha7.patch.gz)" >> "$DIAG"
+          gzip -t /tmp/alpha7.patch.gz >> "$DIAG" 2>&1
+          gzip_test=$?
+          echo "patch-gzip-test-exit=$gzip_test" >> "$DIAG"
+          gzip -dc /tmp/alpha7.patch.gz > /tmp/alpha7.patch 2>> "$DIAG"
+          gzip_decode=$?
+          echo "patch-gzip-decode-exit=$gzip_decode" >> "$DIAG"
+          echo "patch-size=$(wc -c < /tmp/alpha7.patch)" >> "$DIAG"
+          head -n 12 /tmp/alpha7.patch >> "$DIAG" 2>&1
+
+          if [ "$unzip_test" -eq 0 ]; then
+            rm -rf /tmp/alpha7-work
+            mkdir -p /tmp/alpha7-work
+            (cd /tmp/alpha7-work && unzip -q /tmp/alpha6.zip)
+            echo "alpha6-extract-exit=$?" >> "$DIAG"
+            if [ -f /tmp/alpha7-work/upload/src/addons/Warext/ModerationAudit/addon.json ]; then
+              echo "alpha6-addon-version=$(php -r '$j=json_decode(file_get_contents("/tmp/alpha7-work/upload/src/addons/Warext/ModerationAudit/addon.json"),true); echo $j["version_string"] ?? "missing";')" >> "$DIAG"
+            else
+              echo "alpha6-addon-version=missing-addon-json" >> "$DIAG"
+            fi
+            if [ "$gzip_test" -eq 0 ]; then
+              (cd /tmp/alpha7-work && patch -p1 --dry-run --batch < /tmp/alpha7.patch) >> "$DIAG" 2>&1
+              echo "patch-dry-run-exit=$?" >> "$DIAG"
+            fi
+          fi
+
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add upload Warext-ModerationAudit-1.0.0-Alpha7.zip expand-alpha7-diagnostic.txt
+          git add "$DIAG"
           if ! git diff --cached --quiet; then
-            git commit -m "Restore complete Alpha 7 source tree"
+            git commit -m "Diagnose Alpha 7 rebuild chain"
             git push origin main
           fi
+          exit 0
