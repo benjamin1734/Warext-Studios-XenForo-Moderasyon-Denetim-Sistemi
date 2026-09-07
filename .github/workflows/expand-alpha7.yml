@@ -14,54 +14,81 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Test whitespace-normalized bootstrap candidates
+      - name: Repair bootstrap ZIP and restore Alpha7
         shell: bash
         run: |
           set +e
-          DIAG=bootstrap-recovery-diagnostic.txt
+          DIAG=bootstrap-repair-diagnostic.txt
           : > "$DIAG"
+          rm -rf /tmp/bootstrap-work /tmp/bootstrap-fixed.zip /tmp/bootstrap.zip /tmp/bootstrap.b64
 
-          test_candidate() {
-            name="$1"; shift
-            raw="/tmp/${name}.raw"
-            clean="/tmp/${name}.b64"
-            : > "$raw"
-            for f in "$@"; do cat "$f" >> "$raw"; done
-            tr -d '[:space:]' < "$raw" > "$clean"
-            raw_size=$(wc -c < "$raw")
-            size=$(wc -c < "$clean")
-            echo "== $name ==" >> "$DIAG"
-            echo "raw-size=$raw_size clean-size=$size removed=$((raw_size-size)) mod4=$((size % 4))" >> "$DIAG"
-            base64 -d "$clean" > "/tmp/${name}.zip" 2>> "$DIAG"
-            b64=$?
-            echo "base64-exit=$b64 zip-size=$(wc -c < /tmp/${name}.zip)" >> "$DIAG"
-            unzip -tq "/tmp/${name}.zip" >> "$DIAG" 2>&1
-            uz=$?
-            echo "unzip-test-exit=$uz" >> "$DIAG"
-            if [ "$uz" -eq 0 ]; then
-              rm -rf "/tmp/${name}-x" && mkdir -p "/tmp/${name}-x"
-              (cd "/tmp/${name}-x" && unzip -q "/tmp/${name}.zip")
-              addon="/tmp/${name}-x/upload/src/addons/Warext/ModerationAudit/addon.json"
-              if [ -f "$addon" ]; then
-                echo -n "addon-version=" >> "$DIAG"
-                php -r '$j=json_decode(file_get_contents($argv[1]),true); echo $j["version_string"] ?? "missing";' "$addon" >> "$DIAG" 2>&1
-                echo >> "$DIAG"
-              fi
-              echo "files=$(find /tmp/${name}-x -type f | wc -l)" >> "$DIAG"
+          cat .bootstrap/part-00 .bootstrap/part-01 .bootstrap/part-02 .bootstrap/part-03 .bootstrap/part-04 .bootstrap/part-05 .bootstrap/part-06 .bootstrap/part-07-00 \
+            | tr -d '[:space:]' > /tmp/bootstrap.b64
+          base64 -d /tmp/bootstrap.b64 > /tmp/bootstrap.zip 2>> "$DIAG"
+          echo "decode-exit=$? zip-size=$(wc -c < /tmp/bootstrap.zip)" >> "$DIAG"
+
+          timeout 30s zip -FF /tmp/bootstrap.zip --out /tmp/bootstrap-fixed.zip >> "$DIAG" 2>&1
+          repair=$?
+          echo "repair-exit=$repair" >> "$DIAG"
+          if [ -f /tmp/bootstrap-fixed.zip ]; then
+            echo "fixed-size=$(wc -c < /tmp/bootstrap-fixed.zip)" >> "$DIAG"
+            unzip -tq /tmp/bootstrap-fixed.zip >> "$DIAG" 2>&1
+            fixed_test=$?
+            echo "fixed-unzip-test-exit=$fixed_test" >> "$DIAG"
+          else
+            fixed_test=99
+            echo "fixed-file-missing=1" >> "$DIAG"
+          fi
+
+          if [ "$fixed_test" -eq 0 ]; then
+            mkdir -p /tmp/bootstrap-work
+            (cd /tmp/bootstrap-work && unzip -q /tmp/bootstrap-fixed.zip)
+            echo "restored-files=$(find /tmp/bootstrap-work -type f | wc -l)" >> "$DIAG"
+            addon=/tmp/bootstrap-work/upload/src/addons/Warext/ModerationAudit/addon.json
+            if [ -f "$addon" ]; then
+              version=$(php -r '$j=json_decode(file_get_contents($argv[1]),true); echo $j["version_string"] ?? "missing";' "$addon")
+              echo "bootstrap-addon-version=$version" >> "$DIAG"
+            else
+              version=missing
+              echo "bootstrap-addon-version=missing" >> "$DIAG"
             fi
-          }
 
-          common_tail=(.bootstrap/part-02 .bootstrap/part-03 .bootstrap/part-04 .bootstrap/part-05 .bootstrap/part-06)
-          test_candidate c1 .bootstrap/part-00 .bootstrap/part-01 "${common_tail[@]}" .bootstrap/part-07
-          test_candidate c2 .bootstrap/part-00 .bootstrap/part-01-00 .bootstrap/part-01-01 .bootstrap/part-01-02 .bootstrap/part-01-03 .bootstrap/part-01-04 "${common_tail[@]}" .bootstrap/part-07
-          test_candidate c3 .bootstrap/part-00 .bootstrap/part-01 "${common_tail[@]}" .bootstrap/part-07-00
-          test_candidate c4 .bootstrap/part-00 .bootstrap/part-01-00 .bootstrap/part-01-01 .bootstrap/part-01-02 .bootstrap/part-01-03 .bootstrap/part-01-04 "${common_tail[@]}" .bootstrap/part-07-00
+            base64 -d .alpha7patch.b64 | gzip -d > /tmp/alpha7.patch 2>> "$DIAG"
+            echo "patch-decode-exit=${PIPESTATUS[0]}:${PIPESTATUS[1]} patch-size=$(wc -c < /tmp/alpha7.patch)" >> "$DIAG"
+            mkdir -p /tmp/bootstrap-work/upload/src/addons/Warext/ModerationAudit/Cron
+            (cd /tmp/bootstrap-work && patch -p1 --dry-run --batch < /tmp/alpha7.patch) >> "$DIAG" 2>&1
+            dry=$?
+            echo "patch-dry-run-exit=$dry" >> "$DIAG"
+
+            if [ "$dry" -eq 0 ]; then
+              (cd /tmp/bootstrap-work && patch -p1 --batch < /tmp/alpha7.patch) >> "$DIAG" 2>&1
+              applied=$?
+              echo "patch-apply-exit=$applied" >> "$DIAG"
+              if [ "$applied" -eq 0 ]; then
+                rm -rf upload
+                cp -a /tmp/bootstrap-work/upload ./upload
+                alpha7_version=$(php -r '$j=json_decode(file_get_contents("upload/src/addons/Warext/ModerationAudit/addon.json"),true); echo $j["version_string"] ?? "missing";')
+                echo "restored-addon-version=$alpha7_version" >> "$DIAG"
+                find upload/src/addons/Warext/ModerationAudit -type f -name '*.php' -print0 | xargs -0 -n1 php -l >> "$DIAG" 2>&1
+                echo "php-lint-exit=$?" >> "$DIAG"
+              fi
+            fi
+          fi
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add "$DIAG"
+          if [ -d upload ] && [ -f upload/src/addons/Warext/ModerationAudit/addon.json ]; then
+            restored_version=$(php -r '$j=json_decode(file_get_contents("upload/src/addons/Warext/ModerationAudit/addon.json"),true); echo $j["version_string"] ?? "";')
+            if [ "$restored_version" = "1.0.0 Alpha 7" ]; then
+              rm -f Warext-ModerationAudit-1.0.0-Alpha7.zip
+              zip -qr Warext-ModerationAudit-1.0.0-Alpha7.zip upload
+              unzip -tq Warext-ModerationAudit-1.0.0-Alpha7.zip >> "$DIAG" 2>&1
+              git add upload Warext-ModerationAudit-1.0.0-Alpha7.zip "$DIAG"
+            fi
+          fi
           if ! git diff --cached --quiet; then
-            git commit -m "Test normalized bootstrap recovery"
+            git commit -m "Repair source archive and restore Alpha 7 tree"
             git push origin main
           fi
           exit 0
