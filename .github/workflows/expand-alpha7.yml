@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Test bootstrap recovery candidates
+      - name: Test whitespace-normalized bootstrap candidates
         shell: bash
         run: |
           set +e
@@ -23,16 +23,18 @@ jobs:
 
           test_candidate() {
             name="$1"; shift
-            out="/tmp/${name}.b64"
-            : > "$out"
-            for f in "$@"; do cat "$f" >> "$out"; done
-            size=$(wc -c < "$out")
+            raw="/tmp/${name}.raw"
+            clean="/tmp/${name}.b64"
+            : > "$raw"
+            for f in "$@"; do cat "$f" >> "$raw"; done
+            tr -d '[:space:]' < "$raw" > "$clean"
+            raw_size=$(wc -c < "$raw")
+            size=$(wc -c < "$clean")
             echo "== $name ==" >> "$DIAG"
-            echo "size=$size mod4=$((size % 4))" >> "$DIAG"
-            base64 -d "$out" > "/tmp/${name}.zip" 2>> "$DIAG"
+            echo "raw-size=$raw_size clean-size=$size removed=$((raw_size-size)) mod4=$((size % 4))" >> "$DIAG"
+            base64 -d "$clean" > "/tmp/${name}.zip" 2>> "$DIAG"
             b64=$?
             echo "base64-exit=$b64 zip-size=$(wc -c < /tmp/${name}.zip)" >> "$DIAG"
-            file "/tmp/${name}.zip" >> "$DIAG" 2>&1
             unzip -tq "/tmp/${name}.zip" >> "$DIAG" 2>&1
             uz=$?
             echo "unzip-test-exit=$uz" >> "$DIAG"
@@ -59,7 +61,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add "$DIAG"
           if ! git diff --cached --quiet; then
-            git commit -m "Diagnose bootstrap recovery candidates"
+            git commit -m "Test normalized bootstrap recovery"
             git push origin main
           fi
           exit 0
