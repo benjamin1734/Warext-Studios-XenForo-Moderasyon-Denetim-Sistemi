@@ -1,311 +1,38 @@
-name: Build Alpha 8 governance layer
+name: Build Alpha 8
 
 permissions:
   contents: write
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
     paths:
-      - '.github/workflows/build-alpha8.yml'
+      - .github/workflows/build-alpha8.yml
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Integrate Alpha 8
+        run: python3 .github/scripts/integrate_alpha8.py
+
+      - name: PHP lint
         shell: bash
         run: |
           set -euo pipefail
-          python3 - <<'PY'
-          from pathlib import Path
-          import json
-          import xml.etree.ElementTree as ET
+          find upload/src/addons/Warext/ModerationAudit -type f -name '*.php' -print0 | xargs -0 -n1 php -l
 
-          root = Path('upload/src/addons/Warext/ModerationAudit')
+      - name: Validate metadata and hashes
+        run: python3 .github/scripts/validate_alpha8.py
 
-          # Version metadata
-          addon_path = root / 'addon.json'
-          addon = json.loads(addon_path.read_text(encoding='utf-8'))
-          addon['description'] = 'Independent moderation audit layer with immutable evidence, blind reviewer assignment, conflict recusal, multi-review scoring, management analytics, appeals, suggestions and auditable management responses for XenForo.'
-          addon['version_id'] = 1000080
-          addon['version_string'] = '1.0.0 Alpha 8'
-          addon_path.write_text(json.dumps(addon, ensure_ascii=False, indent=4) + '\n', encoding='utf-8')
-
-          # Database install + upgrade schema
-          setup_path = root / 'Setup.php'
-          setup = setup_path.read_text(encoding='utf-8')
-          if "xf_warext_audit_feedback'" not in setup:
-              anchor = "        $sm->createTable('xf_warext_audit_state', function (Create $table)\n"
-              tables = r'''        $sm->createTable('xf_warext_audit_feedback', function (Create $table)
-          {
-              $table->checkExists(true);
-              $table->addColumn('feedback_id', 'int')->autoIncrement();
-              $table->addColumn('feedback_type', 'enum')->values(['appeal', 'suggestion'])->setDefault('suggestion');
-              $table->addColumn('case_id', 'int')->setDefault(0);
-              $table->addColumn('submitted_by_user_id', 'int')->setDefault(0);
-              $table->addColumn('subject', 'varchar', 150)->setDefault('');
-              $table->addColumn('message', 'mediumblob');
-              $table->addColumn('status', 'enum')->values(['open', 'under_review', 'accepted', 'rejected', 'implemented', 'closed'])->setDefault('open');
-              $table->addColumn('priority', 'enum')->values(['low', 'normal', 'high', 'critical'])->setDefault('normal');
-              $table->addColumn('assigned_to_user_id', 'int')->setDefault(0);
-              $table->addColumn('last_response_date', 'int')->setDefault(0);
-              $table->addColumn('created_date', 'int')->setDefault(0);
-              $table->addColumn('updated_date', 'int')->setDefault(0);
-              $table->addPrimaryKey('feedback_id');
-              $table->addKey(['feedback_type', 'status', 'created_date'], 'type_status_created');
-              $table->addKey(['submitted_by_user_id', 'created_date'], 'submitter_created');
-              $table->addKey(['case_id', 'created_date'], 'case_created');
-              $table->addKey(['assigned_to_user_id', 'status'], 'assignee_status');
-          });
-
-          $sm->createTable('xf_warext_audit_feedback_event', function (Create $table)
-          {
-              $table->checkExists(true);
-              $table->addColumn('event_id', 'int')->autoIncrement();
-              $table->addColumn('feedback_id', 'int')->setDefault(0);
-              $table->addColumn('event_type', 'varchar', 32)->setDefault('');
-              $table->addColumn('actor_user_id', 'int')->setDefault(0);
-              $table->addColumn('from_status', 'varchar', 25)->setDefault('');
-              $table->addColumn('to_status', 'varchar', 25)->setDefault('');
-              $table->addColumn('event_data', 'mediumblob');
-              $table->addColumn('data_hash', 'varbinary', 64)->setDefault('');
-              $table->addColumn('created_date', 'int')->setDefault(0);
-              $table->addPrimaryKey('event_id');
-              $table->addKey(['feedback_id', 'created_date'], 'feedback_created');
-              $table->addKey(['actor_user_id', 'created_date'], 'actor_created');
-          });
-
-'''
-              if anchor not in setup:
-                  raise SystemExit('Setup install anchor not found')
-              setup = setup.replace(anchor, tables + anchor, 1)
-
-          setup = setup.replace("'schema_version' => '4',", "'schema_version' => '5',", 1)
-
-          if 'upgrade1000080Step1' not in setup:
-              upgrade_anchor = '    public function uninstallStep1(): void\n'
-              upgrade = r'''    public function upgrade1000080Step1(): void
-          {
-              $sm = $this->schemaManager();
-
-              $sm->createTable('xf_warext_audit_feedback', function (Create $table)
-              {
-                  $table->checkExists(true);
-                  $table->addColumn('feedback_id', 'int')->autoIncrement();
-                  $table->addColumn('feedback_type', 'enum')->values(['appeal', 'suggestion'])->setDefault('suggestion');
-                  $table->addColumn('case_id', 'int')->setDefault(0);
-                  $table->addColumn('submitted_by_user_id', 'int')->setDefault(0);
-                  $table->addColumn('subject', 'varchar', 150)->setDefault('');
-                  $table->addColumn('message', 'mediumblob');
-                  $table->addColumn('status', 'enum')->values(['open', 'under_review', 'accepted', 'rejected', 'implemented', 'closed'])->setDefault('open');
-                  $table->addColumn('priority', 'enum')->values(['low', 'normal', 'high', 'critical'])->setDefault('normal');
-                  $table->addColumn('assigned_to_user_id', 'int')->setDefault(0);
-                  $table->addColumn('last_response_date', 'int')->setDefault(0);
-                  $table->addColumn('created_date', 'int')->setDefault(0);
-                  $table->addColumn('updated_date', 'int')->setDefault(0);
-                  $table->addPrimaryKey('feedback_id');
-                  $table->addKey(['feedback_type', 'status', 'created_date'], 'type_status_created');
-                  $table->addKey(['submitted_by_user_id', 'created_date'], 'submitter_created');
-                  $table->addKey(['case_id', 'created_date'], 'case_created');
-                  $table->addKey(['assigned_to_user_id', 'status'], 'assignee_status');
-              });
-
-              $sm->createTable('xf_warext_audit_feedback_event', function (Create $table)
-              {
-                  $table->checkExists(true);
-                  $table->addColumn('event_id', 'int')->autoIncrement();
-                  $table->addColumn('feedback_id', 'int')->setDefault(0);
-                  $table->addColumn('event_type', 'varchar', 32)->setDefault('');
-                  $table->addColumn('actor_user_id', 'int')->setDefault(0);
-                  $table->addColumn('from_status', 'varchar', 25)->setDefault('');
-                  $table->addColumn('to_status', 'varchar', 25)->setDefault('');
-                  $table->addColumn('event_data', 'mediumblob');
-                  $table->addColumn('data_hash', 'varbinary', 64)->setDefault('');
-                  $table->addColumn('created_date', 'int')->setDefault(0);
-                  $table->addPrimaryKey('event_id');
-                  $table->addKey(['feedback_id', 'created_date'], 'feedback_created');
-                  $table->addKey(['actor_user_id', 'created_date'], 'actor_created');
-              });
-
-              $this->db()->insert('xf_warext_audit_state', [
-                  'state_key' => 'schema_version',
-                  'state_value' => '5',
-                  'updated_date' => time()
-              ], false, 'state_value = VALUES(state_value), updated_date = VALUES(updated_date)');
-          }
-
-'''
-              if upgrade_anchor not in setup:
-                  raise SystemExit('Setup upgrade anchor not found')
-              setup = setup.replace(upgrade_anchor, upgrade + upgrade_anchor, 1)
-
-          uninstall_anchor = "        $tables = [\n            'xf_warext_audit_review_revision',"
-          if "'xf_warext_audit_feedback_event'" not in setup.split('public function uninstallStep1', 1)[-1]:
-              replacement = "        $tables = [\n            'xf_warext_audit_feedback_event',\n            'xf_warext_audit_feedback',\n            'xf_warext_audit_review_revision',"
-              if uninstall_anchor not in setup:
-                  raise SystemExit('Setup uninstall anchor not found')
-              setup = setup.replace(uninstall_anchor, replacement, 1)
-          setup_path.write_text(setup, encoding='utf-8')
-
-          # Route
-          routes_path = root / '_data/routes.xml'
-          routes_tree = ET.parse(routes_path)
-          routes_root = routes_tree.getroot()
-          if not any(x.get('route_prefix') == 'denetim-geribildirim' for x in routes_root.findall('route')):
-              ET.SubElement(routes_root, 'route', {
-                  'route_type': 'public',
-                  'route_prefix': 'denetim-geribildirim',
-                  'controller': r'Warext\ModerationAudit:Feedback',
-                  'context': 'warextAudit'
-              })
-          ET.indent(routes_tree, space='  ')
-          routes_tree.write(routes_path, encoding='utf-8', xml_declaration=True)
-
-          # Permissions
-          perms_path = root / '_data/permissions.xml'
-          perms_tree = ET.parse(perms_path)
-          perms_root = perms_tree.getroot()
-          existing = {x.get('permission_id') for x in perms_root.findall('permission')}
-          if 'warextAuditAppeal' not in existing:
-              ET.SubElement(perms_root, 'permission', {
-                  'permission_group_id': 'general', 'permission_id': 'warextAuditAppeal',
-                  'permission_type': 'flag', 'interface_group_id': 'warextAudit', 'display_order': '60'
-              })
-          if 'warextAuditSuggest' not in existing:
-              ET.SubElement(perms_root, 'permission', {
-                  'permission_group_id': 'general', 'permission_id': 'warextAuditSuggest',
-                  'permission_type': 'flag', 'interface_group_id': 'warextAudit', 'display_order': '70'
-              })
-          ET.indent(perms_tree, space='  ')
-          perms_tree.write(perms_path, encoding='utf-8', xml_declaration=True)
-
-          # Phrases
-          phrases_path = root / '_data/phrases.xml'
-          phrases_tree = ET.parse(phrases_path)
-          phrases_root = phrases_tree.getroot()
-          phrase_map = {x.get('title'): x for x in phrases_root.findall('phrase')}
-          additions = {
-              'permission_general_warextAuditAppeal': 'Kendi denetim vakaları için itiraz oluşturabilir',
-              'permission_general_warextAuditSuggest': 'Denetim sistemi için öneri oluşturabilir'
-          }
-          for title, text in additions.items():
-              if title not in phrase_map:
-                  el = ET.SubElement(phrases_root, 'phrase', {
-                      'title': title, 'version_id': '1000080', 'version_string': '1.0.0 Alpha 8'
-                  })
-                  el.text = text
-          ET.indent(phrases_tree, space='  ')
-          phrases_tree.write(phrases_path, encoding='utf-8', xml_declaration=True)
-
-          # Templates: preserve existing CDATA and append the new UI definitions.
-          templates_path = root / '_data/templates.xml'
-          templates = templates_path.read_text(encoding='utf-8')
-          if 'title="warext_audit_feedback_index"' not in templates:
-              template_block = r'''
-
-            <template type="public" title="warext_audit_feedback_index" version_id="1000080" version_string="1.0.0 Alpha 8"><![CDATA[<xf:title>İtiraz ve Öneri Merkezi</xf:title>
-          <xf:css src="warext_audit.less" />
-          <div class="buttonGroup">
-              <a class="button" href="{{ link('denetim') }}">← Denetim</a>
-              <xf:if is="$canAppeal OR $isManager"><a class="button button--primary" href="{{ link('denetim-geribildirim/olustur', null, {'type':'appeal'}) }}">Yeni itiraz</a></xf:if>
-              <xf:if is="$canSuggest OR $isManager"><a class="button" href="{{ link('denetim-geribildirim/olustur', null, {'type':'suggestion'}) }}">Yeni öneri</a></xf:if>
-          </div>
-          <div class="blockMessage blockMessage--important">İtiraz ve önerilerin özgün metni sonradan değiştirilemez. Yönetim cevapları ve durum değişiklikleri ayrı, bütünlüğü doğrulanabilir olay kayıtları olarak saklanır.</div>
-          <div class="block"><div class="block-container"><h2 class="block-header">Filtreler</h2><div class="block-body">
-          <form action="{{ link('denetim-geribildirim') }}" method="get" class="formRow">
-              <select name="type" class="input"><option value="">Tüm türler</option><option value="appeal" {{ $type == 'appeal' ? 'selected' : '' }}>İtiraz</option><option value="suggestion" {{ $type == 'suggestion' ? 'selected' : '' }}>Öneri</option></select>
-              <select name="status" class="input"><option value="">Tüm durumlar</option><xf:foreach loop="$statusLabels" key="$value" value="$label"><option value="{$value}" {{ $status == $value ? 'selected' : '' }}>{$label}</option></xf:foreach></select>
-              <button class="button" type="submit">Filtrele</button>
-          </form></div></div></div>
-          <div class="block"><div class="block-container"><h2 class="block-header">{{ $isManager ? 'Tüm başvurular' : 'Başvurularım' }} <span class="block-desc">{$total} kayıt</span></h2><div class="block-body">
-          <xf:if is="$feedback"><div class="structItemContainer"><xf:foreach loop="$feedback" value="$item"><div class="structItem structItem--thread"><div class="structItem-cell structItem-cell--main"><div class="structItem-title"><a href="{{ link('denetim-geribildirim/goruntule', null, {'feedback_id':$item.feedback_id}) }}">#{$item.feedback_id} {$item.subject}</a></div><div class="structItem-minor"><span>{{ $item.feedback_type == 'appeal' ? 'İtiraz' : 'Öneri' }}</span> · <span>Durum: {$item.status}</span> · <span>Öncelik: {$item.priority}</span><xf:if is="$item.case_id"> · <span>Vaka #{$item.case_id}</span></xf:if><xf:if is="$isManager"> · <span>Gönderen: {{ $item.Submitter ? $item.Submitter.username : '#' . $item.submitted_by_user_id }}</span></xf:if> · <xf:date time="$item.created_date" /></div></div></div></xf:foreach></div><xf:else /><div class="blockMessage">Başvuru bulunamadı.</div></xf:if>
-          </div></div></div>
-          <xf:pagenav page="$page" perpage="$perPage" total="$total" link="denetim-geribildirim" params="{{ {'type':$type,'status':$status} }}" />]]></template>
-
-            <template type="public" title="warext_audit_feedback_create" version_id="1000080" version_string="1.0.0 Alpha 8"><![CDATA[<xf:title>{{ $type == 'appeal' ? 'Yeni itiraz' : 'Yeni öneri' }}</xf:title>
-          <xf:css src="warext_audit.less" />
-          <div class="buttonGroup"><a class="button" href="{{ link('denetim-geribildirim') }}">← İtiraz ve Öneri Merkezi</a><xf:if is="$canAppeal"><a class="button" href="{{ link('denetim-geribildirim/olustur', null, {'type':'appeal'}) }}">İtiraz</a></xf:if><xf:if is="$canSuggest"><a class="button" href="{{ link('denetim-geribildirim/olustur', null, {'type':'suggestion'}) }}">Öneri</a></xf:if></div>
-          <xf:if is="$type == 'appeal'"><div class="blockMessage blockMessage--important">İtiraz yalnızca kendi moderasyon işleminle ilişkili denetim vakası için açılabilir. İtiraz açılması mevcut denetim kararını otomatik olarak değiştirmez.</div><xf:else /><div class="blockMessage">Öneriler genel sistem iyileştirmeleri içindir ve bir denetim vakasına bağlı olmak zorunda değildir.</div></xf:if>
-          <div class="block"><div class="block-container"><xf:form action="{{ link('denetim-geribildirim/olustur') }}" class="block-body">
-              <input type="hidden" name="type" value="{$type}" />
-              <xf:if is="$type == 'appeal'"><xf:formrow label="Denetim vaka ID"><input class="input" type="number" name="case_id" min="1" value="{$caseId}" required="required" /></xf:formrow></xf:if>
-              <xf:formrow label="Konu"><input class="input" type="text" name="subject" maxlength="150" required="required" /></xf:formrow>
-              <xf:formrow label="Öncelik"><select class="input" name="priority"><xf:foreach loop="$priorityLabels" key="$value" value="$label"><option value="{$value}" {{ $value == 'normal' ? 'selected' : '' }}>{$label}</option></xf:foreach></select></xf:formrow>
-              <xf:formrow label="Açıklama"><textarea class="input" name="message" rows="10" maxlength="10000" required="required"></textarea></xf:formrow>
-              <xf:submitrow submit="Başvuruyu oluştur" />
-          </xf:form></div></div>]]></template>
-
-            <template type="public" title="warext_audit_feedback_view" version_id="1000080" version_string="1.0.0 Alpha 8"><![CDATA[<xf:title>#{$feedback.feedback_id} {$feedback.subject}</xf:title>
-          <xf:css src="warext_audit.less" />
-          <div class="buttonGroup"><a class="button" href="{{ link('denetim-geribildirim') }}">← İtiraz ve Öneri Merkezi</a><xf:if is="$feedback.case_id AND $xf.visitor.hasPermission('general', 'warextAuditView')"><a class="button" href="{{ link('denetim/vaka', null, {'case_id':$feedback.case_id}) }}">Denetim vakası #{$feedback.case_id}</a></xf:if></div>
-          <div class="block"><div class="block-container"><h2 class="block-header">Başvuru</h2><div class="block-body"><div class="pairs pairs--columns pairs--fixedSmall"><dl><dt>Tür</dt><dd>{{ $feedback.feedback_type == 'appeal' ? 'İtiraz' : 'Öneri' }}</dd></dl><dl><dt>Durum</dt><dd>{$feedback.status}</dd></dl><dl><dt>Öncelik</dt><dd>{$feedback.priority}</dd></dl><dl><dt>Gönderen</dt><dd>{{ $feedback.Submitter ? $feedback.Submitter.username : '#' . $feedback.submitted_by_user_id }}</dd></dl><xf:if is="$feedback.case_id"><dl><dt>Vaka</dt><dd>#{$feedback.case_id}</dd></dl></xf:if><dl><dt>Oluşturuldu</dt><dd><xf:date time="$feedback.created_date" /></dd></dl></div><hr class="formRowSep" /><div class="message-userContent">{$feedback.message}</div></div></div></div>
-          <div class="block"><div class="block-container"><h2 class="block-header">Değiştirilemez olay geçmişi</h2><div class="block-body"><xf:foreach loop="$eventRows" value="$row"><div class="message message--simple"><div class="message-inner"><div class="message-cell message-cell--main"><div class="message-attribution"><b>{$row.event.event_type}</b> · {{ $row.event.Actor ? $row.event.Actor.username : '#' . $row.event.actor_user_id }} · <xf:date time="$row.event.created_date" /> · <xf:if is="$row.integrity_valid"><span class="label label--green">SHA-256 doğrulandı</span><xf:else /><span class="label label--red">Bütünlük hatası</span></xf:if></div><xf:if is="$row.data.response"><div class="message-userContent">{$row.data.response}</div></xf:if><xf:if is="$row.event.from_status OR $row.event.to_status"><div class="contentRow-minor">{$row.event.from_status} → {$row.event.to_status}</div></xf:if><div class="contentRow-minor"><code>{$row.event.data_hash}</code></div></div></div></div></xf:foreach></div></div></div>
-          <xf:if is="$isManager"><div class="block"><div class="block-container"><h2 class="block-header">Yönetim dönüşü</h2><xf:form action="{{ link('denetim-geribildirim/yonetim', null, {'feedback_id':$feedback.feedback_id}) }}" class="block-body"><xf:formrow label="Yeni durum"><select class="input" name="status"><xf:foreach loop="$statusLabels" key="$value" value="$label"><option value="{$value}" {{ $feedback.status == $value ? 'selected' : '' }}>{$label}</option></xf:foreach></select></xf:formrow><xf:formrow label="Atanan kullanıcı ID"><input class="input" type="number" name="assigned_to_user_id" min="0" value="{$feedback.assigned_to_user_id}" /></xf:formrow><xf:formrow label="Yönetim cevabı"><textarea class="input" name="response" rows="8" maxlength="10000" required="required"></textarea></xf:formrow><xf:submitrow submit="Dönüşü kaydet" /></xf:form></div></div></xf:if>]]></template>
-          '''
-              templates = templates.replace('</templates>', template_block + '\n</templates>', 1)
-
-          # Give existing audit screens a direct entry point into the new governance center.
-          index_marker = '<div class="warextAudit-toolbar">\n'
-          feedback_link = '    <a class="button" href="{{ link(\'denetim-geribildirim\') }}">İtiraz / Öneri</a>\n'
-          if feedback_link not in templates and index_marker in templates:
-              templates = templates.replace(index_marker, index_marker + feedback_link, 1)
-          case_marker = '<div class="warextAudit-toolbar"><a class="button" href="{{ link(\'denetim\') }}">← Denetim merkezine dön</a>'
-          if case_marker in templates and "denetim-geribildirim/olustur', null, {'type':'appeal'" not in templates.split('title="warext_audit_case"', 1)[-1].split('</template>', 1)[0]:
-              case_repl = case_marker + '<xf:if is="$canManageAudit"><a class="button" href="{{ link(\'denetim-geribildirim/olustur\', null, {\'type\':\'appeal\',\'case_id\':$caseView.case_id}) }}">Bu vaka için itiraz</a></xf:if>'
-              templates = templates.replace(case_marker, case_repl, 1)
-
-          templates_path.write_text(templates, encoding='utf-8')
-
-          # README progress note
-          readme = Path('README.md')
-          text = readme.read_text(encoding='utf-8') if readme.exists() else '# Warext Moderation Audit\n'
-          if '1.0.0 Alpha 8' not in text:
-              text += '''\n\n## 1.0.0 Alpha 8 — Adım 8/10\n\n- İtiraz ve öneri merkezi eklendi.\n- İtirazlar denetim vakasına bağlanıyor; standart kullanıcı yalnızca kendi moderasyon işlemi için itiraz açabiliyor.\n- Özgün başvuru içeriği değiştirilemiyor veya silinemiyor.\n- Yönetim cevapları, atama ve durum geçişleri ayrı olay geçmişinde tutuluyor.\n- Her olay SHA-256 bütünlük doğrulamasına sahip.\n- Yeni izinler: `warextAuditAppeal`, `warextAuditSuggest`.\n- Alpha 8 şema sürümü: 5.\n'''
-              readme.write_text(text, encoding='utf-8')
-          PY
-
-      - name: Validate source and metadata
-        shell: bash
-        run: |
-          set -euo pipefail
-          find upload/src/addons/Warext/ModerationAudit -type f -name '*.php' -print0 | xargs -0 -n1 php -l >/dev/null
-          python3 - <<'PY'
-          from pathlib import Path
-          import json, hashlib, xml.etree.ElementTree as ET
-          root = Path('upload/src/addons/Warext/ModerationAudit')
-          addon = json.loads((root / 'addon.json').read_text(encoding='utf-8'))
-          assert addon['version_id'] == 1000080
-          assert addon['version_string'] == '1.0.0 Alpha 8'
-          for p in (root / '_data').glob('*.xml'):
-              ET.parse(p)
-          required = [
-              root / 'Entity/AuditFeedback.php',
-              root / 'Entity/AuditFeedbackEvent.php',
-              root / 'Service/Audit/FeedbackManager.php',
-              root / 'Pub/Controller/Feedback.php'
-          ]
-          for p in required:
-              assert p.exists(), p
-          templates = (root / '_data/templates.xml').read_text(encoding='utf-8')
-          for title in ['warext_audit_feedback_index', 'warext_audit_feedback_create', 'warext_audit_feedback_view']:
-              assert f'title="{title}"' in templates
-
-          hashes = {}
-          for p in sorted(root.rglob('*')):
-              if not p.is_file() or p.name == 'hashes.json':
-                  continue
-              rel = p.relative_to(Path('upload')).as_posix()
-              hashes[rel] = hashlib.sha256(p.read_bytes()).hexdigest()
-          (root / 'hashes.json').write_text(json.dumps(hashes, indent=4, sort_keys=True) + '\n', encoding='utf-8')
-          print(f'validated PHP/XML/JSON; generated {len(hashes)} hashes')
-          PY
-
-      - name: Package and commit Alpha 8
+      - name: Package
         shell: bash
         run: |
           set -euo pipefail
@@ -313,27 +40,28 @@ jobs:
           zip -qr Warext-ModerationAudit-1.0.0-Alpha8.zip upload
           unzip -tq Warext-ModerationAudit-1.0.0-Alpha8.zip
 
-          # Remove obsolete reconstruction files now that the full source tree is canonical.
-          git rm -rf --ignore-unmatch .alpha7 .alpha7zip .bootstrap .pack .alpha7patch.b64
-          git rm -f --ignore-unmatch Warext-ModerationAudit-1.0.0-Alpha7.zip.b64 alpha7-restored.txt bootstrap-recovery-diagnostic.txt expand-alpha7-diagnostic.txt rebuild-alpha7-diagnostic.txt bootstrap-repair-diagnostic.txt
-          git rm -f --ignore-unmatch .github/workflows/bootstrap-alpha7.yml .github/workflows/expand-alpha7.yml .github/workflows/build-alpha8.yml
-
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add upload README.md Warext-ModerationAudit-1.0.0-Alpha8.zip
-          git commit -m "Alpha 8: add appeals suggestions and management responses"
-          git push origin main
-
-      - name: Publish Alpha 8 release
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Commit Alpha 8
         shell: bash
         run: |
           set -euo pipefail
-          TAG='v1.0.0-alpha8'
-          ZIP='Warext-ModerationAudit-1.0.0-Alpha8.zip'
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add upload README.md Warext-ModerationAudit-1.0.0-Alpha8.zip
+          if ! git diff --cached --quiet; then
+            git commit -m "Alpha 8: appeals suggestions and management responses"
+            git push origin main
+          fi
+
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          TAG="v1.0.0-alpha8"
+          ZIP="Warext-ModerationAudit-1.0.0-Alpha8.zip"
           if gh release view "$TAG" >/dev/null 2>&1; then
             gh release upload "$TAG" "$ZIP" --clobber
           else
-            gh release create "$TAG" "$ZIP" --target main --title 'Warext Moderation Audit 1.0.0 Alpha 8' --notes 'Adım 8/10: itiraz, öneri ve denetlenebilir yönetim dönüşü katmanı. Başvuru metinleri immutable; yönetim olayları SHA-256 bütünlük doğrulamalı.'
+            gh release create "$TAG" "$ZIP" --target main --title "Warext Moderation Audit 1.0.0 Alpha 8" --notes "Adım 8/10: itiraz, öneri ve denetlenebilir yönetim dönüşü katmanı. Özgün başvuru içerikleri değiştirilemez; yönetim olayları SHA-256 bütünlük doğrulamalıdır."
           fi
