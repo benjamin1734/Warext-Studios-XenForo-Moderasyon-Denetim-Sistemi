@@ -1,10 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <phrases>
-  <phrase title="permission_interface_warextAudit" version_id="1000011" version_string="1.0.0 Alpha 1"><![CDATA[Bağımsız moderasyon denetimi]]></phrase>
-  <phrase title="permission_general_warextAuditView" version_id="1000011" version_string="1.0.0 Alpha 1"><![CDATA[Denetim merkezini görüntüleyebilir]]></phrase>
-  <phrase title="permission_general_warextAuditReview" version_id="1000011" version_string="1.0.0 Alpha 1"><![CDATA[Denetim vakalarını değerlendirebilir]]></phrase>
-  <phrase title="permission_general_warextAuditReports" version_id="1000011" version_string="1.0.0 Alpha 1"><![CDATA[Denetim raporlarını görüntüleyebilir]]></phrase>
-  <phrase title="permission_general_warextAuditSensitive" version_id="1000011" version_string="1.0.0 Alpha 1"><![CDATA[Hassas denetim anlık görüntülerini görüntüleyebilir]]></phrase>
-  <phrase title="permission_general_warextAuditManage" version_id="1000011" version_string="1.0.0 Alpha 1"><![CDATA[Denetim sistemi yönetim ayarlarını kullanabilir]]></phrase>
-  <phrase title="nav.warextAudit" version_id="1000070" version_string="1.0.0 Alpha 7"><![CDATA[Denetim]]></phrase>
+  <phrase title="permission_interface_warextAudit" version_id="1000011" version_string="1.0.0 Alpha 1">Bağımsız moderasyon denetimi</phrase>
+  <phrase title="permission_general_warextAuditView" version_id="1000011" version_string="1.0.0 Alpha 1">Denetim merkezini görüntüleyebilir</phrase>
+  <phrase title="permission_general_warextAuditReview" version_id="1000011" version_string="1.0.0 Alpha 1">Denetim vakalarını değerlendirebilir</phrase>
+  <phrase title="permission_general_warextAuditReports" version_id="1000011" version_string="1.0.0 Alpha 1">Denetim raporlarını görüntüleyebilir</phrase>
+  <phrase title="permission_general_warextAuditSensitive" version_id="1000011" version_string="1.0.0 Alpha 1">Hassas denetim anlık görüntülerini görüntüleyebilir</phrase>
+  <phrase title="permission_general_warextAuditManage" version_id="1000011" version_string="1.0.0 Alpha 1">Denetim sistemi yönetim ayarlarını kullanabilir</phrase>
+  <phrase title="nav.warextAudit" version_id="1000070" version_string="1.0.0 Alpha 7">Denetim</phrase>
+  <phrase title="permission_general_warextAuditAppeal" version_id="1000080" version_string="1.0.0 Alpha 8">Kendi denetim vakaları için itiraz oluşturabilir</phrase>
+  <phrase title="permission_general_warextAuditSuggest" version_id="1000080" version_string="1.0.0 Alpha 8">Denetim sistemi için öneri oluşturabilir</phrase>
 </phrases>

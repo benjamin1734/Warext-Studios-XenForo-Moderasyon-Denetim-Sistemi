@@ -171,6 +171,45 @@ class Setup extends AbstractSetup
             $table->addKey(['status', 'generated_date'], 'status_generated');
         });
 
+        $sm->createTable('xf_warext_audit_feedback', function (Create $table)
+        {
+            $table->checkExists(true);
+            $table->addColumn('feedback_id', 'int')->autoIncrement();
+            $table->addColumn('feedback_type', 'enum')->values(['appeal', 'suggestion'])->setDefault('suggestion');
+            $table->addColumn('case_id', 'int')->setDefault(0);
+            $table->addColumn('submitted_by_user_id', 'int')->setDefault(0);
+            $table->addColumn('subject', 'varchar', 150)->setDefault('');
+            $table->addColumn('message', 'mediumblob');
+            $table->addColumn('status', 'enum')->values(['open', 'under_review', 'accepted', 'rejected', 'implemented', 'closed'])->setDefault('open');
+            $table->addColumn('priority', 'enum')->values(['low', 'normal', 'high', 'critical'])->setDefault('normal');
+            $table->addColumn('assigned_to_user_id', 'int')->setDefault(0);
+            $table->addColumn('last_response_date', 'int')->setDefault(0);
+            $table->addColumn('created_date', 'int')->setDefault(0);
+            $table->addColumn('updated_date', 'int')->setDefault(0);
+            $table->addPrimaryKey('feedback_id');
+            $table->addKey(['feedback_type', 'status', 'created_date'], 'type_status_created');
+            $table->addKey(['submitted_by_user_id', 'created_date'], 'submitter_created');
+            $table->addKey(['case_id', 'created_date'], 'case_created');
+            $table->addKey(['assigned_to_user_id', 'status'], 'assignee_status');
+        });
+
+        $sm->createTable('xf_warext_audit_feedback_event', function (Create $table)
+        {
+            $table->checkExists(true);
+            $table->addColumn('event_id', 'int')->autoIncrement();
+            $table->addColumn('feedback_id', 'int')->setDefault(0);
+            $table->addColumn('event_type', 'varchar', 32)->setDefault('');
+            $table->addColumn('actor_user_id', 'int')->setDefault(0);
+            $table->addColumn('from_status', 'varchar', 25)->setDefault('');
+            $table->addColumn('to_status', 'varchar', 25)->setDefault('');
+            $table->addColumn('event_data', 'mediumblob');
+            $table->addColumn('data_hash', 'varbinary', 64)->setDefault('');
+            $table->addColumn('created_date', 'int')->setDefault(0);
+            $table->addPrimaryKey('event_id');
+            $table->addKey(['feedback_id', 'created_date'], 'feedback_created');
+            $table->addKey(['actor_user_id', 'created_date'], 'actor_created');
+        });
+
         $sm->createTable('xf_warext_audit_state', function (Create $table)
         {
             $table->checkExists(true);
@@ -191,7 +230,7 @@ class Setup extends AbstractSetup
             'installed_at' => (string)$now,
             'audit_start_date' => (string)$now,
             'start_moderator_log_id' => (string)$startModeratorLogId,
-            'schema_version' => '4',
+            'schema_version' => '5',
             'report_anon_salt' => bin2hex(random_bytes(32)),
             'assignment_policy' => 'balanced',
             'normal_blind_mode' => 'moderator',
@@ -351,9 +390,61 @@ class Setup extends AbstractSetup
         }
     }
 
+    public function upgrade1000080Step1(): void
+    {
+        $sm = $this->schemaManager();
+
+        $sm->createTable('xf_warext_audit_feedback', function (Create $table)
+        {
+            $table->checkExists(true);
+            $table->addColumn('feedback_id', 'int')->autoIncrement();
+            $table->addColumn('feedback_type', 'enum')->values(['appeal', 'suggestion'])->setDefault('suggestion');
+            $table->addColumn('case_id', 'int')->setDefault(0);
+            $table->addColumn('submitted_by_user_id', 'int')->setDefault(0);
+            $table->addColumn('subject', 'varchar', 150)->setDefault('');
+            $table->addColumn('message', 'mediumblob');
+            $table->addColumn('status', 'enum')->values(['open', 'under_review', 'accepted', 'rejected', 'implemented', 'closed'])->setDefault('open');
+            $table->addColumn('priority', 'enum')->values(['low', 'normal', 'high', 'critical'])->setDefault('normal');
+            $table->addColumn('assigned_to_user_id', 'int')->setDefault(0);
+            $table->addColumn('last_response_date', 'int')->setDefault(0);
+            $table->addColumn('created_date', 'int')->setDefault(0);
+            $table->addColumn('updated_date', 'int')->setDefault(0);
+            $table->addPrimaryKey('feedback_id');
+            $table->addKey(['feedback_type', 'status', 'created_date'], 'type_status_created');
+            $table->addKey(['submitted_by_user_id', 'created_date'], 'submitter_created');
+            $table->addKey(['case_id', 'created_date'], 'case_created');
+            $table->addKey(['assigned_to_user_id', 'status'], 'assignee_status');
+        });
+
+        $sm->createTable('xf_warext_audit_feedback_event', function (Create $table)
+        {
+            $table->checkExists(true);
+            $table->addColumn('event_id', 'int')->autoIncrement();
+            $table->addColumn('feedback_id', 'int')->setDefault(0);
+            $table->addColumn('event_type', 'varchar', 32)->setDefault('');
+            $table->addColumn('actor_user_id', 'int')->setDefault(0);
+            $table->addColumn('from_status', 'varchar', 25)->setDefault('');
+            $table->addColumn('to_status', 'varchar', 25)->setDefault('');
+            $table->addColumn('event_data', 'mediumblob');
+            $table->addColumn('data_hash', 'varbinary', 64)->setDefault('');
+            $table->addColumn('created_date', 'int')->setDefault(0);
+            $table->addPrimaryKey('event_id');
+            $table->addKey(['feedback_id', 'created_date'], 'feedback_created');
+            $table->addKey(['actor_user_id', 'created_date'], 'actor_created');
+        });
+
+        $this->db()->insert('xf_warext_audit_state', [
+            'state_key' => 'schema_version',
+            'state_value' => '5',
+            'updated_date' => time()
+        ], false, 'state_value = VALUES(state_value), updated_date = VALUES(updated_date)');
+    }
+
     public function uninstallStep1(): void
     {
         $tables = [
+            'xf_warext_audit_feedback_event',
+            'xf_warext_audit_feedback',
             'xf_warext_audit_review_revision',
             'xf_warext_audit_review',
             'xf_warext_audit_assignment',

@@ -40,3 +40,14 @@ Repo kökündeki `Warext-ModerationAudit-1.0.0-Alpha7.zip` dosyasını XenForo y
 ## Durum
 
 Alpha 7 geliştirme sürümüdür. PHP 8.4 sözdizimi, XML/JSON, ZIP ve SHA-256 manifest kontrollerinden geçirilmiştir. Canlı XenForo 2.3 kurulumu üzerinde runtime testi henüz tamamlanmamıştır.
+
+
+## 1.0.0 Alpha 8 — Adım 8/10
+
+- İtiraz ve öneri merkezi eklendi.
+- İtirazlar denetim vakasına bağlanıyor; standart kullanıcı yalnızca kendi moderasyon işlemi için itiraz açabiliyor.
+- Özgün başvuru içeriği değiştirilemiyor veya silinemiyor.
+- Yönetim cevapları, atama ve durum geçişleri ayrı olay geçmişinde tutuluyor.
+- Her olay SHA-256 bütünlük doğrulamasına sahip.
+- Yeni izinler: `warextAuditAppeal`, `warextAuditSuggest`.
+- Alpha 8 şema sürümü: 5.
