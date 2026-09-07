@@ -210,6 +210,42 @@ class Setup extends AbstractSetup
             $table->addKey(['actor_user_id', 'created_date'], 'actor_created');
         });
 
+        $sm->createTable('xf_warext_audit_escalation', function (Create $table)
+        {
+            $table->checkExists(true);
+            $table->addColumn('escalation_id', 'int')->autoIncrement();
+            $table->addColumn('source_type', 'enum')->values(['case', 'feedback'])->setDefault('case');
+            $table->addColumn('source_id', 'int')->setDefault(0);
+            $table->addColumn('level', 'tinyint')->setDefault(1);
+            $table->addColumn('reason', 'varchar', 255)->setDefault('');
+            $table->addColumn('created_date', 'int')->setDefault(0);
+            $table->addColumn('event_hash', 'varbinary', 64)->setDefault('');
+            $table->addColumn('resolved_by_user_id', 'int')->setDefault(0);
+            $table->addColumn('resolved_date', 'int')->setDefault(0);
+            $table->addColumn('resolution_note', 'mediumblob');
+            $table->addColumn('resolution_hash', 'varbinary', 64)->setDefault('');
+            $table->addPrimaryKey('escalation_id');
+            $table->addUniqueKey(['source_type', 'source_id', 'level'], 'source_level');
+            $table->addKey(['resolved_date', 'created_date'], 'resolved_created');
+            $table->addKey(['source_type', 'created_date'], 'source_created');
+        });
+
+        $sm->createTable('xf_warext_audit_notice', function (Create $table)
+        {
+            $table->checkExists(true);
+            $table->addColumn('notice_id', 'int')->autoIncrement();
+            $table->addColumn('user_id', 'int')->setDefault(0);
+            $table->addColumn('notice_type', 'varchar', 32)->setDefault('');
+            $table->addColumn('source_type', 'varchar', 20)->setDefault('');
+            $table->addColumn('source_id', 'int')->setDefault(0);
+            $table->addColumn('message', 'varchar', 255)->setDefault('');
+            $table->addColumn('created_date', 'int')->setDefault(0);
+            $table->addColumn('read_date', 'int')->setDefault(0);
+            $table->addPrimaryKey('notice_id');
+            $table->addUniqueKey(['user_id', 'notice_type', 'source_type', 'source_id'], 'user_notice_source');
+            $table->addKey(['user_id', 'read_date', 'created_date'], 'user_read_created');
+        });
+
         $sm->createTable('xf_warext_audit_state', function (Create $table)
         {
             $table->checkExists(true);
@@ -230,12 +266,19 @@ class Setup extends AbstractSetup
             'installed_at' => (string)$now,
             'audit_start_date' => (string)$now,
             'start_moderator_log_id' => (string)$startModeratorLogId,
-            'schema_version' => '5',
+            'schema_version' => '6',
             'report_anon_salt' => bin2hex(random_bytes(32)),
             'assignment_policy' => 'balanced',
             'normal_blind_mode' => 'moderator',
             'elevated_blind_mode' => 'moderator',
-            'critical_blind_mode' => 'full'
+            'critical_blind_mode' => 'full',
+            'sla_case_normal_hours' => '72',
+            'sla_case_elevated_hours' => '36',
+            'sla_case_critical_hours' => '12',
+            'sla_feedback_low_hours' => '96',
+            'sla_feedback_normal_hours' => '48',
+            'sla_feedback_high_hours' => '24',
+            'sla_feedback_critical_hours' => '6'
         ];
 
         foreach ($state as $key => $value)
@@ -440,9 +483,71 @@ class Setup extends AbstractSetup
         ], false, 'state_value = VALUES(state_value), updated_date = VALUES(updated_date)');
     }
 
+    public function upgrade1000090Step1(): void
+    {
+        $sm = $this->schemaManager();
+
+        $sm->createTable('xf_warext_audit_escalation', function (Create $table)
+        {
+            $table->checkExists(true);
+            $table->addColumn('escalation_id', 'int')->autoIncrement();
+            $table->addColumn('source_type', 'enum')->values(['case', 'feedback'])->setDefault('case');
+            $table->addColumn('source_id', 'int')->setDefault(0);
+            $table->addColumn('level', 'tinyint')->setDefault(1);
+            $table->addColumn('reason', 'varchar', 255)->setDefault('');
+            $table->addColumn('created_date', 'int')->setDefault(0);
+            $table->addColumn('event_hash', 'varbinary', 64)->setDefault('');
+            $table->addColumn('resolved_by_user_id', 'int')->setDefault(0);
+            $table->addColumn('resolved_date', 'int')->setDefault(0);
+            $table->addColumn('resolution_note', 'mediumblob');
+            $table->addColumn('resolution_hash', 'varbinary', 64)->setDefault('');
+            $table->addPrimaryKey('escalation_id');
+            $table->addUniqueKey(['source_type', 'source_id', 'level'], 'source_level');
+            $table->addKey(['resolved_date', 'created_date'], 'resolved_created');
+            $table->addKey(['source_type', 'created_date'], 'source_created');
+        });
+
+        $sm->createTable('xf_warext_audit_notice', function (Create $table)
+        {
+            $table->checkExists(true);
+            $table->addColumn('notice_id', 'int')->autoIncrement();
+            $table->addColumn('user_id', 'int')->setDefault(0);
+            $table->addColumn('notice_type', 'varchar', 32)->setDefault('');
+            $table->addColumn('source_type', 'varchar', 20)->setDefault('');
+            $table->addColumn('source_id', 'int')->setDefault(0);
+            $table->addColumn('message', 'varchar', 255)->setDefault('');
+            $table->addColumn('created_date', 'int')->setDefault(0);
+            $table->addColumn('read_date', 'int')->setDefault(0);
+            $table->addPrimaryKey('notice_id');
+            $table->addUniqueKey(['user_id', 'notice_type', 'source_type', 'source_id'], 'user_notice_source');
+            $table->addKey(['user_id', 'read_date', 'created_date'], 'user_read_created');
+        });
+
+        $now = time();
+        foreach ([
+            'schema_version' => '6',
+            'sla_case_normal_hours' => '72',
+            'sla_case_elevated_hours' => '36',
+            'sla_case_critical_hours' => '12',
+            'sla_feedback_low_hours' => '96',
+            'sla_feedback_normal_hours' => '48',
+            'sla_feedback_high_hours' => '24',
+            'sla_feedback_critical_hours' => '6'
+        ] as $key => $value)
+        {
+            $this->db()->insert('xf_warext_audit_state', [
+                'state_key' => $key,
+                'state_value' => $value,
+                'updated_date' => $now
+            ], false, 'state_value = VALUES(state_value), updated_date = VALUES(updated_date)');
+        }
+    }
+
     public function uninstallStep1(): void
     {
         $tables = [
+            'xf_warext_audit_notice',
+            'xf_warext_audit_escalation',
             'xf_warext_audit_feedback_event',
             'xf_warext_audit_feedback',
             'xf_warext_audit_review_revision',

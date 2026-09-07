@@ -4,6 +4,7 @@
 <xf:css src="warext_audit.less" />
 
 <div class="warextAudit-toolbar">
+    <a class="button" href="{{ link('denetim-takip') }}">Takip / Eskalasyon</a>
     <a class="button" href="{{ link('denetim-geribildirim') }}">İtiraz / Öneri</a>
     <xf:if is="$xf.visitor.hasPermission('general', 'warextAuditReports')"><a class="button" href="{{ link('denetim/raporlar') }}">Raporlar</a></xf:if>
     <xf:if is="$canManageAudit"><a class="button" href="{{ link('denetim/havuz') }}">Denetçi havuzu</a></xf:if>
@@ -219,6 +220,7 @@
   <template type="public" title="warext_audit_feedback_index" version_id="1000080" version_string="1.0.0 Alpha 8"><![CDATA[<xf:title>İtiraz ve Öneri Merkezi</xf:title>
 <xf:css src="warext_audit.less" />
 <div class="buttonGroup">
+    <a class="button" href="{{ link('denetim-takip') }}">Takip / Eskalasyon</a>
     <a class="button" href="{{ link('denetim') }}">← Denetim</a>
     <xf:if is="$canAppeal OR $isManager"><a class="button button--primary" href="{{ link('denetim-geribildirim/olustur', null, {'type':'appeal'}) }}">Yeni itiraz</a></xf:if>
     <xf:if is="$canSuggest OR $isManager"><a class="button" href="{{ link('denetim-geribildirim/olustur', null, {'type':'suggestion'}) }}">Yeni öneri</a></xf:if>
@@ -254,5 +256,30 @@
 <div class="block"><div class="block-container"><h2 class="block-header">Başvuru</h2><div class="block-body"><div class="pairs pairs--columns pairs--fixedSmall"><dl><dt>Tür</dt><dd>{{ $feedback.feedback_type == 'appeal' ? 'İtiraz' : 'Öneri' }}</dd></dl><dl><dt>Durum</dt><dd>{$feedback.status}</dd></dl><dl><dt>Öncelik</dt><dd>{$feedback.priority}</dd></dl><dl><dt>Gönderen</dt><dd>{$feedback.Submitter.username}</dd></dl><xf:if is="$feedback.case_id"><dl><dt>Vaka</dt><dd>#{$feedback.case_id}</dd></dl></xf:if><dl><dt>Oluşturuldu</dt><dd><xf:date time="$feedback.created_date" /></dd></dl></div><hr class="formRowSep" /><div class="message-userContent">{$feedback.message}</div></div></div></div>
 <div class="block"><div class="block-container"><h2 class="block-header">Değiştirilemez olay geçmişi</h2><div class="block-body"><xf:foreach loop="$eventRows" value="$row"><div class="message message--simple"><div class="message-inner"><div class="message-cell message-cell--main"><div class="message-attribution"><b>{$row.event.event_type}</b> · {$row.event.Actor.username} · <xf:date time="$row.event.created_date" /> · <xf:if is="$row.integrity_valid"><span class="label label--green">SHA-256 doğrulandı</span><xf:else /><span class="label label--red">Bütünlük hatası</span></xf:if></div><xf:if is="$row.data.response"><div class="message-userContent">{$row.data.response}</div></xf:if><xf:if is="$row.event.from_status OR $row.event.to_status"><div class="contentRow-minor">{$row.event.from_status} → {$row.event.to_status}</div></xf:if><div class="contentRow-minor"><code>{$row.event.data_hash}</code></div></div></div></div></xf:foreach></div></div></div>
 <xf:if is="$isManager"><div class="block"><div class="block-container"><h2 class="block-header">Yönetim dönüşü</h2><xf:form action="{{ link('denetim-geribildirim/yonetim', null, {'feedback_id':$feedback.feedback_id}) }}" class="block-body"><xf:formrow label="Yeni durum"><select class="input" name="status"><xf:foreach loop="$statusLabels" key="$value" value="$label"><option value="{$value}" {{ $feedback.status == $value ? 'selected' : '' }}>{$label}</option></xf:foreach></select></xf:formrow><xf:formrow label="Atanan kullanıcı ID"><input class="input" type="number" name="assigned_to_user_id" min="0" value="{$feedback.assigned_to_user_id}" /></xf:formrow><xf:formrow label="Yönetim cevabı"><textarea class="input" name="response" rows="8" maxlength="10000" required="required"></textarea></xf:formrow><xf:submitrow submit="Dönüşü kaydet" /></xf:form></div></div></xf:if>]]></template>
+
+
+
+  <template type="public" title="warext_audit_governance" version_id="1000090" version_string="1.0.0 Alpha 9"><![CDATA[<xf:title>Denetim Takip ve Eskalasyon</xf:title>
+<xf:css src="warext_audit.less" />
+<div class="warextAudit-toolbar">
+    <a class="button" href="{{ link('denetim') }}">← Denetim merkezi</a>
+    <a class="button" href="{{ link('denetim-geribildirim') }}">İtiraz / Öneri</a>
+    <xf:if is="$isManager"><xf:form action="{{ link('denetim-takip/tara') }}" class="u-inlineBlock"><button class="button button--primary" type="submit">SLA taramasını çalıştır</button></xf:form></xf:if>
+</div>
+
+<div class="warextAudit-stats">
+    <div class="warextAudit-stat"><span class="warextAudit-statValue">{$activeCount}</span><span class="warextAudit-statLabel">Aktif eskalasyon</span></div>
+    <div class="warextAudit-stat"><span class="warextAudit-statValue">{$unreadCount}</span><span class="warextAudit-statLabel">Okunmamış bildirim</span></div>
+</div>
+
+<div class="blockMessage blockMessage--important">SLA ihlalleri silinmez. Eskalasyonun özgün kaydı SHA-256 ile doğrulanır; çözüm işlemi ayrıca hash'li bir kapanış izi bırakır.</div>
+
+<div class="block"><div class="block-container"><h2 class="block-header">Bildirimlerim</h2><div class="block-body">
+<xf:if is="$notices"><xf:foreach loop="$notices" value="$notice"><div class="contentRow {{ !$notice.read_date ? 'is-unread' : '' }}"><div class="contentRow-main"><b>{$notice.message}</b><div class="contentRow-minor">{$notice.source_type} #{$notice.source_id} · <xf:date time="$notice.created_date" /></div></div><xf:if is="!$notice.read_date"><div class="contentRow-extra"><xf:form action="{{ link('denetim-takip/oku', null, {'notice_id':$notice.notice_id}) }}"><button type="submit" class="button button--small">Okundu</button></xf:form></div></xf:if></div></xf:foreach><xf:else /><div class="blockMessage">Bildirim bulunmuyor.</div></xf:if>
+</div></div></div>
+
+<div class="block"><div class="block-container"><h2 class="block-header">Eskalasyon geçmişi</h2><div class="block-body">
+<xf:if is="$escalationRows"><xf:foreach loop="$escalationRows" value="$row"><div class="message message--simple"><div class="message-inner"><div class="message-cell message-cell--main"><div class="message-attribution"><b>Seviye {$row.entity.level}</b> · {$row.entity.source_type} #{$row.entity.source_id} · <xf:date time="$row.entity.created_date" /> · <xf:if is="$row.integrity_valid"><span class="label label--green">Kayıt doğrulandı</span><xf:else /><span class="label label--red">Kayıt bütünlüğü hatalı</span></xf:if></div><div class="message-userContent">{$row.entity.reason}</div><xf:if is="$row.entity.resolved_date"><div class="blockMessage">Çözüldü: {$row.entity.resolution_note} · <xf:date time="$row.entity.resolved_date" /> · <xf:if is="$row.resolution_valid"><span class="label label--green">Çözüm doğrulandı</span><xf:else /><span class="label label--red">Çözüm bütünlüğü hatalı</span></xf:if></div><xf:elseif is="$isManager" /><xf:form action="{{ link('denetim-takip/coz', null, {'escalation_id':$row.entity.escalation_id}) }}"><textarea class="input" name="resolution_note" rows="2" maxlength="10000" placeholder="Çözüm notu" required="required"></textarea><button class="button button--small button--primary" type="submit">Eskalasyonu çöz</button></xf:form></xf:if><div class="contentRow-minor"><code>{$row.entity.event_hash}</code></div></div></div></div></xf:foreach><xf:else /><div class="blockMessage">Görüntülenebilir eskalasyon kaydı yok.</div></xf:if>
+</div></div></div>]]></template>
 
 </templates>

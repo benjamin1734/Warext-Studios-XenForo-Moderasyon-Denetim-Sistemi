@@ -4,7 +4,7 @@ XenForo 2.3 için bağımsız moderasyon denetim eklentisi. Moderasyon işlemler
 
 ## Sürüm
 
-**1.0.0 Alpha 7**
+**1.0.0 Alpha 9**
 
 ## Gereksinimler
 
@@ -13,7 +13,7 @@ XenForo 2.3 için bağımsız moderasyon denetim eklentisi. Moderasyon işlemler
 
 ## Kurulum
 
-Repo kökündeki `Warext-ModerationAudit-1.0.0-Alpha7.zip` dosyasını XenForo yönetim panelinde **Add-ons → Install/upgrade from archive** alanına yükleyin.
+Repo kökündeki `Warext-ModerationAudit-1.0.0-Alpha9.zip` dosyasını XenForo yönetim panelinde **Add-ons → Install/upgrade from archive** alanına yükleyin.
 
 ## Özellikler
 
@@ -39,7 +39,7 @@ Repo kökündeki `Warext-ModerationAudit-1.0.0-Alpha7.zip` dosyasını XenForo y
 
 ## Durum
 
-Alpha 7 geliştirme sürümüdür. PHP 8.4 sözdizimi, XML/JSON, ZIP ve SHA-256 manifest kontrollerinden geçirilmiştir. Canlı XenForo 2.3 kurulumu üzerinde runtime testi henüz tamamlanmamıştır.
+Alpha 9 geliştirme sürümüdür. PHP 8.4 sözdizimi, XML/JSON, ZIP ve SHA-256 manifest kontrollerinden geçirilmiştir. Canlı XenForo 2.3 kurulumu üzerinde runtime testi henüz tamamlanmamıştır.
 
 
 ## 1.0.0 Alpha 8 — Adım 8/10
@@ -51,3 +51,17 @@ Alpha 7 geliştirme sürümüdür. PHP 8.4 sözdizimi, XML/JSON, ZIP ve SHA-256 
 - Her olay SHA-256 bütünlük doğrulamasına sahip.
 - Yeni izinler: `warextAuditAppeal`, `warextAuditSuggest`.
 - Alpha 8 şema sürümü: 5.
+
+
+## 1.0.0 Alpha 9 — Adım 9/10
+
+- Risk ve öncelik bazlı SLA süreleri eklendi.
+- Denetim vakaları için normal 72s, yükseltilmiş 36s, kritik 12s varsayılan SLA.
+- İtiraz/öneriler için düşük 96s, normal 48s, yüksek 24s, kritik 6s varsayılan SLA.
+- SLA ihlalleri 3 seviyeli eskalasyon kaydı üretir ve aynı seviye tekrarlanmaz.
+- Eskalasyon başlangıcı ve çözümü ayrı SHA-256 bütünlük kontrolüne sahiptir.
+- Kullanıcıya bağlı dahili denetim bildirim merkezi eklendi.
+- Sonuçlanan vaka/başvuruların açık eskalasyonları sistem tarafından iz bırakarak kapatılır.
+- Saatlik XenForo cron taraması ve yönetici manuel tarama düğmesi eklendi.
+- Yeni `/denetim-takip/` takip ve eskalasyon merkezi eklendi.
+- Alpha 9 şema sürümü: 6.

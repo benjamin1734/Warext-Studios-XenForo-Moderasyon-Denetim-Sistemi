@@ -108,12 +108,12 @@ class Governance extends AbstractController
     {
         if ((string)$escalation->source_type === 'case')
         {
-            $case = $this->app()->em()->find('Warext\ModerationAudit:AuditCase', (int)$escalation->source_id);
+            $case = \XF::em()->find('Warext\ModerationAudit:AuditCase', (int)$escalation->source_id);
             return $case && (int)$case->moderator_user_id === $userId;
         }
         if ((string)$escalation->source_type === 'feedback')
         {
-            $feedback = $this->app()->em()->find('Warext\ModerationAudit:AuditFeedback', (int)$escalation->source_id);
+            $feedback = \XF::em()->find('Warext\ModerationAudit:AuditFeedback', (int)$escalation->source_id);
             return $feedback && in_array($userId, [(int)$feedback->submitted_by_user_id, (int)$feedback->assigned_to_user_id], true);
         }
         return false;

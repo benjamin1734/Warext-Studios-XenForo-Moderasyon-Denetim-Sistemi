@@ -2,4 +2,5 @@
 <routes>
   <route route_type="public" route_prefix="denetim" controller="Warext\ModerationAudit:Audit" context="warextAudit" />
   <route route_type="public" route_prefix="denetim-geribildirim" controller="Warext\ModerationAudit:Feedback" context="warextAudit" />
+  <route route_type="public" route_prefix="denetim-takip" controller="Warext\ModerationAudit:Governance" context="warextAudit" />
 </routes>

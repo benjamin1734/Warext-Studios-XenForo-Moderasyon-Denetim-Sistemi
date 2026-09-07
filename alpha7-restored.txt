@@ -1,3 +1,0 @@
-restore=ok
-version=1.0.0 Alpha 7
-php-count=31
