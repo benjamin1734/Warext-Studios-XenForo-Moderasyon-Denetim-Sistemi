@@ -1,0 +1,13 @@
+b64-size=20039
+base64: invalid input
+base64-exit=1
+zip-size=7500
+Warext-ModerationAudit-1.0.0-Alpha7.zip: Zip archive data, at least v1.0 to extract, compression method=store
+[Warext-ModerationAudit-1.0.0-Alpha7.zip]
+  End-of-central-directory signature not found.  Either this file is not
+  a zipfile, or it constitutes one disk of a multi-part archive.  In the
+  latter case the central directory and zipfile comment will be found on
+  the last disk(s) of this archive.
+unzip:  cannot find zipfile directory in one of Warext-ModerationAudit-1.0.0-Alpha7.zip or
+        Warext-ModerationAudit-1.0.0-Alpha7.zip.zip, and cannot find Warext-ModerationAudit-1.0.0-Alpha7.zip.ZIP, period.
+unzip-test-exit=9
