@@ -14,81 +14,110 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Repair bootstrap ZIP and restore Alpha7
+      - name: Recover ZIP entries without central directory and restore Alpha7
         shell: bash
         run: |
-          set +e
-          DIAG=bootstrap-repair-diagnostic.txt
-          : > "$DIAG"
-          rm -rf /tmp/bootstrap-work /tmp/bootstrap-fixed.zip /tmp/bootstrap.zip /tmp/bootstrap.b64
-
+          set -euo pipefail
+          rm -rf /tmp/bootstrap-work /tmp/bootstrap.zip /tmp/bootstrap.b64
+          mkdir -p /tmp/bootstrap-work
           cat .bootstrap/part-00 .bootstrap/part-01 .bootstrap/part-02 .bootstrap/part-03 .bootstrap/part-04 .bootstrap/part-05 .bootstrap/part-06 .bootstrap/part-07-00 \
             | tr -d '[:space:]' > /tmp/bootstrap.b64
-          base64 -d /tmp/bootstrap.b64 > /tmp/bootstrap.zip 2>> "$DIAG"
-          echo "decode-exit=$? zip-size=$(wc -c < /tmp/bootstrap.zip)" >> "$DIAG"
+          base64 -d /tmp/bootstrap.b64 > /tmp/bootstrap.zip
 
-          timeout 30s zip -FF /tmp/bootstrap.zip --out /tmp/bootstrap-fixed.zip >> "$DIAG" 2>&1
-          repair=$?
-          echo "repair-exit=$repair" >> "$DIAG"
-          if [ -f /tmp/bootstrap-fixed.zip ]; then
-            echo "fixed-size=$(wc -c < /tmp/bootstrap-fixed.zip)" >> "$DIAG"
-            unzip -tq /tmp/bootstrap-fixed.zip >> "$DIAG" 2>&1
-            fixed_test=$?
-            echo "fixed-unzip-test-exit=$fixed_test" >> "$DIAG"
-          else
-            fixed_test=99
-            echo "fixed-file-missing=1" >> "$DIAG"
-          fi
+          python3 - <<'PY'
+          from pathlib import Path
+          import struct, zlib, binascii
 
-          if [ "$fixed_test" -eq 0 ]; then
-            mkdir -p /tmp/bootstrap-work
-            (cd /tmp/bootstrap-work && unzip -q /tmp/bootstrap-fixed.zip)
-            echo "restored-files=$(find /tmp/bootstrap-work -type f | wc -l)" >> "$DIAG"
-            addon=/tmp/bootstrap-work/upload/src/addons/Warext/ModerationAudit/addon.json
-            if [ -f "$addon" ]; then
-              version=$(php -r '$j=json_decode(file_get_contents($argv[1]),true); echo $j["version_string"] ?? "missing";' "$addon")
-              echo "bootstrap-addon-version=$version" >> "$DIAG"
-            else
-              version=missing
-              echo "bootstrap-addon-version=missing" >> "$DIAG"
-            fi
+          src = Path('/tmp/bootstrap.zip').read_bytes()
+          out = Path('/tmp/bootstrap-work')
+          pos = 0
+          count = 0
+          total = len(src)
+          while pos + 4 <= total:
+              sig = src[pos:pos+4]
+              if sig == b'PK\x01\x02' or sig == b'PK\x05\x06':
+                  break
+              if sig != b'PK\x03\x04':
+                  raise SystemExit(f'unexpected signature at {pos}: {sig!r}')
+              if pos + 30 > total:
+                  raise SystemExit('truncated local header')
+              fields = struct.unpack_from('<HHHHHIIIHH', src, pos + 4)
+              ver, flags, method, mtime, mdate, crc, csize, usize, fnlen, extralen = fields
+              if flags & 0x08:
+                  raise SystemExit(f'unsupported data descriptor at entry {count}')
+              name_start = pos + 30
+              name_end = name_start + fnlen
+              extra_end = name_end + extralen
+              data_end = extra_end + csize
+              if data_end > total:
+                  raise SystemExit(f'truncated entry at {pos}')
+              name = src[name_start:name_end].decode('utf-8')
+              comp = src[extra_end:data_end]
+              if method == 0:
+                  data = comp
+              elif method == 8:
+                  data = zlib.decompress(comp, -15)
+              else:
+                  raise SystemExit(f'unsupported method {method} for {name}')
+              if len(data) != usize:
+                  raise SystemExit(f'size mismatch {name}: {len(data)} != {usize}')
+              if (binascii.crc32(data) & 0xffffffff) != crc:
+                  raise SystemExit(f'crc mismatch {name}')
+              target = out / name
+              if name.endswith('/'):
+                  target.mkdir(parents=True, exist_ok=True)
+              else:
+                  target.parent.mkdir(parents=True, exist_ok=True)
+                  target.write_bytes(data)
+              count += 1
+              pos = data_end
+          print(f'recovered_entries={count} local_data_end={pos} total_zip_bytes={total}')
+          if count < 20:
+              raise SystemExit('too few recovered entries')
+          PY
 
-            base64 -d .alpha7patch.b64 | gzip -d > /tmp/alpha7.patch 2>> "$DIAG"
-            echo "patch-decode-exit=${PIPESTATUS[0]}:${PIPESTATUS[1]} patch-size=$(wc -c < /tmp/alpha7.patch)" >> "$DIAG"
-            mkdir -p /tmp/bootstrap-work/upload/src/addons/Warext/ModerationAudit/Cron
-            (cd /tmp/bootstrap-work && patch -p1 --dry-run --batch < /tmp/alpha7.patch) >> "$DIAG" 2>&1
-            dry=$?
-            echo "patch-dry-run-exit=$dry" >> "$DIAG"
+          addon=/tmp/bootstrap-work/upload/src/addons/Warext/ModerationAudit/addon.json
+          test -f "$addon"
+          bootstrap_version=$(php -r '$j=json_decode(file_get_contents($argv[1]),true); echo $j["version_string"] ?? "missing";' "$addon")
+          echo "bootstrap-version=$bootstrap_version"
 
-            if [ "$dry" -eq 0 ]; then
-              (cd /tmp/bootstrap-work && patch -p1 --batch < /tmp/alpha7.patch) >> "$DIAG" 2>&1
-              applied=$?
-              echo "patch-apply-exit=$applied" >> "$DIAG"
-              if [ "$applied" -eq 0 ]; then
-                rm -rf upload
-                cp -a /tmp/bootstrap-work/upload ./upload
-                alpha7_version=$(php -r '$j=json_decode(file_get_contents("upload/src/addons/Warext/ModerationAudit/addon.json"),true); echo $j["version_string"] ?? "missing";')
-                echo "restored-addon-version=$alpha7_version" >> "$DIAG"
-                find upload/src/addons/Warext/ModerationAudit -type f -name '*.php' -print0 | xargs -0 -n1 php -l >> "$DIAG" 2>&1
-                echo "php-lint-exit=$?" >> "$DIAG"
-              fi
-            fi
-          fi
+          base64 -d .alpha7patch.b64 | gzip -d > /tmp/alpha7.patch
+          mkdir -p /tmp/bootstrap-work/upload/src/addons/Warext/ModerationAudit/Cron
+          (cd /tmp/bootstrap-work && patch -p1 --dry-run --batch < /tmp/alpha7.patch)
+          (cd /tmp/bootstrap-work && patch -p1 --batch < /tmp/alpha7.patch)
+
+          rm -rf upload
+          cp -a /tmp/bootstrap-work/upload ./upload
+          restored_version=$(php -r '$j=json_decode(file_get_contents("upload/src/addons/Warext/ModerationAudit/addon.json"),true); echo $j["version_string"] ?? "";')
+          test "$restored_version" = "1.0.0 Alpha 7"
+
+          find upload/src/addons/Warext/ModerationAudit -type f -name '*.php' -print0 | xargs -0 -n1 php -l >/dev/null
+          python3 - <<'PY'
+          import json, pathlib, xml.etree.ElementTree as ET, hashlib
+          root = pathlib.Path('upload/src/addons/Warext/ModerationAudit')
+          json.loads((root / 'addon.json').read_text(encoding='utf-8'))
+          for p in root.rglob('*.xml'):
+              ET.parse(p)
+          hashes = json.loads((root / 'hashes.json').read_text(encoding='utf-8'))
+          checked = 0
+          for rel, expected in hashes.items():
+              p = pathlib.Path('upload') / rel
+              if not p.exists():
+                  raise SystemExit(f'missing hashed file: {rel}')
+              actual = hashlib.sha256(p.read_bytes()).hexdigest()
+              if actual != expected:
+                  raise SystemExit(f'hash mismatch: {rel}')
+              checked += 1
+          print(f'hashes_verified={checked}')
+          PY
+
+          rm -f Warext-ModerationAudit-1.0.0-Alpha7.zip
+          zip -qr Warext-ModerationAudit-1.0.0-Alpha7.zip upload
+          unzip -tq Warext-ModerationAudit-1.0.0-Alpha7.zip
+          printf 'restore=ok\nversion=%s\nphp-count=%s\n' "$restored_version" "$(find upload/src/addons/Warext/ModerationAudit -type f -name '*.php' | wc -l)" > alpha7-restored.txt
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add "$DIAG"
-          if [ -d upload ] && [ -f upload/src/addons/Warext/ModerationAudit/addon.json ]; then
-            restored_version=$(php -r '$j=json_decode(file_get_contents("upload/src/addons/Warext/ModerationAudit/addon.json"),true); echo $j["version_string"] ?? "";')
-            if [ "$restored_version" = "1.0.0 Alpha 7" ]; then
-              rm -f Warext-ModerationAudit-1.0.0-Alpha7.zip
-              zip -qr Warext-ModerationAudit-1.0.0-Alpha7.zip upload
-              unzip -tq Warext-ModerationAudit-1.0.0-Alpha7.zip >> "$DIAG" 2>&1
-              git add upload Warext-ModerationAudit-1.0.0-Alpha7.zip "$DIAG"
-            fi
-          fi
-          if ! git diff --cached --quiet; then
-            git commit -m "Repair source archive and restore Alpha 7 tree"
-            git push origin main
-          fi
-          exit 0
+          git add upload Warext-ModerationAudit-1.0.0-Alpha7.zip alpha7-restored.txt
+          git commit -m "Restore complete Alpha 7 source tree"
+          git push origin main
