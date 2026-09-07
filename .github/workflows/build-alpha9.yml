@@ -1,0 +1,70 @@
+name: Build Alpha 9
+
+permissions:
+  contents: write
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/build-alpha9.yml
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Integrate Alpha 9
+        run: python3 .github/scripts/integrate_alpha9.py
+
+      - name: PHP lint
+        shell: bash
+        run: |
+          set -euo pipefail
+          find upload/src/addons/Warext/ModerationAudit -type f -name '*.php' -print0 | xargs -0 -n1 php -l
+
+      - name: Validate Alpha 9
+        run: python3 .github/scripts/validate_alpha9.py
+
+      - name: Package Alpha 9
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -f Warext-ModerationAudit-1.0.0-Alpha9.zip
+          zip -qr Warext-ModerationAudit-1.0.0-Alpha9.zip upload
+          unzip -tq Warext-ModerationAudit-1.0.0-Alpha9.zip
+
+      - name: Commit Alpha 9
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm -rf --ignore-unmatch .alpha7 .alpha7zip .bootstrap .pack
+          git rm -f --ignore-unmatch .alpha7patch.b64 Warext-ModerationAudit-1.0.0-Alpha7.zip.b64 alpha7-restored.txt bootstrap-recovery-diagnostic.txt expand-alpha7-diagnostic.txt rebuild-alpha7-diagnostic.txt bootstrap-repair-diagnostic.txt
+          git rm -f --ignore-unmatch .github/workflows/bootstrap-alpha7.yml .github/workflows/expand-alpha7.yml
+          git add upload README.md Warext-ModerationAudit-1.0.0-Alpha9.zip
+          if ! git diff --cached --quiet; then
+            git commit -m "Alpha 9: SLA escalation and governance tracking"
+            git push origin main
+          fi
+
+      - name: Publish Alpha 9 release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          TAG="v1.0.0-alpha9"
+          ZIP="Warext-ModerationAudit-1.0.0-Alpha9.zip"
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" "$ZIP" --clobber
+          else
+            gh release create "$TAG" "$ZIP" --target main --title "Warext Moderation Audit 1.0.0 Alpha 9" --notes "Adım 9/10: risk ve öncelik bazlı SLA, üç seviyeli eskalasyon, dahili denetim bildirimleri, otomatik kapanış takibi ve SHA-256 doğrulamalı eskalasyon/çözüm izleri."
+          fi
