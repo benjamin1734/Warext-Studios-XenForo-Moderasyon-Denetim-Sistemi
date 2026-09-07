@@ -1,0 +1,52 @@
+== c1 ==
+size=73873 mod4=1
+base64: invalid input
+base64-exit=1 zip-size=54745
+/tmp/c1.zip: Zip archive data, at least v1.0 to extract, compression method=store
+[/tmp/c1.zip]
+  End-of-central-directory signature not found.  Either this file is not
+  a zipfile, or it constitutes one disk of a multi-part archive.  In the
+  latter case the central directory and zipfile comment will be found on
+  the last disk(s) of this archive.
+unzip:  cannot find zipfile directory in one of /tmp/c1.zip or
+        /tmp/c1.zip.zip, and cannot find /tmp/c1.zip.ZIP, period.
+unzip-test-exit=9
+== c2 ==
+size=73873 mod4=1
+base64: invalid input
+base64-exit=1 zip-size=54745
+/tmp/c2.zip: Zip archive data, at least v1.0 to extract, compression method=store
+[/tmp/c2.zip]
+  End-of-central-directory signature not found.  Either this file is not
+  a zipfile, or it constitutes one disk of a multi-part archive.  In the
+  latter case the central directory and zipfile comment will be found on
+  the last disk(s) of this archive.
+unzip:  cannot find zipfile directory in one of /tmp/c2.zip or
+        /tmp/c2.zip.zip, and cannot find /tmp/c2.zip.ZIP, period.
+unzip-test-exit=9
+== c3 ==
+size=73868 mod4=0
+base64: invalid input
+base64-exit=1 zip-size=51669
+/tmp/c3.zip: Zip archive data, at least v1.0 to extract, compression method=store
+[/tmp/c3.zip]
+  End-of-central-directory signature not found.  Either this file is not
+  a zipfile, or it constitutes one disk of a multi-part archive.  In the
+  latter case the central directory and zipfile comment will be found on
+  the last disk(s) of this archive.
+unzip:  cannot find zipfile directory in one of /tmp/c3.zip or
+        /tmp/c3.zip.zip, and cannot find /tmp/c3.zip.ZIP, period.
+unzip-test-exit=9
+== c4 ==
+size=73868 mod4=0
+base64: invalid input
+base64-exit=1 zip-size=51669
+/tmp/c4.zip: Zip archive data, at least v1.0 to extract, compression method=store
+[/tmp/c4.zip]
+  End-of-central-directory signature not found.  Either this file is not
+  a zipfile, or it constitutes one disk of a multi-part archive.  In the
+  latter case the central directory and zipfile comment will be found on
+  the last disk(s) of this archive.
+unzip:  cannot find zipfile directory in one of /tmp/c4.zip or
+        /tmp/c4.zip.zip, and cannot find /tmp/c4.zip.ZIP, period.
+unzip-test-exit=9
