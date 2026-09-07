@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates>
+  <template type="public" title="warext_audit_index" version_id="1000061" version_string="1.0.0 Alpha 6"><![CDATA[<xf:title>Bağımsız Moderasyon Denetimi</xf:title>
+<xf:css src="warext_audit.less" />
+
+<div class="warextAudit-toolbar">
+    <xf:if is="$xf.visitor.hasPermission('general', 'warextAuditReports')"><a class="button" href="{{ link('denetim/raporlar') }}">Raporlar</a></xf:if>
+    <xf:if is="$canManageAudit"><a class="button" href="{{ link('denetim/havuz') }}">Denetçi havuzu</a></xf:if>
+</div>
+
+<div class="blockMessage blockMessage--important warextAudit-readOnly">
+    Bu alan yalnızca denetim içindir. Buradan mesaj silme, uyarı verme, yasaklama veya başka bir moderasyon işlemi yapılamaz.
+</div>
+
+<xf:if is="$canManageAudit">
+    <div class="warextAudit-stats">
+        <a class="warextAudit-stat {{ $queue == 'pending' ? 'is-active' : '' }}" href="{{ link('denetim', null, {'queue':'pending'}) }}"><span class="warextAudit-statValue">{$counts.pending}</span><span class="warextAudit-statLabel">Bekleyen</span></a>
+        <a class="warextAudit-stat {{ $queue == 'assigned' ? 'is-active' : '' }}" href="{{ link('denetim', null, {'queue':'assigned'}) }}"><span class="warextAudit-statValue">{$counts.assigned}</span><span class="warextAudit-statLabel">Atanmış / incelenen</span></a>
+        <a class="warextAudit-stat warextAudit-stat--critical {{ $queue == 'critical' ? 'is-active' : '' }}" href="{{ link('denetim', null, {'queue':'critical'}) }}"><span class="warextAudit-statValue">{$counts.critical}</span><span class="warextAudit-statLabel">Kritik</span></a>
+        <a class="warextAudit-stat {{ $queue == 'all' ? 'is-active' : '' }}" href="{{ link('denetim', null, {'queue':'all'}) }}"><span class="warextAudit-statValue">{$counts.active}</span><span class="warextAudit-statLabel">Aktif toplam</span></a>
+    </div>
+<xf:else />
+    <div class="blockMessage">Yalnızca sana atanmış vakalar gösterilir. Kör değerlendirme nedeniyle denetlenen yetkili ve diğer denetçilerin kimliği/görüşleri değerlendirmene etki etmez.</div>
+</xf:if>
+
+<div class="block">
+    <div class="block-container">
+        <h2 class="block-header">Filtreler</h2>
+        <div class="block-body">
+            <form action="{{ link('denetim') }}" method="get" class="warextAudit-filterForm">
+                <xf:if is="$canManageAudit"><input type="hidden" name="queue" value="{$queue}" /></xf:if>
+                <div class="warextAudit-filterGrid">
+                    <label><span>Durum</span><select name="status" class="input"><option value="">Tümü</option><xf:foreach loop="$statusOptions" key="$value" value="$label"><option value="{$value}" {{ $filters.status == $value ? 'selected' : '' }}>{$label}</option></xf:foreach></select></label>
+                    <label><span>Risk</span><select name="risk" class="input"><option value="">Tümü</option><xf:foreach loop="$riskOptions" key="$value" value="$label"><option value="{$value}" {{ $filters.risk == $value ? 'selected' : '' }}>{$label}</option></xf:foreach></select></label>
+                    <label><span>Kaynak</span><input class="input" type="text" name="source_type" value="{$filters.source_type}" placeholder="moderator_log, warning..." maxlength="32" /></label>
+                    <label><span>İşlem</span><input class="input" type="text" name="action" value="{$filters.action}" placeholder="delete, ban..." maxlength="50" /></label>
+                    <xf:if is="$canManageAudit">
+                        <label><span>Yetkili kullanıcı ID</span><input class="input" type="number" min="0" name="moderator_user_id" value="{$filters.moderator_user_id}" /></label>
+                        <label><span>Hedef kullanıcı ID</span><input class="input" type="number" min="0" name="target_user_id" value="{$filters.target_user_id}" /></label>
+                    </xf:if>
+                </div>
+                <div class="warextAudit-filterActions"><button type="submit" class="button button--primary">Filtrele</button><a class="button" href="{{ link('denetim') }}">Temizle</a></div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="block">
+    <div class="block-container">
+        <h2 class="block-header">{{ $canManageAudit ? 'Denetim vakaları' : 'Atamalarım' }} <span class="block-desc">{$total} sonuç</span></h2>
+        <div class="block-body">
+            <xf:if is="$rows">
+                <div class="warextAudit-caseList">
+                    <xf:foreach loop="$rows" value="$row">
+                        <a class="warextAudit-caseRow" href="{{ link('denetim/vaka', null, {'case_id':$row.case_id}) }}">
+                            <div class="warextAudit-caseMain">
+                                <div class="warextAudit-caseTitle"><strong>#{$row.case_id}</strong><span>{$row.action}</span><xf:if is="$row.content_type"><span class="warextAudit-muted">{$row.content_type} #{$row.content_id}</span></xf:if></div>
+                                <div class="warextAudit-caseMeta"><span>Yetkili: {$row.moderator_name}</span><span>Hedef: {$row.target_name}</span><span>Kaynak: {$row.source_type}</span><span><xf:date time="$row.action_date" /></span></div>
+                            </div>
+                            <div class="warextAudit-caseBadges"><span class="warextAudit-badge warextAudit-badge--{$row.risk}">{$row.risk_label}</span><span class="warextAudit-badge warextAudit-badge--status">{$row.status_label}</span><xf:if is="$row.required_reviews > 1"><span class="warextAudit-badge">{$row.required_reviews} denetçi</span></xf:if></div>
+                        </a>
+                    </xf:foreach>
+                </div>
+            <xf:else /><div class="blockMessage">Bu filtrelere uyan denetim vakası bulunamadı.</div></xf:if>
+        </div>
+    </div>
+</div>
+<xf:pagenav page="$page" perpage="$perPage" total="$total" link="denetim" params="$linkParams" />]]></template>
+
+  <template type="public" title="warext_audit_case" version_id="1000061" version_string="1.0.0 Alpha 6"><![CDATA[<xf:title>Denetim Vakası #{$caseView.case_id}</xf:title>
+<xf:css src="warext_audit.less" />
+<div class="warextAudit-toolbar"><a class="button" href="{{ link('denetim') }}">← Denetim merkezine dön</a><xf:if is="$xf.visitor.hasPermission('general', 'warextAuditReports')"><a class="button" href="{{ link('denetim/raporlar') }}">Raporlar</a></xf:if>
+    <xf:if is="$canManageAudit"><a class="button" href="{{ link('denetim/havuz') }}">Denetçi havuzu</a></xf:if><xf:if is="$hasSensitiveSnapshots AND $canViewSensitive"><xf:if is="$showSensitive"><a class="button" href="{{ link('denetim/vaka', null, {'case_id':$caseView.case_id}) }}">Hassas kanıtları gizle</a><xf:else /><a class="button button--link" href="{{ link('denetim/vaka', null, {'case_id':$caseView.case_id, 'sensitive':1}) }}">Hassas kanıtları göster</a></xf:if></xf:if></div>
+<div class="blockMessage blockMessage--important warextAudit-readOnly">Denetim sistemi moderasyon işlemini değiştirmez. Değerlendirmeler yalnızca denetim kaydı üretir.</div>
+<xf:if is="$isBlind"><div class="blockMessage blockMessage--warning"><b>Kör değerlendirme aktif:</b> {$blindMode}. Kimlik alanları kanıt gösteriminde dinamik olarak maskelenir; ham kanıtın SHA-256 bütünlüğü değişmez.</div></xf:if>
+<xf:if is="$hasSensitiveSnapshots AND !$showSensitive"><div class="blockMessage">Hassas/orijinal kanıt ayrı tutuluyor. <xf:if is="$canViewSensitive">Gerekirse yukarıdaki düğmeyle görüntüleyebilirsin.<xf:else />Bu hesabın hassas kanıt izni yok.</xf:if></div></xf:if>
+
+<div class="warextAudit-detailGrid">
+<div class="block"><div class="block-container"><h2 class="block-header">Vaka özeti</h2><div class="block-body warextAudit-kv"><div><b>Vaka</b><span>#{$caseView.case_id}</span></div><div><b>Durum</b><span>{$caseView.status_label}</span></div><div><b>Risk</b><span class="warextAudit-badge warextAudit-badge--{$caseView.risk}">{$caseView.risk_label}</span></div><div><b>Öncelik</b><span>{$caseView.priority}</span></div><div><b>Gerekli denetçi</b><span>{$caseView.required_reviews}</span></div><div><b>İşlem zamanı</b><span><xf:date time="$caseView.action_date" /></span></div><div><b>Kaynak</b><span>{$caseView.source_type} #{$caseView.source_id}</span></div></div></div></div>
+<div class="block"><div class="block-container"><h2 class="block-header">İşlem tarafları</h2><div class="block-body warextAudit-kv"><div><b>Yetkili</b><span>{$caseView.moderator_name}<xf:if is="$caseView.moderator_user_id"> (#{$caseView.moderator_user_id})</xf:if></span></div><div><b>Hedef</b><span>{$caseView.target_name}<xf:if is="$caseView.target_user_id"> (#{$caseView.target_user_id})</xf:if></span></div><div><b>İçerik</b><span>{$caseView.content_type} <xf:if is="$caseView.content_id">#{$caseView.content_id}</xf:if></span></div><div><b>İşlem</b><span>{$caseView.action}</span></div><div><b>Kural anahtarı</b><span>{{ $caseView.rule_key ?: '—' }}</span></div><div><b>Gerekçe</b><span>{{ $caseView.reason ?: '—' }}</span></div></div></div></div>
+</div>
+
+<div class="block"><div class="block-container"><h2 class="block-header">Olay metadatası</h2><div class="block-body"><xf:if is="!$metadata.valid"><div class="blockMessage blockMessage--error">Metadata geçerli JSON değil.</div></xf:if><pre class="warextAudit-json">{$metadata.pretty}</pre></div></div></div>
+
+<div class="block"><div class="block-container"><h2 class="block-header">Kanıt anlık görüntüleri</h2><div class="block-body"><xf:if is="$snapshots"><xf:foreach loop="$snapshots" value="$snapshot"><section class="warextAudit-snapshot {{ $snapshot.is_sensitive ? 'is-sensitive' : '' }}"><div class="warextAudit-snapshotHead"><div><strong>{$snapshot.snapshot_type}</strong> <span class="warextAudit-muted">#{$snapshot.snapshot_id}</span> <xf:if is="$snapshot.is_sensitive"><span class="warextAudit-badge warextAudit-badge--sensitive">Hassas / orijinal</span><xf:else /><span class="warextAudit-badge">Maskelenmiş görünüm</span></xf:if></div><div><xf:if is="$snapshot.integrity_valid"><span class="warextAudit-integrity is-valid">SHA-256 doğrulandı</span><xf:else /><span class="warextAudit-integrity is-invalid">BÜTÜNLÜK HATASI</span></xf:if></div></div><div class="warextAudit-snapshotMeta"><span>Redaksiyon: {$snapshot.redaction_level}</span><span><xf:date time="$snapshot.created_date" /></span><span>Hash: <code>{$snapshot.data_hash}</code></span></div><pre class="warextAudit-json">{$snapshot.pretty}</pre></section></xf:foreach><xf:else /><div class="blockMessage">Görüntülenebilir kanıt yok.</div></xf:if></div></div></div>
+
+<div class="block"><div class="block-container"><h2 class="block-header">Denetçi değerlendirmesi</h2><xf:if is="$canReviewCase"><xf:form action="{{ link('denetim/degerlendir', null, {'case_id':$caseView.case_id}) }}" class="warextAudit-reviewForm"><div class="block-body"><xf:if is="$currentReview"><div class="blockMessage">Mevcut değerlendirmeni düzenliyorsun. Eski sürüm revizyon geçmişinde korunur.</div></xf:if><div class="warextAudit-reviewGrid">
+<label><span>Genel karar</span><select name="verdict" class="input" required="required"><option value="">Seç...</option><xf:foreach loop="$verdictOptions" key="$value" value="$label"><option value="{$value}" {{ $reviewForm.verdict == $value ? 'selected' : '' }}>{$label}</option></xf:foreach></select></label>
+<label><span>Kural uygulaması</span><select name="rule_rating" class="input" required="required"><option value="">Seç...</option><xf:foreach loop="$ruleRatingOptions" key="$value" value="$label"><option value="{$value}" {{ $reviewForm.rule_rating == $value ? 'selected' : '' }}>{$label}</option></xf:foreach></select></label>
+<label><span>Ceza / orantı</span><select name="penalty_rating" class="input" required="required"><option value="">Seç...</option><xf:foreach loop="$penaltyRatingOptions" key="$value" value="$label"><option value="{$value}" {{ $reviewForm.penalty_rating == $value ? 'selected' : '' }}>{$label}</option></xf:foreach></select></label>
+<label><span>Yetkili iletişimi</span><select name="communication_rating" class="input" required="required"><option value="">Seç...</option><xf:foreach loop="$communicationRatingOptions" key="$value" value="$label"><option value="{$value}" {{ $reviewForm.communication_rating == $value ? 'selected' : '' }}>{$label}</option></xf:foreach></select></label>
+<label><span>Güven seviyesi (%)</span><input class="input" type="number" name="confidence" min="1" max="100" value="{$reviewForm.confidence}" required="required" /></label></div><label class="warextAudit-reasonField"><span>Gerekçe</span><textarea class="input" name="reason" rows="7" maxlength="10000" required="required">{$reviewForm.reason}</textarea></label></div><div class="block-footer"><button type="submit" class="button button--primary">Değerlendirmeyi kaydet</button><span>En az 30 karakter gerekçe zorunlu.</span></div></xf:form><xf:else /><div class="block-body"><div class="blockMessage">{$reviewError}</div></div></xf:if></div></div>
+
+<xf:if is="$canRecuse"><div class="block"><div class="block-container"><h2 class="block-header">Çıkar çatışması / çekilme</h2><xf:form action="{{ link('denetim/cekil', null, {'case_id':$caseView.case_id}) }}"><div class="block-body"><div class="blockMessage">Arkadaşlık, ticari ilişki, kişisel tartışma veya başka bir sebeple tarafsızlığından şüphe ediyorsan vakadan çekil. Sistem otomatik olarak yedek denetçi arar.</div><textarea class="input" name="reason" rows="3" maxlength="255" placeholder="Çekilme gerekçesi" required="required"></textarea></div><div class="block-footer"><button class="button">Vakadan çekil</button></div></xf:form></div></div></xf:if>
+
+<div class="block"><div class="block-container"><h2 class="block-header">Atamalar</h2><div class="block-body"><xf:if is="$assignments"><ul class="warextAudit-simpleList"><xf:foreach loop="$assignments" value="$assignment"><li><b>{{ $canManageAudit ? ($assignment.Auditor ? $assignment.Auditor.username : ('#' . $assignment.auditor_user_id)) : 'Kendi ataman' }}</b><span>{$assignment.status} · körlük: {$assignment.blind_mode} · kaynak: {$assignment.assignment_source}</span></li></xf:foreach></ul><xf:else /><div class="blockMessage">Atama yok.</div></xf:if></div></div></div>
+
+<div class="block"><div class="block-container"><h2 class="block-header">Kaydedilmiş değerlendirmeler</h2><div class="block-body"><xf:if is="$reviewRows"><div class="warextAudit-reviewList"><xf:foreach loop="$reviewRows" value="$review"><article class="warextAudit-reviewCard"><div class="warextAudit-reviewHead"><div><strong>{$review.auditor_name}</strong><span class="warextAudit-badge">{$review.verdict_label}</span><xf:if is="!$review.counts_for_case"><span class="warextAudit-badge warextAudit-badge--critical">Geçersiz / sayım dışı</span></xf:if></div><span>%{$review.confidence} güven</span></div><div class="warextAudit-reviewRatings"><span><b>Kural:</b> {$review.rule_rating_label}</span><span><b>Ceza:</b> {$review.penalty_rating_label}</span><span><b>İletişim:</b> {$review.communication_rating_label}</span></div><div class="warextAudit-reviewReason">{$review.reason}</div><div class="warextAudit-reviewFoot"><span><xf:date time="$review.updated_date" /></span><a href="{{ link('denetim/revizyonlar', null, {'review_id':$review.review_id}) }}">Revizyon geçmişi ({$review.revision_count})</a></div></article></xf:foreach></div><xf:else /><div class="blockMessage">Henüz değerlendirme yok.</div></xf:if></div></div></div>
+
+<xf:if is="$canManageAudit"><div class="block"><div class="block-container"><h2 class="block-header">Bağımsızlık yönetimi</h2><div class="block-body"><xf:if is="!$canManageMutations"><div class="blockMessage blockMessage--error">{$manageMutationError}</div></xf:if><xf:if is="$canManageMutations"><xf:form action="{{ link('denetim/yeniden-ata', null, {'case_id':$caseView.case_id}) }}" class="warextAudit-inlineForm"><button class="button">Atama havuzunu yeniden çalıştır</button></xf:form><xf:foreach loop="$assignments" value="$assignment"><xf:if is="$assignment.status == 'assigned' || $assignment.status == 'opened'"><xf:form action="{{ link('denetim/catisma', null, {'case_id':$caseView.case_id}) }}" class="warextAudit-conflictForm"><input type="hidden" name="auditor_user_id" value="{$assignment.auditor_user_id}" /><input class="input" type="text" name="conflict_type" value="manager_conflict" maxlength="30" /><input class="input" type="text" name="reason" maxlength="255" placeholder="Çıkar çatışması gerekçesi" required="required" /><button class="button">{{ $assignment.Auditor ? $assignment.Auditor.username : ('#' . $assignment.auditor_user_id) }} için çatışma kaydet</button></xf:form></xf:if></xf:foreach></xf:if></div></div></div></xf:if>
+
+<xf:if is="$conflicts"><div class="block"><div class="block-container"><h2 class="block-header">Çıkar çatışması kayıtları</h2><div class="block-body"><ul class="warextAudit-simpleList"><xf:foreach loop="$conflicts" value="$conflict"><li><b>{{ $canManageAudit ? ($conflict.Auditor ? $conflict.Auditor.username : ('#' . $conflict.auditor_user_id)) : 'Kendi kaydın' }}</b><span>{$conflict.conflict_type}: {$conflict.reason}</span></li></xf:foreach></ul></div></div></div></xf:if>]]></template>
+
+  <template type="public" title="warext_audit_review_revisions" version_id="1000061" version_string="1.0.0 Alpha 6"><![CDATA[<xf:title>Değerlendirme Revizyonları #{$reviewView.review_id}</xf:title>
+<xf:css src="warext_audit.less" />
+<div class="warextAudit-toolbar"><a class="button" href="{{ link('denetim/vaka', null, {'case_id':$caseView.case_id}) }}">← Vaka #{$caseView.case_id}</a></div>
+<div class="blockMessage blockMessage--important">Bu geçmiş salt okunurdur. Her kayıt kaydedildiği andaki değerlendirmeyi temsil eder ve SHA-256 bütünlük doğrulamasına sahiptir.</div>
+<div class="block"><div class="block-container"><h2 class="block-header">Değerlendirme özeti</h2><div class="block-body warextAudit-kv"><div><b>Denetçi</b><span>{$reviewView.auditor_name}</span></div><div><b>Güncel karar</b><span>{$reviewView.verdict_label}</span></div><div><b>Güven</b><span>%{$reviewView.confidence}</span></div><div><b>Toplam revizyon</b><span>{$reviewView.revision_count}</span></div></div></div></div>
+<div class="block"><div class="block-container"><h2 class="block-header">Revizyon geçmişi</h2><div class="block-body"><xf:if is="$revisionRows"><xf:foreach loop="$revisionRows" value="$revision"><article class="warextAudit-revisionCard"><div class="warextAudit-snapshotHead"><div><strong>Revizyon {$revision.revision}</strong> <span class="warextAudit-muted">#{$revision.revision_id}</span></div><xf:if is="$revision.integrity_valid"><span class="warextAudit-integrity is-valid">SHA-256 doğrulandı</span><xf:else /><span class="warextAudit-integrity is-invalid">BÜTÜNLÜK HATASI</span></xf:if></div><div class="warextAudit-reviewRatings"><span><b>Karar:</b> {$revision.verdict_label}</span><span><b>Kural:</b> {$revision.rule_rating_label}</span><span><b>Ceza:</b> {$revision.penalty_rating_label}</span><span><b>İletişim:</b> {$revision.communication_rating_label}</span><span><b>Güven:</b> %{$revision.confidence}</span></div><div class="warextAudit-reviewReason">{$revision.reason}</div><div class="warextAudit-snapshotMeta"><span><xf:date time="$revision.created_date" /></span><span>Hash: <code>{$revision.data_hash}</code></span></div></article></xf:foreach><xf:else /><div class="blockMessage">Revizyon kaydı bulunamadı.</div></xf:if></div></div></div>]]></template>
+
+  <template type="public" title="warext_audit_pool" version_id="1000061" version_string="1.0.0 Alpha 6"><![CDATA[<xf:title>Bağımsız Denetçi Havuzu</xf:title>
+<xf:css src="warext_audit.less" />
+<div class="warextAudit-toolbar"><a class="button" href="{{ link('denetim') }}">← Denetim merkezine dön</a></div>
+<div class="blockMessage blockMessage--important">Aktif XenForo yönetici/moderatörleri ve bu havuzu yöneten hesaplar bağımsız denetçi olamaz. Denetçi hesabında ayrıca Denetim Görüntüleme + Değerlendirme izinleri bulunmalıdır.</div>
+<xf:if is="!$canMutate"><div class="blockMessage blockMessage--error">{$mutationError}</div></xf:if>
+<xf:if is="$canMutate"><div class="warextAudit-toolbar"><xf:form action="{{ link('denetim/havuz-dagit') }}" class="warextAudit-inlineForm"><button class="button">Bekleyen vakaları dağıt (en fazla 500)</button></xf:form></div><div class="block"><div class="block-container"><h2 class="block-header">Denetçi ekle / yeniden etkinleştir</h2><xf:form action="{{ link('denetim/havuz-ekle') }}"><div class="block-body warextAudit-poolForm"><input class="input" type="text" name="username" placeholder="Kullanıcı adı" required="required" /><input class="input" type="number" name="max_active_assignments" min="1" max="100" value="20" /><input class="input" type="text" name="note" maxlength="255" placeholder="İç not (opsiyonel)" /></div><div class="block-footer"><button class="button button--primary">Havuza ekle</button></div></xf:form></div></div></xf:if>
+<div class="block"><div class="block-container"><h2 class="block-header">Denetçiler</h2><div class="block-body"><xf:if is="$rows"><div class="warextAudit-poolList"><xf:foreach loop="$rows" value="$row"><article class="warextAudit-poolRow"><div><strong>{$row.username}</strong> <span class="warextAudit-muted">#{$row.user_id}</span> <span class="warextAudit-badge">{$row.status}</span><xf:if is="!$row.eligible"><span class="warextAudit-badge warextAudit-badge--critical">Uygun değil</span></xf:if><div class="warextAudit-caseMeta"><span>Açık: {$row.open_assignments}</span><span>Tamamlanan: {$row.completed_assignments}</span><span>Maks. açık: {$row.max_active_assignments}</span><xf:if is="$row.last_assigned_date"><span>Son atama: <xf:date time="$row.last_assigned_date" /></span></xf:if></div><xf:if is="$row.eligibility_error"><div class="blockMessage blockMessage--error">{$row.eligibility_error}</div></xf:if><xf:if is="$row.note"><div class="warextAudit-muted">{$row.note}</div></xf:if></div><xf:if is="$canMutate"><xf:form action="{{ link('denetim/havuz-durum') }}" class="warextAudit-inlineForm"><input type="hidden" name="user_id" value="{$row.user_id}" /><select class="input" name="status"><option value="active" {{ $row.status == 'active' ? 'selected' : '' }}>Aktif</option><option value="paused" {{ $row.status == 'paused' ? 'selected' : '' }}>Duraklat</option><option value="suspended" {{ $row.status == 'suspended' ? 'selected' : '' }}>Askıya al</option></select><button class="button">Güncelle</button></xf:form></xf:if></article></xf:foreach></div><xf:else /><div class="blockMessage">Denetçi havuzu boş. Otomatik atama yapılmaz.</div></xf:if></div></div></div>]]></template>
+
+  <template type="public" title="warext_audit.less" version_id="1000061" version_string="1.0.0 Alpha 6"><![CDATA[.warextAudit-readOnly { margin-bottom: 15px; }
+.warextAudit-stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin: 15px 0; }
+.warextAudit-stat { display: flex; flex-direction: column; padding: 14px; border: 1px solid @xf-borderColor; border-radius: @xf-borderRadiusMedium; background: @xf-contentBg; color: @xf-textColor; text-decoration: none; }
+.warextAudit-stat:hover, .warextAudit-stat.is-active { border-color: @xf-linkColor; text-decoration: none; }
+.warextAudit-statValue { font-size: 24px; font-weight: 700; line-height: 1; }
+.warextAudit-statLabel { margin-top: 6px; color: @xf-textColorMuted; }
+.warextAudit-stat--critical .warextAudit-statValue { color: @xf-errorColor; }
+.warextAudit-filterForm { padding: 15px; }
+.warextAudit-filterGrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.warextAudit-filterGrid label > span { display: block; margin-bottom: 5px; font-weight: 600; }
+.warextAudit-filterActions { display: flex; gap: 8px; margin-top: 14px; }
+.warextAudit-caseList { display: flex; flex-direction: column; }
+.warextAudit-caseRow { display: flex; align-items: center; justify-content: space-between; gap: 15px; padding: 14px 15px; border-bottom: 1px solid @xf-borderColor; color: @xf-textColor; text-decoration: none; }
+.warextAudit-caseRow:last-child { border-bottom: 0; }
+.warextAudit-caseRow:hover { background: @xf-contentHighlightBg; text-decoration: none; }
+.warextAudit-caseTitle, .warextAudit-caseMeta, .warextAudit-caseBadges, .warextAudit-snapshotHead, .warextAudit-snapshotMeta, .warextAudit-toolbar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.warextAudit-caseMeta { margin-top: 5px; color: @xf-textColorMuted; font-size: 13px; }
+.warextAudit-caseBadges { justify-content: flex-end; }
+.warextAudit-badge { display: inline-flex; align-items: center; padding: 3px 8px; border-radius: 999px; background: @xf-contentAltBg; border: 1px solid @xf-borderColor; font-size: 12px; font-weight: 600; }
+.warextAudit-badge--normal { color: @xf-textColorMuted; }
+.warextAudit-badge--elevated { color: @xf-warningColor; }
+.warextAudit-badge--critical, .warextAudit-badge--sensitive { color: @xf-errorColor; border-color: fade(@xf-errorColor, 45%); }
+.warextAudit-badge--status { color: @xf-linkColor; }
+.warextAudit-muted { color: @xf-textColorMuted; }
+.warextAudit-toolbar { margin: 10px 0 15px; }
+.warextAudit-detailGrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 15px; }
+.warextAudit-kv > div { display: grid; grid-template-columns: 150px 1fr; gap: 12px; padding: 10px 15px; border-bottom: 1px solid @xf-borderColor; }
+.warextAudit-kv > div:last-child { border-bottom: 0; }
+.warextAudit-json { margin: 0; padding: 14px; overflow: auto; max-height: 650px; white-space: pre-wrap; overflow-wrap: anywhere; background: @xf-contentAltBg; border-radius: @xf-borderRadiusSmall; font-family: monospace; font-size: 12px; line-height: 1.55; }
+.warextAudit-snapshot { padding: 15px; border-bottom: 1px solid @xf-borderColor; }
+.warextAudit-snapshot:last-child { border-bottom: 0; }
+.warextAudit-snapshot.is-sensitive { box-shadow: inset 3px 0 0 @xf-errorColor; }
+.warextAudit-snapshotHead { justify-content: space-between; margin-bottom: 8px; }
+.warextAudit-snapshotMeta { margin-bottom: 10px; color: @xf-textColorMuted; font-size: 12px; }
+.warextAudit-snapshotMeta code { word-break: break-all; }
+.warextAudit-integrity { font-size: 12px; font-weight: 700; }
+.warextAudit-integrity.is-valid { color: @xf-successColor; }
+.warextAudit-integrity.is-invalid { color: @xf-errorColor; }
+.warextAudit-simpleList { list-style: none; margin: 0; padding: 0; }
+.warextAudit-simpleList li { display: flex; justify-content: space-between; gap: 12px; padding: 10px 15px; border-bottom: 1px solid @xf-borderColor; }
+.warextAudit-simpleList li:last-child { border-bottom: 0; }
+
+.warextAudit-reviewForm { margin: 0; }
+.warextAudit-reviewGrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; padding: 15px; }
+.warextAudit-reviewGrid label > span, .warextAudit-reasonField > span { display: block; margin-bottom: 5px; font-weight: 600; }
+.warextAudit-reasonField { display: block; padding: 0 15px 15px; }
+.warextAudit-reviewForm .block-footer { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.warextAudit-reviewList { display: flex; flex-direction: column; }
+.warextAudit-reviewCard, .warextAudit-revisionCard { padding: 14px 15px; border-bottom: 1px solid @xf-borderColor; }
+.warextAudit-reviewCard:last-child, .warextAudit-revisionCard:last-child { border-bottom: 0; }
+.warextAudit-reviewHead { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.warextAudit-reviewHead > div { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.warextAudit-reviewRatings { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 9px; color: @xf-textColorMuted; font-size: 13px; }
+.warextAudit-reviewReason { margin-top: 10px; padding: 10px; background: @xf-contentAltBg; border-radius: @xf-borderRadiusSmall; white-space: pre-wrap; overflow-wrap: anywhere; }
+.warextAudit-reviewFoot { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-top: 9px; color: @xf-textColorMuted; font-size: 12px; }
+.warextAudit-revisionCard { margin: 0; }
+@media (max-width: 900px) {
+    .warextAudit-stats, .warextAudit-filterGrid, .warextAudit-detailGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 650px) {
+    .warextAudit-stats, .warextAudit-filterGrid, .warextAudit-detailGrid, .warextAudit-reviewGrid { grid-template-columns: 1fr; }
+    .warextAudit-caseRow { align-items: flex-start; flex-direction: column; }
+    .warextAudit-caseBadges { justify-content: flex-start; }
+    .warextAudit-kv > div { grid-template-columns: 1fr; gap: 4px; }
+}
+.warextAudit-poolForm { display: grid; grid-template-columns: 1.2fr 160px 2fr; gap: 10px; padding: 15px; }
+.warextAudit-poolList { display: flex; flex-direction: column; }
+.warextAudit-poolRow { display: flex; justify-content: space-between; align-items: flex-start; gap: 15px; padding: 14px 15px; border-bottom: 1px solid @xf-borderColor; }
+.warextAudit-poolRow:last-child { border-bottom: 0; }
+.warextAudit-inlineForm { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.warextAudit-conflictForm { display: grid; grid-template-columns: 160px 1fr auto; gap: 8px; margin-top: 10px; }
+@media (max-width: 650px) { .warextAudit-poolForm, .warextAudit-conflictForm { grid-template-columns: 1fr; } .warextAudit-poolRow { flex-direction: column; } }
+
+.warextAudit-reportActions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.warextAudit-customRange{display:flex;gap:8px;flex-wrap:wrap}.warextAudit-reportGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}.warextAudit-tableWrap{overflow:auto}.warextAudit-tableWrap .dataList-table{min-width:850px;width:100%}
+]]></template>
+  <template type="public" title="warext_audit_reports" version_id="1000070" version_string="1.0.0 Alpha 7"><![CDATA[<xf:title>Denetim Raporları</xf:title>
+<xf:css src="warext_audit.less" />
+<div class="warextAudit-toolbar"><a class="button" href="{{ link('denetim') }}">← Denetim merkezine dön</a></div>
+<xf:if is="$canManageAudit">
+<div class="block"><div class="block-container"><h2 class="block-header">Yeni rapor oluştur</h2><div class="block-body warextAudit-reportActions">
+<xf:form action="{{ link('denetim/rapor-olustur') }}" class="warextAudit-inlineForm"><input type="hidden" name="kind" value="previous_week" /><button class="button button--primary">Önceki haftayı oluştur</button></xf:form>
+<xf:form action="{{ link('denetim/rapor-olustur') }}" class="warextAudit-inlineForm"><input type="hidden" name="kind" value="previous_month" /><button class="button button--primary">Önceki ayı oluştur</button></xf:form>
+<xf:form action="{{ link('denetim/rapor-olustur') }}" class="warextAudit-inlineForm warextAudit-customRange"><input type="hidden" name="kind" value="custom" /><input class="input" type="date" name="start_date" required="required" /><input class="input" type="date" name="end_date" required="required" /><button class="button">Özel dönem</button></xf:form>
+</div></div></div></xf:if>
+<div class="block"><div class="block-container"><h2 class="block-header">Rapor geçmişi <span class="block-desc">{$total} rapor</span></h2><div class="block-body">
+<xf:if is="$reports"><div class="warextAudit-reportList"><xf:foreach loop="$reports" value="$report"><a class="warextAudit-caseRow" href="{{ link('denetim/rapor', null, {'report_id':$report.report_id}) }}"><div><strong>#{$report.report_id}</strong> · {$report.period_type}<div class="warextAudit-caseMeta"><span><xf:date time="$report.period_start" /> – <xf:date time="$report.period_end" /></span><span>Oluşturma: <xf:date time="$report.generated_date" /></span></div></div><span class="warextAudit-badge">{$report.status}</span></a></xf:foreach></div><xf:else /><div class="blockMessage">Henüz rapor oluşturulmadı.</div></xf:if>
+</div></div></div><xf:pagenav page="$page" perpage="$perPage" total="$total" link="denetim/raporlar" />]]></template>
+  <template type="public" title="warext_audit_report" version_id="1000070" version_string="1.0.0 Alpha 7"><![CDATA[<xf:title>Denetim Raporu #{$report.report_id}</xf:title>
+<xf:css src="warext_audit.less" />
+<div class="warextAudit-toolbar"><a class="button" href="{{ link('denetim/raporlar') }}">← Raporlara dön</a><xf:if is="$canManageAudit"><a class="button" href="{{ link('denetim/rapor', null, {'report_id':$report.report_id, 'anon':$anonymized ? 0 : 1}) }}">{{ $anonymized ? 'Gerçek kimlikler' : 'Anonim görünüm' }}</a></xf:if></div>
+<xf:if is="!$hashValid"><div class="blockMessage blockMessage--error">Rapor bütünlük doğrulaması başarısız. Kaydedilmiş rapor verisi değiştirilmiş olabilir.</div><xf:else /><div class="blockMessage blockMessage--success">SHA-256 rapor bütünlüğü doğrulandı. Durum: <strong>{$report.status}</strong></div></xf:if>
+<div class="warextAudit-stats"><div class="warextAudit-stat"><span class="warextAudit-statValue">{$summary.totals.actions}</span><span class="warextAudit-statLabel">Moderasyon işlemi</span></div><div class="warextAudit-stat"><span class="warextAudit-statValue">{$summary.totals.coverage_percent}%</span><span class="warextAudit-statLabel">Denetim kapsamı</span></div><div class="warextAudit-stat"><span class="warextAudit-statValue">{{ $summary.totals.accuracy_score !== null ? $summary.totals.accuracy_score ~ '%' : '—' }}</span><span class="warextAudit-statLabel">Doğruluk skoru</span></div><div class="warextAudit-stat warextAudit-stat--critical"><span class="warextAudit-statValue">{{ $summary.totals.problem_rate !== null ? $summary.totals.problem_rate ~ '%' : '—' }}</span><span class="warextAudit-statLabel">Sorunlu işlem oranı</span></div></div>
+<div class="block"><div class="block-container"><h2 class="block-header">Genel dağılım</h2><div class="block-body warextAudit-reportGrid"><div><strong>Genel karar</strong><p>Doğru: {$summary.verdicts.correct} · Kısmen: {$summary.verdicts.partly_correct} · Yanlış: {$summary.verdicts.wrong} · Kanıt yetersiz: {$summary.verdicts.insufficient_evidence}</p></div><div><strong>Kural uygulaması</strong><p>Doğru: {$summary.rule_ratings.correct} · Kısmen: {$summary.rule_ratings.partly_correct} · Yanlış: {$summary.rule_ratings.wrong}</p></div><div><strong>Ceza/orantı</strong><p>Orantılı: {$summary.penalty_ratings.proportionate} · Hafif: {$summary.penalty_ratings.too_light} · Ağır: {$summary.penalty_ratings.too_severe}</p></div><div><strong>İletişim</strong><p>Profesyonel: {$summary.communication_ratings.professional} · Geliştirilmeli: {$summary.communication_ratings.needs_improvement} · Uygunsuz: {$summary.communication_ratings.inappropriate}</p></div></div></div></div>
+<xf:if is="$summary.comparison"><div class="block"><div class="block-container"><h2 class="block-header">Önceki eş dönem karşılaştırması</h2><div class="block-body"><div class="warextAudit-caseMeta"><span>Kapsam değişimi: {$summary.comparison.coverage_delta} puan</span><span>Doğruluk değişimi: {{ $summary.comparison.accuracy_delta !== null ? $summary.comparison.accuracy_delta ~ ' puan' : '—' }}</span><span>Sorun oranı değişimi: {{ $summary.comparison.problem_rate_delta !== null ? $summary.comparison.problem_rate_delta ~ ' puan' : '—' }}</span></div></div></div></div></xf:if>
+<div class="block"><div class="block-container"><h2 class="block-header">Yetkili bazlı kalite</h2><div class="block-body"><div class="warextAudit-tableWrap"><table class="dataList-table"><thead><tr><th>Yetkili</th><th>İşlem</th><th>Kapsam</th><th>Doğruluk</th><th>Sorun oranı</th><th>Kural</th><th>Ceza</th><th>İletişim</th></tr></thead><tbody><xf:foreach loop="$summary.moderators" value="$row"><tr><td><strong>{$row.display_name}</strong></td><td>{$row.actions}</td><td>{$row.coverage_percent}%</td><td>{{ $row.accuracy_score !== null ? $row.accuracy_score ~ '%' : '—' }}</td><td>{{ $row.problem_rate !== null ? $row.problem_rate ~ '%' : '—' }}</td><td>{$row.rule_issues}</td><td>{$row.penalty_issues}</td><td>{$row.communication_issues}</td></tr></xf:foreach></tbody></table></div></div></div></div>
+<xf:if is="$summary.problem_cases"><div class="block"><div class="block-container"><h2 class="block-header">Öncelikli sorunlu vakalar</h2><div class="block-body warextAudit-caseList"><xf:foreach loop="$summary.problem_cases" value="$row"><a class="warextAudit-caseRow" href="{{ link('denetim/vaka', null, {'case_id':$row.case_id}) }}"><div><strong>#{$row.case_id}</strong> · {$row.action}<div class="warextAudit-caseMeta"><span>{$row.moderator_name}</span><span><xf:date time="$row.action_date" /></span><span>Karar: {$row.verdict}</span><span>Kural: {$row.rule_rating}</span><span>Ceza: {$row.penalty_rating}</span><span>İletişim: {$row.communication_rating}</span></div></div></a></xf:foreach></div></div></div></xf:if>
+<xf:if is="$canManageAudit && $report.status == 'draft'"><div class="block"><div class="block-container"><div class="block-body"><div class="blockMessage blockMessage--important">Sonuçlandırılan raporun özeti ve SHA-256 hash'i daha sonra değiştirilemez.</div><xf:form action="{{ link('denetim/rapor-sonuclandir') }}"><input type="hidden" name="report_id" value="{$report.report_id}" /><button class="button button--primary">Raporu sonuçlandır ve kilitle</button></xf:form></div></div></div></xf:if>]]></template>
+</templates>
