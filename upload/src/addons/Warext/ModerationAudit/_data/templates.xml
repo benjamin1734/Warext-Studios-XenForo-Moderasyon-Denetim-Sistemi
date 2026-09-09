@@ -6,7 +6,7 @@
 <div class="warextAudit-toolbar">
     <a class="button" href="{{ link('denetim-takip') }}">Takip / Eskalasyon</a>
     <a class="button" href="{{ link('denetim-geribildirim') }}">İtiraz / Öneri</a>
-    <xf:if is="$xf.visitor.hasPermission('general', 'warextAuditReports')"><a class="button" href="{{ link('denetim/raporlar') }}">Raporlar</a></xf:if>
+    <xf:if is="($xf.visitor.is_super_admin OR $xf.visitor.hasPermission('general', 'warextAuditReports'))"><a class="button" href="{{ link('denetim/raporlar') }}">Raporlar</a></xf:if>
     <xf:if is="$canManageAudit"><a class="button" href="{{ link('denetim/havuz') }}">Denetçi havuzu</a></xf:if>
 </div>
 
@@ -71,7 +71,7 @@
 
   <template type="public" title="warext_audit_case" version_id="1000061" version_string="1.0.0 Alpha 6"><![CDATA[<xf:title>Denetim Vakası #{$caseView.case_id}</xf:title>
 <xf:css src="warext_audit.less" />
-<div class="warextAudit-toolbar"><a class="button" href="{{ link('denetim') }}">← Denetim merkezine dön</a><xf:if is="$canManageAudit OR ($xf.visitor.hasPermission('general', 'warextAuditAppeal') AND $caseView.moderator_user_id == $xf.visitor.user_id)"><a class="button" href="{{ link('denetim-geribildirim/olustur', null, {'type':'appeal','case_id':$caseView.case_id}) }}">Bu vaka için itiraz</a></xf:if><xf:if is="$xf.visitor.hasPermission('general', 'warextAuditReports')"><a class="button" href="{{ link('denetim/raporlar') }}">Raporlar</a></xf:if>
+<div class="warextAudit-toolbar"><a class="button" href="{{ link('denetim') }}">← Denetim merkezine dön</a><xf:if is="$canManageAudit OR (($xf.visitor.is_super_admin OR $xf.visitor.hasPermission('general', 'warextAuditAppeal')) AND $caseView.moderator_user_id == $xf.visitor.user_id)"><a class="button" href="{{ link('denetim-geribildirim/olustur', null, {'type':'appeal','case_id':$caseView.case_id}) }}">Bu vaka için itiraz</a></xf:if><xf:if is="($xf.visitor.is_super_admin OR $xf.visitor.hasPermission('general', 'warextAuditReports'))"><a class="button" href="{{ link('denetim/raporlar') }}">Raporlar</a></xf:if>
     <xf:if is="$canManageAudit"><a class="button" href="{{ link('denetim/havuz') }}">Denetçi havuzu</a></xf:if><xf:if is="$hasSensitiveSnapshots AND $canViewSensitive"><xf:if is="$showSensitive"><a class="button" href="{{ link('denetim/vaka', null, {'case_id':$caseView.case_id}) }}">Hassas kanıtları gizle</a><xf:else /><a class="button button--link" href="{{ link('denetim/vaka', null, {'case_id':$caseView.case_id, 'sensitive':1}) }}">Hassas kanıtları göster</a></xf:if></xf:if></div>
 <div class="blockMessage blockMessage--important warextAudit-readOnly">Denetim sistemi moderasyon işlemini değiştirmez. Değerlendirmeler yalnızca denetim kaydı üretir.</div>
 <xf:if is="$isBlind"><div class="blockMessage blockMessage--warning"><b>Kör değerlendirme aktif:</b> {$blindMode}. Kimlik alanları kanıt gösteriminde dinamik olarak maskelenir; ham kanıtın SHA-256 bütünlüğü değişmez.</div></xf:if>
@@ -252,7 +252,7 @@
 
   <template type="public" title="warext_audit_feedback_view" version_id="1000080" version_string="1.0.0 Alpha 8"><![CDATA[<xf:title>#{$feedback.feedback_id} {$feedback.subject}</xf:title>
 <xf:css src="warext_audit.less" />
-<div class="buttonGroup"><a class="button" href="{{ link('denetim-geribildirim') }}">← İtiraz ve Öneri Merkezi</a><xf:if is="$feedback.case_id AND $xf.visitor.hasPermission('general', 'warextAuditView')"><a class="button" href="{{ link('denetim/vaka', null, {'case_id':$feedback.case_id}) }}">Denetim vakası #{$feedback.case_id}</a></xf:if></div>
+<div class="buttonGroup"><a class="button" href="{{ link('denetim-geribildirim') }}">← İtiraz ve Öneri Merkezi</a><xf:if is="$feedback.case_id AND ($xf.visitor.is_super_admin OR $xf.visitor.hasPermission('general', 'warextAuditView'))"><a class="button" href="{{ link('denetim/vaka', null, {'case_id':$feedback.case_id}) }}">Denetim vakası #{$feedback.case_id}</a></xf:if></div>
 <div class="block"><div class="block-container"><h2 class="block-header">Başvuru</h2><div class="block-body"><div class="pairs pairs--columns pairs--fixedSmall"><dl><dt>Tür</dt><dd>{{ $feedback.feedback_type == 'appeal' ? 'İtiraz' : 'Öneri' }}</dd></dl><dl><dt>Durum</dt><dd>{$feedback.status}</dd></dl><dl><dt>Öncelik</dt><dd>{$feedback.priority}</dd></dl><dl><dt>Gönderen</dt><dd>{$feedback.Submitter.username}</dd></dl><xf:if is="$feedback.case_id"><dl><dt>Vaka</dt><dd>#{$feedback.case_id}</dd></dl></xf:if><dl><dt>Oluşturuldu</dt><dd><xf:date time="$feedback.created_date" /></dd></dl></div><hr class="formRowSep" /><div class="message-userContent">{$feedback.message}</div></div></div></div>
 <div class="block"><div class="block-container"><h2 class="block-header">Değiştirilemez olay geçmişi</h2><div class="block-body"><xf:foreach loop="$eventRows" value="$row"><div class="message message--simple"><div class="message-inner"><div class="message-cell message-cell--main"><div class="message-attribution"><b>{$row.event.event_type}</b> · {$row.event.Actor.username} · <xf:date time="$row.event.created_date" /> · <xf:if is="$row.integrity_valid"><span class="label label--green">SHA-256 doğrulandı</span><xf:else /><span class="label label--red">Bütünlük hatası</span></xf:if></div><xf:if is="$row.data.response"><div class="message-userContent">{$row.data.response}</div></xf:if><xf:if is="$row.event.from_status OR $row.event.to_status"><div class="contentRow-minor">{$row.event.from_status} → {$row.event.to_status}</div></xf:if><div class="contentRow-minor"><code>{$row.event.data_hash}</code></div></div></div></div></xf:foreach></div></div></div>
 <xf:if is="$isManager"><div class="block"><div class="block-container"><h2 class="block-header">Yönetim dönüşü</h2><xf:form action="{{ link('denetim-geribildirim/yonetim', null, {'feedback_id':$feedback.feedback_id}) }}" class="block-body"><xf:formrow label="Yeni durum"><select class="input" name="status"><xf:foreach loop="$statusLabels" key="$value" value="$label"><option value="{$value}" {{ $feedback.status == $value ? 'selected' : '' }}>{$label}</option></xf:foreach></select></xf:formrow><xf:formrow label="Atanan kullanıcı ID"><input class="input" type="number" name="assigned_to_user_id" min="0" value="{$feedback.assigned_to_user_id}" /></xf:formrow><xf:formrow label="Yönetim cevabı"><textarea class="input" name="response" rows="8" maxlength="10000" required="required"></textarea></xf:formrow><xf:submitrow submit="Dönüşü kaydet" /></xf:form></div></div></xf:if>]]></template>
@@ -283,7 +283,7 @@
 </div></div></div>]]></template>
 
 
-  <template type="admin" title="warext_audit_admin_dashboard" version_id="1000101" version_string="1.0.1"><![CDATA[<xf:title>Moderasyon Denetim Sistemi</xf:title>
+  <template type="admin" title="warext_audit_admin_dashboard" version_id="1000102" version_string="1.0.2"><![CDATA[<xf:title>Moderasyon Denetim Sistemi</xf:title>
 
 <div class="block">
     <div class="block-container">
@@ -312,7 +312,7 @@
     </div>
 </div>]]></template>
 
-  <template type="admin" title="warext_audit_admin_settings" version_id="1000101" version_string="1.0.1"><![CDATA[<xf:title>Moderasyon Denetim Sistemi - Ayarlar</xf:title>
+  <template type="admin" title="warext_audit_admin_settings" version_id="1000102" version_string="1.0.2"><![CDATA[<xf:title>Moderasyon Denetim Sistemi - Ayarlar</xf:title>
 
 <xf:form action="{{ link('warext-moderation-audit-settings/save') }}" class="block">
     <div class="block-container">

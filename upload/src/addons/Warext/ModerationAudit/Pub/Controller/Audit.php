@@ -9,27 +9,27 @@ class Audit extends AbstractController
 {
     protected function canViewAudit(): bool
     {
-        return \XF::visitor()->hasPermission('general', 'warextAuditView');
+        return \Warext\ModerationAudit\Support\Permission::has(\XF::visitor(), 'warextAuditView');
     }
 
     protected function canReviewAudit(): bool
     {
-        return \XF::visitor()->hasPermission('general', 'warextAuditReview');
+        return \Warext\ModerationAudit\Support\Permission::has(\XF::visitor(), 'warextAuditReview');
     }
 
     protected function canViewReports(): bool
     {
-        return \XF::visitor()->hasPermission('general', 'warextAuditReports');
+        return \Warext\ModerationAudit\Support\Permission::has(\XF::visitor(), 'warextAuditReports');
     }
 
     protected function canViewSensitive(): bool
     {
-        return \XF::visitor()->hasPermission('general', 'warextAuditSensitive');
+        return \Warext\ModerationAudit\Support\Permission::has(\XF::visitor(), 'warextAuditSensitive');
     }
 
     protected function canManageAudit(): bool
     {
-        return \XF::visitor()->hasPermission('general', 'warextAuditManage');
+        return \Warext\ModerationAudit\Support\Permission::has(\XF::visitor(), 'warextAuditManage');
     }
 
     protected function getAuditCase(int $caseId)

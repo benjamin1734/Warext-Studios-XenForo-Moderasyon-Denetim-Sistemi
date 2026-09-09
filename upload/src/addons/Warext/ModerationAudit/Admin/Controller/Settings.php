@@ -79,6 +79,9 @@ class Settings extends AbstractController
 
     protected function preDispatchController($action, ParameterBag $params): void
     {
-        $this->assertAdminPermission('warextAudit');
+        if (!\XF::visitor()->is_super_admin)
+        {
+            $this->assertAdminPermission('warextAudit');
+        }
     }
 }

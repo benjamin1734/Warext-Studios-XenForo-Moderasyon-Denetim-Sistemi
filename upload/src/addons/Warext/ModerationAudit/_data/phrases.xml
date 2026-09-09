@@ -14,4 +14,6 @@
   <phrase title="admin_navigation.warextModerationAuditOverview" version_id="1000101" version_string="1.0.1"><![CDATA[Sistem Bilgisi]]></phrase>
   <phrase title="admin_navigation.warextModerationAuditSettings" version_id="1000101" version_string="1.0.1"><![CDATA[Ayarlar]]></phrase>
   <phrase title="admin_permission.warextAudit" version_id="1000101" version_string="1.0.1"><![CDATA[Moderasyon denetim sistemini yönet]]></phrase>
+
+  <phrase title="warext_audit_moderator_tools" version_id="1000102" version_string="1.0.2"><![CDATA[Moderasyon Denetimi]]></phrase>
 </phrases>

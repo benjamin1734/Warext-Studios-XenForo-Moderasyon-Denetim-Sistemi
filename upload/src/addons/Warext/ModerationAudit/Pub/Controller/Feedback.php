@@ -10,17 +10,17 @@ class Feedback extends AbstractController
 {
     protected function canManage(): bool
     {
-        return \XF::visitor()->hasPermission('general', 'warextAuditManage');
+        return \Warext\ModerationAudit\Support\Permission::has(\XF::visitor(), 'warextAuditManage');
     }
 
     protected function canAppeal(): bool
     {
-        return \XF::visitor()->hasPermission('general', 'warextAuditAppeal');
+        return \Warext\ModerationAudit\Support\Permission::has(\XF::visitor(), 'warextAuditAppeal');
     }
 
     protected function canSuggest(): bool
     {
-        return \XF::visitor()->hasPermission('general', 'warextAuditSuggest');
+        return \Warext\ModerationAudit\Support\Permission::has(\XF::visitor(), 'warextAuditSuggest');
     }
 
     protected function canAccessFeedbackCenter(): bool

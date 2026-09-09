@@ -9,16 +9,16 @@ class Governance extends AbstractController
 {
     protected function canManage(): bool
     {
-        return \XF::visitor()->hasPermission('general', 'warextAuditManage');
+        return \Warext\ModerationAudit\Support\Permission::has(\XF::visitor(), 'warextAuditManage');
     }
 
     protected function canAccess(): bool
     {
         $visitor = \XF::visitor();
         return $this->canManage()
-            || $visitor->hasPermission('general', 'warextAuditView')
-            || $visitor->hasPermission('general', 'warextAuditAppeal')
-            || $visitor->hasPermission('general', 'warextAuditSuggest');
+            || \Warext\ModerationAudit\Support\Permission::has($visitor, 'warextAuditView')
+            || \Warext\ModerationAudit\Support\Permission::has($visitor, 'warextAuditAppeal')
+            || \Warext\ModerationAudit\Support\Permission::has($visitor, 'warextAuditSuggest');
     }
 
     protected function governance()

@@ -16,7 +16,7 @@ class BlindPolicy extends AbstractService
 
     public function canManage(User $viewer): bool
     {
-        return $viewer->hasPermission('general', 'warextAuditManage');
+        return \Warext\ModerationAudit\Support\Permission::has($viewer, 'warextAuditManage');
     }
 
     public function getAssignment(AuditCase $case, int $userId)

@@ -372,7 +372,7 @@ class Setup extends AbstractSetup
                 {
                     continue;
                 }
-                if ($user->hasPermission('general', 'warextAuditManage') || !$user->hasPermission('general', 'warextAuditView') || !$user->hasPermission('general', 'warextAuditReview'))
+                if (\Warext\ModerationAudit\Support\Permission::has($user, 'warextAuditManage') || !\Warext\ModerationAudit\Support\Permission::has($user, 'warextAuditView') || !\Warext\ModerationAudit\Support\Permission::has($user, 'warextAuditReview'))
                 {
                     continue;
                 }

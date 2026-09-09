@@ -99,12 +99,12 @@ class AssignmentManager extends AbstractService
             $error = 'Aktif XenForo yönetici/moderatör hesapları bağımsız denetçi havuzuna alınamaz.';
             return false;
         }
-        if ($user->hasPermission('general', 'warextAuditManage'))
+        if (\Warext\ModerationAudit\Support\Permission::has($user, 'warextAuditManage'))
         {
             $error = 'Denetçi havuzu yöneticileri aynı zamanda vaka denetçisi olamaz.';
             return false;
         }
-        if (!$user->hasPermission('general', 'warextAuditView') || !$user->hasPermission('general', 'warextAuditReview'))
+        if (!\Warext\ModerationAudit\Support\Permission::has($user, 'warextAuditView') || !\Warext\ModerationAudit\Support\Permission::has($user, 'warextAuditReview'))
         {
             $error = 'Kullanıcıda denetim görüntüleme ve değerlendirme izinlerinin ikisi de bulunmalıdır.';
             return false;

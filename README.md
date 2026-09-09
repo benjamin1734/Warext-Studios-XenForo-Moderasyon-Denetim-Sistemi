@@ -4,7 +4,7 @@ XenForo 2.3 için bağımsız moderasyon denetim eklentisi. Moderasyon işlemler
 
 ## Sürüm
 
-**1.0.1**
+**1.0.2**
 
 ## Gereksinimler
 
@@ -13,7 +13,7 @@ XenForo 2.3 için bağımsız moderasyon denetim eklentisi. Moderasyon işlemler
 
 ## Kurulum
 
-Repo kökündeki `Warext-ModerationAudit-1.0.1.zip` dosyasını XenForo yönetim panelinde **Add-ons → Install/upgrade from archive** alanına yükleyin.
+Repo kökündeki `Warext-ModerationAudit-1.0.2.zip` dosyasını XenForo yönetim panelinde **Add-ons → Install/upgrade from archive** alanına yükleyin.
 
 ## Özellikler
 
@@ -88,3 +88,10 @@ Repo kökündeki `Warext-ModerationAudit-1.0.1.zip` dosyasını XenForo yönetim
 - Sistem Bilgisi ekranında sürüm, şema, açık/toplam vaka ve başvuru sayıları ile aktif eskalasyon sayısı gösterilir.
 - Ayarlar ekranından vaka ve itiraz/öneri SLA süreleri doğrudan düzenlenebilir.
 - Ayar değerleri mevcut `xf_warext_audit_state` altyapısına yazılır; governance/cron sistemi bu değerleri doğrudan kullanır.
+
+## 1.0.2
+
+- XenForo super admin hesapları tüm `warextAudit*` public izinlerini otomatik olarak geçer; ayrıca kullanıcı grubu izni vermeleri gerekmez.
+- ACP `warextAudit` izni super admin için otomatik bypass edilir.
+- `Moderator tools` açılır menüsüne XenForo'nun `mod_tools_menu:top` template hook'u üzerinden **Moderasyon Denetimi** bağlantısı eklendi.
+- Normal moderatör/denetçiler için ayrıntılı kullanıcı grubu izin sistemi aynen korunur.
