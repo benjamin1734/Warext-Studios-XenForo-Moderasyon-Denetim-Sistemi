@@ -46,12 +46,12 @@
     "src/addons/Warext/ModerationAudit/_data/admin_permission.xml": "1a6e7a4dd9fc0daddf468681fec275ab990a09cf2a7edf3218984eac05dbca70",
     "src/addons/Warext/ModerationAudit/_data/class_extensions.xml": "8eb48bcf012835354962ed2ebeb7d4f67232bf66f47dc92bd2e320e57816a955",
     "src/addons/Warext/ModerationAudit/_data/cron_entries.xml": "dde256d146aae578f63f75a253e6533a2f6307616f5cf3f20d2fafce4a57bda3",
-    "src/addons/Warext/ModerationAudit/_data/navigation.xml": "9404412b4853ae045bc52be635cf30b58bde32b97fa3d7bf0034fb1de1496d22",
+    "src/addons/Warext/ModerationAudit/_data/navigation.xml": "dda49c02e1a7fa384792183f8fba42522ecd7a4fc306ffccfa82043076199d4a",
     "src/addons/Warext/ModerationAudit/_data/permission_interface_groups.xml": "b74596884fae8c1d1242e24d117a5520005b459beb77c5ec854838889db0ac28",
     "src/addons/Warext/ModerationAudit/_data/permissions.xml": "b140058db6684af9801fd5ad97a1f0a47f395563a78ce20a0cbbd31596bfedf1",
     "src/addons/Warext/ModerationAudit/_data/phrases.xml": "a6e176df40b59b4dbba02eace5503356a8ef912103bf51cc7c7fb4615d1a3f51",
     "src/addons/Warext/ModerationAudit/_data/routes.xml": "d87b1df21187081998982225cfe26999cb2c131530b29fd0d549f2df694d6129",
     "src/addons/Warext/ModerationAudit/_data/template_modifications.xml": "5555b21b1aa04994da2686a274ae28ac9c0c12caf3b251275360f80454eeea9b",
     "src/addons/Warext/ModerationAudit/_data/templates.xml": "845aa9ba18715dba95500881aa83d4d5b85e3b19e28a9b297f715550de15a7f5",
-    "src/addons/Warext/ModerationAudit/addon.json": "22fec457374c97c8b89dbf780f578dc0fdbb8ceacf0d6573cf1559c125500c8f"
+    "src/addons/Warext/ModerationAudit/addon.json": "7d1af89b5aca1cf8decf953e9073d6410f2bdb7dc228c7afb7922b7702604002"
 }
