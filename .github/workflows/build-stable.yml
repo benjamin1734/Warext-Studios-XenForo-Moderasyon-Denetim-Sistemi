@@ -1,0 +1,112 @@
+name: Build Stable 1.0.0
+
+permissions:
+  contents: write
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/build-stable.yml
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup PHP 8.1
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          coverage: none
+
+      - name: Validate build scripts
+        run: python3 -m py_compile .github/scripts/integrate_stable.py .github/scripts/validate_stable.py
+
+      - name: Apply stable hardening
+        run: python3 .github/scripts/integrate_stable.py
+
+      - name: PHP 8.1 lint
+        shell: bash
+        run: |
+          set -euo pipefail
+          php -v
+          find upload/src/addons/Warext/ModerationAudit -type f -name '*.php' -print0 | xargs -0 -n1 php -l
+
+      - name: Stable cross-validation
+        run: python3 .github/scripts/validate_stable.py
+
+      - name: Package stable ZIP
+        shell: bash
+        run: |
+          set -euo pipefail
+          ZIP="Warext-ModerationAudit-1.0.0.zip"
+          rm -f "$ZIP"
+          zip -qr "$ZIP" upload
+          unzip -tq "$ZIP"
+          if zipinfo -1 "$ZIP" | grep -E '(^|/)(\.github|.*\.py|.*\.zip)(/|$)' >/dev/null; then
+            echo "Development/build artifact leaked into install ZIP" >&2
+            zipinfo -1 "$ZIP" | grep -E '(^|/)(\.github|.*\.py|.*\.zip)(/|$)' >&2 || true
+            exit 1
+          fi
+          test "$(zipinfo -1 "$ZIP" | head -n1 | cut -d/ -f1)" = "upload"
+
+      - name: Commit stable source and package
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git rm -f --ignore-unmatch \
+            Warext-ModerationAudit-1.0.0-Alpha7.zip \
+            Warext-ModerationAudit-1.0.0-Alpha8.zip \
+            Warext-ModerationAudit-1.0.0-Alpha9.zip
+          git rm -f --ignore-unmatch \
+            .github/scripts/integrate_alpha8.py \
+            .github/scripts/integrate_alpha9.py \
+            .github/scripts/validate_alpha9.py \
+            .github/workflows/build-alpha8.yml \
+            .github/workflows/build-alpha9.yml
+
+          git add upload README.md "$ZIP" .github/scripts/integrate_stable.py .github/scripts/validate_stable.py .github/workflows/build-stable.yml
+          if ! git diff --cached --quiet; then
+            git commit -m "1.0.0 stable: final hardening and validation"
+            git push origin main
+          fi
+
+      - name: Publish stable release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          TAG="v1.0.0"
+          ZIP="Warext-ModerationAudit-1.0.0.zip"
+          NOTES=$(cat <<'EOF'
+          Warext Studios XenForo Moderasyon Denetim Sistemi 1.0.0 stable.
+
+          Final 10/10 kapsamı:
+          - Moderasyon olay yakalama ve değiştirilemez delil/snapshot kayıtları
+          - Bağımsız denetim merkezi, kör denetçi ataması ve çakışma yönetimi
+          - Değerlendirme geçmişi, raporlar ve analitik
+          - İtiraz, öneri ve denetlenebilir yönetim yanıtı
+          - Risk/öncelik bazlı SLA, üç seviyeli eskalasyon ve dahili bildirimler
+          - Stable güvenlik/performans hardening ve çapraz kaynak doğrulamaları
+          - PHP 8.1 lint, XML/JSON, route-controller, cron-callback, template, permission, entity/DB ve SHA-256 manifest kontrolleri
+
+          Not: Lisanslı canlı XenForo 2.3 runtime testi GitHub Actions ortamında yapılamaz; üretim kurulumu öncesi staging üzerinde son runtime testi önerilir.
+          EOF
+          )
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" "$ZIP" --clobber
+            gh release edit "$TAG" --title "Warext Moderation Audit 1.0.0" --notes "$NOTES" --latest
+          else
+            gh release create "$TAG" "$ZIP" --target main --title "Warext Moderation Audit 1.0.0" --notes "$NOTES" --latest
+          fi
