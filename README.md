@@ -4,7 +4,7 @@ XenForo 2.3 için bağımsız moderasyon denetim eklentisi. Moderasyon işlemler
 
 ## Sürüm
 
-**1.0.2**
+**1.0.3**
 
 ## Gereksinimler
 
@@ -13,7 +13,7 @@ XenForo 2.3 için bağımsız moderasyon denetim eklentisi. Moderasyon işlemler
 
 ## Kurulum
 
-Repo kökündeki `Warext-ModerationAudit-1.0.2.zip` dosyasını XenForo yönetim panelinde **Add-ons → Install/upgrade from archive** alanına yükleyin.
+Repo kökündeki `Warext-ModerationAudit-1.0.3.zip` dosyasını XenForo yönetim panelinde **Add-ons → Install/upgrade from archive** alanına yükleyin.
 
 ## Özellikler
 
@@ -95,3 +95,12 @@ Repo kökündeki `Warext-ModerationAudit-1.0.2.zip` dosyasını XenForo yönetim
 - ACP `warextAudit` izni super admin için otomatik bypass edilir.
 - `Moderator tools` açılır menüsüne XenForo'nun `mod_tools_menu:top` template hook'u üzerinden **Moderasyon Denetimi** bağlantısı eklendi.
 - Normal moderatör/denetçiler için ayrıntılı kullanıcı grubu izin sistemi aynen korunur.
+
+## 1.0.3
+
+- Vaka ekranındaki ham **Olay metadatası** ve büyük JSON **Kanıt anlık görüntüleri** ana görünümden kaldırıldı.
+- Denetçiye artık yapılan işlem, işlem zamanı, durum geçişi, gerçek içerik, konu başlığı, rapor nedeni/notları ve yakın içerik bağlamı okunabilir kartlar halinde gösterilir.
+- SHA-256 doğrulaması arka planda korunur; ana ekranda yalnızca kanıt bütünlüğü sonucu gösterilir.
+- Ham metadata, hash ve snapshot JSON verileri sadece denetim yöneticileri için kapalı **Teknik detaylar** alanında tutulur.
+- Rapor vakalarında rapor yorumları/nedenleri bundan sonraki olay snapshot'larına değişmez kanıt olarak dahil edilir.
+- Teknik action/source kodları yerine kullanıcı dostu Türkçe işlem ve kaynak adları gösterilir.

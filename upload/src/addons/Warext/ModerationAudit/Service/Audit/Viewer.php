@@ -86,6 +86,8 @@ class Viewer extends AbstractService
             'content_type' => (string)$case->content_type,
             'content_id' => (int)$case->content_id,
             'action' => (string)$case->action,
+            'action_label' => $this->getActionLabel((string)$case->action),
+            'source_label' => $this->getSourceLabel((string)$case->source_type),
             'action_date' => (int)$case->action_date,
             'risk' => $risk,
             'risk_label' => $this->riskLabels[$risk] ?? $risk,
@@ -130,8 +132,148 @@ class Viewer extends AbstractService
             'integrity_valid' => $snapshot->isIntegrityValid(),
             'json_valid' => $validJson,
             'data_hash' => (string)$snapshot->data_hash,
-            'pretty' => $pretty === false ? $raw : (string)$pretty
+            'pretty' => $pretty === false ? $raw : (string)$pretty,
+            'evidence' => $validJson ? $this->buildReadableEvidence($decoded) : []
         ];
+    }
+
+    protected function buildReadableEvidence(array $data): array
+    {
+        $base = is_array($data['base'] ?? null) ? $data['base'] : [];
+        $context = is_array($data['context'] ?? null) ? $data['context'] : [];
+        $buffer = is_array($data['buffer'] ?? null)
+            ? $data['buffer']
+            : (is_array($context['buffer'] ?? null) ? $context['buffer'] : []);
+
+        $content = is_array($data['content'] ?? null) ? $data['content'] : [];
+        if (!$content)
+        {
+            $content = $this->pickBufferedContent($buffer);
+        }
+
+        $thread = is_array($context['thread'] ?? null)
+            ? $context['thread']
+            : (is_array($data['thread'] ?? null) ? $data['thread'] : []);
+
+        $surrounding = [];
+        foreach (['surrounding_posts', 'edge_posts'] as $key)
+        {
+            $candidate = $context[$key] ?? ($data[$key] ?? []);
+            if (is_array($candidate) && $candidate)
+            {
+                $surrounding = array_values(array_filter($candidate, 'is_array'));
+                break;
+            }
+        }
+
+        $comments = [];
+        foreach (($data['report_comments'] ?? []) as $comment)
+        {
+            if (!is_array($comment))
+            {
+                continue;
+            }
+            $state = (string)($comment['state_change'] ?? '');
+            $comment['state_change_label'] = $this->getReportStateLabel($state);
+            $comments[] = $comment;
+        }
+
+        $oldState = (string)($base['old_state'] ?? '');
+        $newState = (string)($base['new_state'] ?? '');
+
+        return [
+            'base' => $base,
+            'content' => $content,
+            'thread' => $thread,
+            'surrounding_posts' => $surrounding,
+            'report' => is_array($data['report'] ?? null) ? $data['report'] : [],
+            'report_comments' => $comments,
+            'user' => is_array($data['user'] ?? null) ? $data['user'] : [],
+            'existing' => is_array($data['existing'] ?? null) ? $data['existing'] : [],
+            'transition' => [
+                'from' => $oldState,
+                'from_label' => $this->getReportStateLabel($oldState),
+                'to' => $newState,
+                'to_label' => $this->getReportStateLabel($newState)
+            ]
+        ];
+    }
+
+    protected function pickBufferedContent(array $buffer): array
+    {
+        foreach (['before_delete', 'before_save', 'after_save'] as $stage)
+        {
+            $stageData = $buffer[$stage]['data'] ?? null;
+            if (!is_array($stageData))
+            {
+                continue;
+            }
+            foreach (['post', 'thread'] as $key)
+            {
+                if (is_array($stageData[$key] ?? null))
+                {
+                    return $stageData[$key];
+                }
+            }
+        }
+        return [];
+    }
+
+    protected function getReportStateLabel(string $state): string
+    {
+        return match ($state)
+        {
+            'open' => 'Açık',
+            'assigned' => 'Atandı',
+            'resolved' => 'Çözüldü',
+            'rejected' => 'Reddedildi',
+            '' => '—',
+            default => $state
+        };
+    }
+
+    protected function getSourceLabel(string $source): string
+    {
+        return match ($source)
+        {
+            'report' => 'Rapor',
+            'warning' => 'Uyarı',
+            'user_ban' => 'Kullanıcı yasağı',
+            'moderator_log' => 'Moderatör işlemi',
+            default => $source ?: 'Sistem'
+        };
+    }
+
+    protected function getActionLabel(string $action): string
+    {
+        return match ($action)
+        {
+            'report_state_open' => 'Rapor yeniden açıldı',
+            'report_state_assigned' => 'Rapor incelemeye alındı',
+            'report_state_resolved' => 'Rapor çözüldü',
+            'report_state_rejected' => 'Rapor reddedildi',
+            'report_assigned' => 'Rapor ataması değiştirildi',
+            'warning_insert' => 'Uyarı verildi',
+            'warning_update' => 'Uyarı güncellendi',
+            'warning_delete' => 'Uyarı kaldırıldı',
+            'user_ban_insert' => 'Kullanıcı yasaklandı',
+            'user_ban_update' => 'Yasaklama güncellendi',
+            'user_ban_delete' => 'Yasaklama kaldırıldı',
+            'delete' => 'İçerik silindi',
+            'delete_hard' => 'İçerik kalıcı silindi',
+            'undelete' => 'İçerik geri getirildi',
+            'approve' => 'İçerik onaylandı',
+            'unapprove' => 'İçerik onaydan kaldırıldı',
+            'edit' => 'İçerik düzenlendi',
+            'move' => 'İçerik taşındı',
+            'merge' => 'İçerik birleştirildi',
+            'lock' => 'Konu kilitlendi',
+            'unlock' => 'Konu kilidi açıldı',
+            'stick' => 'Konu sabitlendi',
+            'unstick' => 'Konu sabitlemesi kaldırıldı',
+            'spam_clean' => 'Spam temizliği uygulandı',
+            default => ucfirst(str_replace('_', ' ', $action ?: 'moderasyon işlemi'))
+        };
     }
 
     public function prepareReview(Entity $review, bool $anonymizeAuditor = false): array

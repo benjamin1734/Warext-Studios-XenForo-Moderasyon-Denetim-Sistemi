@@ -83,7 +83,8 @@ class SnapshotBuilder extends AbstractService
                 'comment_count' => (int)$this->value($report, 'comment_count', 0),
                 'first_report_date' => (int)$this->value($report, 'first_report_date', 0),
                 'last_modified_date' => (int)$this->value($report, 'last_modified_date', 0)
-            ]
+            ],
+            'report_comments' => $this->fetchReportComments($reportId)
         ];
 
         return $this->pair($sensitive);
@@ -153,6 +154,36 @@ class SnapshotBuilder extends AbstractService
         }
 
         return $snapshots;
+    }
+
+    protected function fetchReportComments(int $reportId): array
+    {
+        if ($reportId <= 0)
+        {
+            return [];
+        }
+
+        try
+        {
+            $finder = \XF::finder('XF:ReportComment')
+                ->where('report_id', $reportId)
+                ->order('comment_date', 'ASC')
+                ->limit(100);
+
+            $rows = [];
+            foreach ($finder->fetch() as $comment)
+            {
+                $rows[] = $this->genericEntity($comment, [
+                    'report_comment_id', 'comment_date', 'user_id', 'username',
+                    'message', 'state_change', 'is_report'
+                ]);
+            }
+            return $rows;
+        }
+        catch (\Throwable $e)
+        {
+            return [];
+        }
     }
 
     protected function fetchContent(string $contentType, int $contentId): ?array

@@ -32,8 +32,8 @@
     "src/addons/Warext/ModerationAudit/Service/Audit/Redactor.php": "b4c08778aa121d43dff885d8d606ee80212d707d13baf27e4fd3277aad27c52b",
     "src/addons/Warext/ModerationAudit/Service/Audit/ReportManager.php": "141b1e5617ed995624d2a8deb0a673921e1973614d51499ebd955514e501bf19",
     "src/addons/Warext/ModerationAudit/Service/Audit/ReviewManager.php": "e94db2333cecc374bb982f8fe0282336f44606856d37ecb0ab62dbc802a20d38",
-    "src/addons/Warext/ModerationAudit/Service/Audit/SnapshotBuilder.php": "56bfae73835f276f92487fbc01af5bedbcdd83f6d142ca9eb50015db6a361611",
-    "src/addons/Warext/ModerationAudit/Service/Audit/Viewer.php": "6a00784d027c38536b930c89c47a8cfa774001f7d4b8fac9fba08346646ea293",
+    "src/addons/Warext/ModerationAudit/Service/Audit/SnapshotBuilder.php": "1b7a12b16151b751f503e4c0292bf73c47d802d70eedda43b3ca0ddfd902f170",
+    "src/addons/Warext/ModerationAudit/Service/Audit/Viewer.php": "7223977911faa526018b59e5a91df9cbcfb82ee5b31740e0f6b9cd67d59080c5",
     "src/addons/Warext/ModerationAudit/Setup.php": "03e822bdd255a6cb1a8e228c26187e8dfdd6511db1249c112d7519abdc78ab1b",
     "src/addons/Warext/ModerationAudit/Support/Permission.php": "d3a60d8705cc47a8505d6d54e601f9cc5ff2dc378d7537ebb0f5e9ecb1747538",
     "src/addons/Warext/ModerationAudit/XF/Entity/ModeratorLog.php": "7b9e6f311e1405e9c4ed24221e3da5fe32c91c8752ba5995be7186be4f606b7f",
@@ -52,6 +52,6 @@
     "src/addons/Warext/ModerationAudit/_data/phrases.xml": "a6e176df40b59b4dbba02eace5503356a8ef912103bf51cc7c7fb4615d1a3f51",
     "src/addons/Warext/ModerationAudit/_data/routes.xml": "d87b1df21187081998982225cfe26999cb2c131530b29fd0d549f2df694d6129",
     "src/addons/Warext/ModerationAudit/_data/template_modifications.xml": "5555b21b1aa04994da2686a274ae28ac9c0c12caf3b251275360f80454eeea9b",
-    "src/addons/Warext/ModerationAudit/_data/templates.xml": "29045e6fdd284b9abc4de24880ab579c656dee684d587c86fddc3d3de04b90d1",
-    "src/addons/Warext/ModerationAudit/addon.json": "d2bcf60cec45b4705eb6c0e61a887150d75650c64ded65bcd5f240feec6cb19f"
+    "src/addons/Warext/ModerationAudit/_data/templates.xml": "845aa9ba18715dba95500881aa83d4d5b85e3b19e28a9b297f715550de15a7f5",
+    "src/addons/Warext/ModerationAudit/addon.json": "22fec457374c97c8b89dbf780f578dc0fdbb8ceacf0d6573cf1559c125500c8f"
 }
