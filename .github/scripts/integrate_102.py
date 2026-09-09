@@ -53,7 +53,6 @@ final class Permission
 
 
 def update_php_permission_checks():
-    # Every Warext audit public permission is automatically granted to XenForo super admins.
     pattern = re.compile(
         r"(?P<actor>\\XF::visitor\(\)|\$[A-Za-z_][A-Za-z0-9_]*)->hasPermission\(\s*'general'\s*,\s*'(?P<perm>warextAudit[A-Za-z]+)'\s*\)"
     )
@@ -70,13 +69,20 @@ def update_php_permission_checks():
 
 
 def update_template_permission_checks():
-    pattern = re.compile(
+    dot_pattern = re.compile(
         r"(?<!OR )\$xf\.visitor\.hasPermission\('general',\s*'(warextAudit[A-Za-z]+)'\)"
+    )
+    arrow_pattern = re.compile(
+        r"(?<!OR )\$xf\.visitor->hasPermission\('general',\s*'(warextAudit[A-Za-z]+)'\)"
     )
     for path in [DATA / 'templates.xml', DATA / 'navigation.xml']:
         text = path.read_text(encoding='utf-8')
-        text = pattern.sub(
+        text = dot_pattern.sub(
             lambda m: "($xf.visitor.is_super_admin OR $xf.visitor.hasPermission('general', '" + m.group(1) + "'))",
+            text
+        )
+        text = arrow_pattern.sub(
+            lambda m: "($xf.visitor.is_super_admin OR $xf.visitor->hasPermission('general', '" + m.group(1) + "'))",
             text
         )
         path.write_text(text, encoding='utf-8')
@@ -117,7 +123,6 @@ def add_phrase():
 def bump_owned_template_versions():
     path = DATA / 'templates.xml'
     text = path.read_text(encoding='utf-8')
-    # Only metadata; content remains intact apart from permission expressions.
     text = re.sub(r'version_id="1000101" version_string="1\.0\.1"', 'version_id="1000102" version_string="1.0.2"', text)
     path.write_text(text, encoding='utf-8')
 
