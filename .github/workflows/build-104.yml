@@ -1,0 +1,92 @@
+name: Build 1.0.4
+
+permissions:
+  contents: write
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/build-104.yml
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup PHP 8.1
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          coverage: none
+
+      - name: Validate build scripts
+        run: python3 -m py_compile .github/scripts/integrate_104.py .github/scripts/validate_104.py
+
+      - name: Apply 1.0.4 navbar cleanup
+        run: python3 .github/scripts/integrate_104.py
+
+      - name: PHP 8.1 lint
+        shell: bash
+        run: |
+          set -euo pipefail
+          find upload/src/addons/Warext/ModerationAudit -type f -name '*.php' -print0 | xargs -0 -n1 php -l
+
+      - name: Cross validate 1.0.4
+        run: python3 .github/scripts/validate_104.py
+
+      - name: Package 1.0.4 ZIP
+        shell: bash
+        run: |
+          set -euo pipefail
+          ZIP="Warext-ModerationAudit-1.0.4.zip"
+          rm -f "$ZIP"
+          zip -qr "$ZIP" upload
+          unzip -tq "$ZIP"
+          test "$(zipinfo -1 "$ZIP" | head -n1 | cut -d/ -f1)" = "upload"
+
+      - name: Commit 1.0.4 source and package
+        shell: bash
+        run: |
+          set -euo pipefail
+          ZIP="Warext-ModerationAudit-1.0.4.zip"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm -f --ignore-unmatch Warext-ModerationAudit-1.0.3.zip
+          git add upload README.md "$ZIP" .github/scripts/integrate_104.py .github/scripts/validate_104.py .github/workflows/build-104.yml
+          if ! git diff --cached --quiet; then
+            git commit -m "1.0.4: remove audit from public navbar"
+            git push origin main
+          fi
+
+      - name: Publish 1.0.4 release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          TAG="v1.0.4"
+          ZIP="Warext-ModerationAudit-1.0.4.zip"
+          NOTES=$(cat <<'EOF'
+          Warext Studios XenForo Moderasyon Denetim Sistemi 1.0.4.
+
+          - Public ana navbar üzerindeki Denetim sekmesi tamamen kaldırıldı.
+          - Moderasyon denetimine public tarafta yalnızca Moderator tools menüsünden erişilir.
+          - ACP'deki bağımsız Moderasyon Denetim Sistemi bölümü korunur.
+          - Normal kullanıcıların ana navigasyonunda denetim sistemi bağlantısı bulunmaz.
+          - Super admin otomatik erişimi ve normal yetkili izin sistemi korunur.
+          - PHP 8.1 lint, XML, navigation isolation, Moderator tools hook ve ZIP bütünlük kontrolleri geçti.
+          EOF
+          )
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" "$ZIP" --clobber
+            gh release edit "$TAG" --title "Warext Moderation Audit 1.0.4" --notes "$NOTES" --latest
+          else
+            gh release create "$TAG" "$ZIP" --target main --title "Warext Moderation Audit 1.0.4" --notes "$NOTES" --latest
+          fi
