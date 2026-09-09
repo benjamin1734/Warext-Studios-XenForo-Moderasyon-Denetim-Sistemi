@@ -1,0 +1,96 @@
+name: Build 1.0.1
+
+permissions:
+  contents: write
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/build-101.yml
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup PHP 8.1
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          coverage: none
+
+      - name: Validate build scripts
+        run: python3 -m py_compile .github/scripts/integrate_101.py .github/scripts/validate_101.py
+
+      - name: Apply 1.0.1 fixes
+        run: python3 .github/scripts/integrate_101.py
+
+      - name: PHP 8.1 lint
+        shell: bash
+        run: |
+          set -euo pipefail
+          find upload/src/addons/Warext/ModerationAudit -type f -name '*.php' -print0 | xargs -0 -n1 php -l
+
+      - name: Cross validate 1.0.1
+        run: python3 .github/scripts/validate_101.py
+
+      - name: Package 1.0.1 ZIP
+        shell: bash
+        run: |
+          set -euo pipefail
+          ZIP="Warext-ModerationAudit-1.0.1.zip"
+          rm -f "$ZIP"
+          zip -qr "$ZIP" upload
+          unzip -tq "$ZIP"
+          if zipinfo -1 "$ZIP" | grep -E '(^|/)(\.github|.*\.py|.*\.zip)(/|$)' >/dev/null; then
+            echo "Development/build artifact leaked into install ZIP" >&2
+            exit 1
+          fi
+          test "$(zipinfo -1 "$ZIP" | head -n1 | cut -d/ -f1)" = "upload"
+
+      - name: Commit 1.0.1 source and package
+        shell: bash
+        run: |
+          set -euo pipefail
+          ZIP="Warext-ModerationAudit-1.0.1.zip"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm -f --ignore-unmatch Warext-ModerationAudit-1.0.0.zip
+          git add upload README.md "$ZIP" .github/scripts/integrate_101.py .github/scripts/validate_101.py .github/workflows/build-101.yml
+          if ! git diff --cached --quiet; then
+            git commit -m "1.0.1: fix report template and add standalone ACP section"
+            git push origin main
+          fi
+
+      - name: Publish 1.0.1 release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          TAG="v1.0.1"
+          ZIP="Warext-ModerationAudit-1.0.1.zip"
+          NOTES=$(cat <<'EOF'
+          Warext Studios XenForo Moderasyon Denetim Sistemi 1.0.1.
+
+          - Kurulumda public:warext_audit_report şablonunu durduran hatalı ~ string birleştirme operatörü XenForo uyumlu . operatörü ile düzeltildi.
+          - ACP sol menüsüne bağımsız "Moderasyon Denetim Sistemi" ana kategorisi eklendi.
+          - Kategori altında "Sistem Bilgisi" ve "Ayarlar" sayfaları eklendi.
+          - Vaka ve itiraz/öneri SLA süreleri ACP üzerinden düzenlenebilir hale getirildi.
+          - ACP erişimi ayrı warextAudit yönetici izni ile korunuyor.
+          - PHP 8.1 lint, XML, route/controller, controller/template, ACP veri ve ZIP bütünlük kontrolleri geçti.
+          EOF
+          )
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" "$ZIP" --clobber
+            gh release edit "$TAG" --title "Warext Moderation Audit 1.0.1" --notes "$NOTES" --latest
+          else
+            gh release create "$TAG" "$ZIP" --target main --title "Warext Moderation Audit 1.0.1" --notes "$NOTES" --latest
+          fi
