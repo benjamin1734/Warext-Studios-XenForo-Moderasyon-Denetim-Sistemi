@@ -4,7 +4,7 @@ XenForo 2.3 için bağımsız moderasyon denetim eklentisi. Moderasyon işlemler
 
 ## Sürüm
 
-**1.0.0**
+**1.0.1**
 
 ## Gereksinimler
 
@@ -13,7 +13,7 @@ XenForo 2.3 için bağımsız moderasyon denetim eklentisi. Moderasyon işlemler
 
 ## Kurulum
 
-Repo kökündeki `Warext-ModerationAudit-1.0.0.zip` dosyasını XenForo yönetim panelinde **Add-ons → Install/upgrade from archive** alanına yükleyin.
+Repo kökündeki `Warext-ModerationAudit-1.0.1.zip` dosyasını XenForo yönetim panelinde **Add-ons → Install/upgrade from archive** alanına yükleyin.
 
 ## Özellikler
 
@@ -78,3 +78,13 @@ Repo kökündeki `Warext-ModerationAudit-1.0.0.zip` dosyasını XenForo yönetim
 - Vaka ekranındaki itiraz düğmesi kendi işlemi olan ve itiraz yetkisine sahip kullanıcılar için düzeltildi.
 - Route/controller, cron callback, template, permission, entity/DB kolon ve sınıf alias çapraz kontrolleri final doğrulamaya eklendi.
 - Kurulum ZIP'i yalnızca `upload/` ağacını içerir; geliştirme ve CI dosyaları pakete girmez.
+
+
+## 1.0.1 — Kurulum düzeltmesi ve bağımsız ACP bölümü
+
+- `public:warext_audit_report` şablonundaki XenForo ile uyumsuz `~` string birleştirme operatörü `.` ile düzeltildi; kurulum sırasında oluşan template syntax hatası giderildi.
+- ACP sol menüsüne diğer XenForo kategorilerinden bağımsız **Moderasyon Denetim Sistemi** ana bölümü eklendi.
+- Bu bölüm altında **Sistem Bilgisi** ve **Ayarlar** alt sayfaları eklendi.
+- Sistem Bilgisi ekranında sürüm, şema, açık/toplam vaka ve başvuru sayıları ile aktif eskalasyon sayısı gösterilir.
+- Ayarlar ekranından vaka ve itiraz/öneri SLA süreleri doğrudan düzenlenebilir.
+- Ayar değerleri mevcut `xf_warext_audit_state` altyapısına yazılır; governance/cron sistemi bu değerleri doğrudan kullanır.

@@ -1,4 +1,6 @@
 {
+    "src/addons/Warext/ModerationAudit/Admin/Controller/Dashboard.php": "2fb679bcde96352632c80e236deb1b767ceb5278cd60eb1d4ec4ab9c43827c74",
+    "src/addons/Warext/ModerationAudit/Admin/Controller/Settings.php": "9cca6c2e42c12efd838e463e739e6af73f7b3e1a994c888c2987697b9c62fcc8",
     "src/addons/Warext/ModerationAudit/Cron/Governance.php": "ff0a40d4b704495861aaaa17f65879c28c60b8dc9742ad8828800902efa7e3fc",
     "src/addons/Warext/ModerationAudit/Cron/Reports.php": "4498cfb34b678abe558b19270e2760fdbdecd488364fb3bd5a331c158737ffd0",
     "src/addons/Warext/ModerationAudit/Entity/AuditAssignment.php": "8cd6f6801b38da2b64ba0412e2c72150901c389ec2f511bf8ea73f9eed765592",
@@ -39,13 +41,15 @@
     "src/addons/Warext/ModerationAudit/XF/Entity/Thread.php": "4f8b7dd38eeb9ff243ac3a95dcdbf1d04e5844da8bf73b53cca8f596305d2ec8",
     "src/addons/Warext/ModerationAudit/XF/Entity/UserBan.php": "43ed5e26f7e1215c463b31683716ccec4b757ed8528ef1d97c8d801f169f294a",
     "src/addons/Warext/ModerationAudit/XF/Entity/Warning.php": "2c472d01f40f2c3ef6c837e21077d97d2491c802a4b6ae5f603540e9af86a91e",
+    "src/addons/Warext/ModerationAudit/_data/admin_navigation.xml": "2201f5430b970970d5e7b65effe01ec93eafe03d235a7b38a232ddc4a8138f31",
+    "src/addons/Warext/ModerationAudit/_data/admin_permission.xml": "1a6e7a4dd9fc0daddf468681fec275ab990a09cf2a7edf3218984eac05dbca70",
     "src/addons/Warext/ModerationAudit/_data/class_extensions.xml": "8eb48bcf012835354962ed2ebeb7d4f67232bf66f47dc92bd2e320e57816a955",
     "src/addons/Warext/ModerationAudit/_data/cron_entries.xml": "dde256d146aae578f63f75a253e6533a2f6307616f5cf3f20d2fafce4a57bda3",
     "src/addons/Warext/ModerationAudit/_data/navigation.xml": "ca3855752e8d6e40c29f199d5fd8eaecbc9ff188661e47bf2b971c7a7617a396",
     "src/addons/Warext/ModerationAudit/_data/permission_interface_groups.xml": "b74596884fae8c1d1242e24d117a5520005b459beb77c5ec854838889db0ac28",
     "src/addons/Warext/ModerationAudit/_data/permissions.xml": "b140058db6684af9801fd5ad97a1f0a47f395563a78ce20a0cbbd31596bfedf1",
-    "src/addons/Warext/ModerationAudit/_data/phrases.xml": "e482f54239809eb29ca9ec394ef5252f47513e812840629b04fefca2c9d978bb",
-    "src/addons/Warext/ModerationAudit/_data/routes.xml": "7d143a9c8cb2d81281e795441536281bc1d3a275cc3dcc36945cf59006a0ba4f",
-    "src/addons/Warext/ModerationAudit/_data/templates.xml": "5897cda0ceaf52982d178b592d2acd169ab22ff3bb12b438dcbb958215da9b99",
-    "src/addons/Warext/ModerationAudit/addon.json": "9811446822fe783041c2680948aec74d1336fdf42fa7924c6dfb9198afbc4e91"
+    "src/addons/Warext/ModerationAudit/_data/phrases.xml": "427df8bf3184ee0af1df669397d1216263a917bfaf38e958a2ad5cacc643f487",
+    "src/addons/Warext/ModerationAudit/_data/routes.xml": "d87b1df21187081998982225cfe26999cb2c131530b29fd0d549f2df694d6129",
+    "src/addons/Warext/ModerationAudit/_data/templates.xml": "2334fee5ab331c12eb0ecbd557343d87227546f7c30c51b99a34c66eb9aaf790",
+    "src/addons/Warext/ModerationAudit/addon.json": "9d66fc54d368229183a33ae2f1b7812e0e6aded9383890c87197d3e92f3692e7"
 }

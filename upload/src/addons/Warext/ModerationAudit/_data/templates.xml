@@ -209,10 +209,10 @@
 <xf:css src="warext_audit.less" />
 <div class="warextAudit-toolbar"><a class="button" href="{{ link('denetim/raporlar') }}">← Raporlara dön</a><xf:if is="$canManageAudit"><a class="button" href="{{ link('denetim/rapor', null, {'report_id':$report.report_id, 'anon':$anonymized ? 0 : 1}) }}">{{ $anonymized ? 'Gerçek kimlikler' : 'Anonim görünüm' }}</a></xf:if></div>
 <xf:if is="!$hashValid"><div class="blockMessage blockMessage--error">Rapor bütünlük doğrulaması başarısız. Kaydedilmiş rapor verisi değiştirilmiş olabilir.</div><xf:else /><div class="blockMessage blockMessage--success">SHA-256 rapor bütünlüğü doğrulandı. Durum: <strong>{$report.status}</strong></div></xf:if>
-<div class="warextAudit-stats"><div class="warextAudit-stat"><span class="warextAudit-statValue">{$summary.totals.actions}</span><span class="warextAudit-statLabel">Moderasyon işlemi</span></div><div class="warextAudit-stat"><span class="warextAudit-statValue">{$summary.totals.coverage_percent}%</span><span class="warextAudit-statLabel">Denetim kapsamı</span></div><div class="warextAudit-stat"><span class="warextAudit-statValue">{{ $summary.totals.accuracy_score !== null ? $summary.totals.accuracy_score ~ '%' : '—' }}</span><span class="warextAudit-statLabel">Doğruluk skoru</span></div><div class="warextAudit-stat warextAudit-stat--critical"><span class="warextAudit-statValue">{{ $summary.totals.problem_rate !== null ? $summary.totals.problem_rate ~ '%' : '—' }}</span><span class="warextAudit-statLabel">Sorunlu işlem oranı</span></div></div>
+<div class="warextAudit-stats"><div class="warextAudit-stat"><span class="warextAudit-statValue">{$summary.totals.actions}</span><span class="warextAudit-statLabel">Moderasyon işlemi</span></div><div class="warextAudit-stat"><span class="warextAudit-statValue">{$summary.totals.coverage_percent}%</span><span class="warextAudit-statLabel">Denetim kapsamı</span></div><div class="warextAudit-stat"><span class="warextAudit-statValue">{{ $summary.totals.accuracy_score !== null ? $summary.totals.accuracy_score . '%' : '—' }}</span><span class="warextAudit-statLabel">Doğruluk skoru</span></div><div class="warextAudit-stat warextAudit-stat--critical"><span class="warextAudit-statValue">{{ $summary.totals.problem_rate !== null ? $summary.totals.problem_rate . '%' : '—' }}</span><span class="warextAudit-statLabel">Sorunlu işlem oranı</span></div></div>
 <div class="block"><div class="block-container"><h2 class="block-header">Genel dağılım</h2><div class="block-body warextAudit-reportGrid"><div><strong>Genel karar</strong><p>Doğru: {$summary.verdicts.correct} · Kısmen: {$summary.verdicts.partly_correct} · Yanlış: {$summary.verdicts.wrong} · Kanıt yetersiz: {$summary.verdicts.insufficient_evidence}</p></div><div><strong>Kural uygulaması</strong><p>Doğru: {$summary.rule_ratings.correct} · Kısmen: {$summary.rule_ratings.partly_correct} · Yanlış: {$summary.rule_ratings.wrong}</p></div><div><strong>Ceza/orantı</strong><p>Orantılı: {$summary.penalty_ratings.proportionate} · Hafif: {$summary.penalty_ratings.too_light} · Ağır: {$summary.penalty_ratings.too_severe}</p></div><div><strong>İletişim</strong><p>Profesyonel: {$summary.communication_ratings.professional} · Geliştirilmeli: {$summary.communication_ratings.needs_improvement} · Uygunsuz: {$summary.communication_ratings.inappropriate}</p></div></div></div></div>
-<xf:if is="$summary.comparison"><div class="block"><div class="block-container"><h2 class="block-header">Önceki eş dönem karşılaştırması</h2><div class="block-body"><div class="warextAudit-caseMeta"><span>Kapsam değişimi: {$summary.comparison.coverage_delta} puan</span><span>Doğruluk değişimi: {{ $summary.comparison.accuracy_delta !== null ? $summary.comparison.accuracy_delta ~ ' puan' : '—' }}</span><span>Sorun oranı değişimi: {{ $summary.comparison.problem_rate_delta !== null ? $summary.comparison.problem_rate_delta ~ ' puan' : '—' }}</span></div></div></div></div></xf:if>
-<div class="block"><div class="block-container"><h2 class="block-header">Yetkili bazlı kalite</h2><div class="block-body"><div class="warextAudit-tableWrap"><table class="dataList-table"><thead><tr><th>Yetkili</th><th>İşlem</th><th>Kapsam</th><th>Doğruluk</th><th>Sorun oranı</th><th>Kural</th><th>Ceza</th><th>İletişim</th></tr></thead><tbody><xf:foreach loop="$summary.moderators" value="$row"><tr><td><strong>{$row.display_name}</strong></td><td>{$row.actions}</td><td>{$row.coverage_percent}%</td><td>{{ $row.accuracy_score !== null ? $row.accuracy_score ~ '%' : '—' }}</td><td>{{ $row.problem_rate !== null ? $row.problem_rate ~ '%' : '—' }}</td><td>{$row.rule_issues}</td><td>{$row.penalty_issues}</td><td>{$row.communication_issues}</td></tr></xf:foreach></tbody></table></div></div></div></div>
+<xf:if is="$summary.comparison"><div class="block"><div class="block-container"><h2 class="block-header">Önceki eş dönem karşılaştırması</h2><div class="block-body"><div class="warextAudit-caseMeta"><span>Kapsam değişimi: {$summary.comparison.coverage_delta} puan</span><span>Doğruluk değişimi: {{ $summary.comparison.accuracy_delta !== null ? $summary.comparison.accuracy_delta . ' puan' : '—' }}</span><span>Sorun oranı değişimi: {{ $summary.comparison.problem_rate_delta !== null ? $summary.comparison.problem_rate_delta . ' puan' : '—' }}</span></div></div></div></div></xf:if>
+<div class="block"><div class="block-container"><h2 class="block-header">Yetkili bazlı kalite</h2><div class="block-body"><div class="warextAudit-tableWrap"><table class="dataList-table"><thead><tr><th>Yetkili</th><th>İşlem</th><th>Kapsam</th><th>Doğruluk</th><th>Sorun oranı</th><th>Kural</th><th>Ceza</th><th>İletişim</th></tr></thead><tbody><xf:foreach loop="$summary.moderators" value="$row"><tr><td><strong>{$row.display_name}</strong></td><td>{$row.actions}</td><td>{$row.coverage_percent}%</td><td>{{ $row.accuracy_score !== null ? $row.accuracy_score . '%' : '—' }}</td><td>{{ $row.problem_rate !== null ? $row.problem_rate . '%' : '—' }}</td><td>{$row.rule_issues}</td><td>{$row.penalty_issues}</td><td>{$row.communication_issues}</td></tr></xf:foreach></tbody></table></div></div></div></div>
 <xf:if is="$summary.problem_cases"><div class="block"><div class="block-container"><h2 class="block-header">Öncelikli sorunlu vakalar</h2><div class="block-body warextAudit-caseList"><xf:foreach loop="$summary.problem_cases" value="$row"><a class="warextAudit-caseRow" href="{{ link('denetim/vaka', null, {'case_id':$row.case_id}) }}"><div><strong>#{$row.case_id}</strong> · {$row.action}<div class="warextAudit-caseMeta"><span>{$row.moderator_name}</span><span><xf:date time="$row.action_date" /></span><span>Karar: {$row.verdict}</span><span>Kural: {$row.rule_rating}</span><span>Ceza: {$row.penalty_rating}</span><span>İletişim: {$row.communication_rating}</span></div></div></a></xf:foreach></div></div></div></xf:if>
 <xf:if is="$canManageAudit && $report.status == 'draft'"><div class="block"><div class="block-container"><div class="block-body"><div class="blockMessage blockMessage--important">Sonuçlandırılan raporun özeti ve SHA-256 hash'i daha sonra değiştirilemez.</div><xf:form action="{{ link('denetim/rapor-sonuclandir') }}"><input type="hidden" name="report_id" value="{$report.report_id}" /><button class="button button--primary">Raporu sonuçlandır ve kilitle</button></xf:form></div></div></div></xf:if>]]></template>
 
@@ -282,4 +282,60 @@
 <xf:if is="$escalationRows"><xf:foreach loop="$escalationRows" value="$row"><div class="message message--simple"><div class="message-inner"><div class="message-cell message-cell--main"><div class="message-attribution"><b>Seviye {$row.entity.level}</b> · {$row.entity.source_type} #{$row.entity.source_id} · <xf:date time="$row.entity.created_date" /> · <xf:if is="$row.integrity_valid"><span class="label label--green">Kayıt doğrulandı</span><xf:else /><span class="label label--red">Kayıt bütünlüğü hatalı</span></xf:if></div><div class="message-userContent">{$row.entity.reason}</div><xf:if is="$row.entity.resolved_date"><div class="blockMessage">Çözüldü: {$row.entity.resolution_note} · <xf:date time="$row.entity.resolved_date" /> · <xf:if is="$row.resolution_valid"><span class="label label--green">Çözüm doğrulandı</span><xf:else /><span class="label label--red">Çözüm bütünlüğü hatalı</span></xf:if></div><xf:elseif is="$isManager" /><xf:form action="{{ link('denetim-takip/coz', null, {'escalation_id':$row.entity.escalation_id}) }}"><textarea class="input" name="resolution_note" rows="2" maxlength="10000" placeholder="Çözüm notu" required="required"></textarea><button class="button button--small button--primary" type="submit">Eskalasyonu çöz</button></xf:form></xf:if><div class="contentRow-minor"><code>{$row.entity.event_hash}</code></div></div></div></div></xf:foreach><xf:else /><div class="blockMessage">Görüntülenebilir eskalasyon kaydı yok.</div></xf:if>
 </div></div></div>]]></template>
 
+
+  <template type="admin" title="warext_audit_admin_dashboard" version_id="1000101" version_string="1.0.1"><![CDATA[<xf:title>Moderasyon Denetim Sistemi</xf:title>
+
+<div class="block">
+    <div class="block-container">
+        <div class="block-header">Sistem Bilgisi</div>
+        <div class="block-body">
+            <div class="block-row"><b>Sürüm:</b> {$version}</div>
+            <div class="block-row"><b>Şema sürümü:</b> {$schemaVersion}</div>
+            <div class="block-row"><b>Gereksinimler:</b> XenForo 2.3.0+ / PHP 8.1+</div>
+            <div class="block-row"><b>Denetim vakaları:</b> {$caseCount} toplam / {$openCaseCount} açık</div>
+            <div class="block-row"><b>İtiraz ve öneriler:</b> {$feedbackCount} toplam / {$openFeedbackCount} açık</div>
+            <div class="block-row"><b>Aktif eskalasyon:</b> {$activeEscalationCount}</div>
+        </div>
+        <div class="block-footer">
+            <a class="button button--primary" href="{{ link('warext-moderation-audit-settings') }}">Ayarları Düzenle</a>
+        </div>
+    </div>
+</div>
+
+<div class="block">
+    <div class="block-container">
+        <div class="block-header">Aktif SLA Ayarları</div>
+        <div class="block-body">
+            <div class="block-row">Vaka: Normal {$settings.sla_case_normal_hours} saat · Yüksek risk {$settings.sla_case_elevated_hours} saat · Kritik {$settings.sla_case_critical_hours} saat</div>
+            <div class="block-row">Başvuru: Düşük {$settings.sla_feedback_low_hours} saat · Normal {$settings.sla_feedback_normal_hours} saat · Yüksek {$settings.sla_feedback_high_hours} saat · Kritik {$settings.sla_feedback_critical_hours} saat</div>
+        </div>
+    </div>
+</div>]]></template>
+
+  <template type="admin" title="warext_audit_admin_settings" version_id="1000101" version_string="1.0.1"><![CDATA[<xf:title>Moderasyon Denetim Sistemi - Ayarlar</xf:title>
+
+<xf:form action="{{ link('warext-moderation-audit-settings/save') }}" class="block">
+    <div class="block-container">
+        <div class="block-header">Vaka SLA Süreleri</div>
+        <div class="block-body">
+            <div class="block-row"><label><b>Normal risk (saat)</b><input class="input" type="number" min="1" max="720" name="sla_case_normal_hours" value="{$settings.sla_case_normal_hours}" required="required" /></label></div>
+            <div class="block-row"><label><b>Yüksek risk (saat)</b><input class="input" type="number" min="1" max="720" name="sla_case_elevated_hours" value="{$settings.sla_case_elevated_hours}" required="required" /></label></div>
+            <div class="block-row"><label><b>Kritik risk (saat)</b><input class="input" type="number" min="1" max="720" name="sla_case_critical_hours" value="{$settings.sla_case_critical_hours}" required="required" /></label></div>
+        </div>
+    </div>
+
+    <div class="block-container">
+        <div class="block-header">İtiraz / Öneri SLA Süreleri</div>
+        <div class="block-body">
+            <div class="block-row"><label><b>Düşük öncelik (saat)</b><input class="input" type="number" min="1" max="720" name="sla_feedback_low_hours" value="{$settings.sla_feedback_low_hours}" required="required" /></label></div>
+            <div class="block-row"><label><b>Normal öncelik (saat)</b><input class="input" type="number" min="1" max="720" name="sla_feedback_normal_hours" value="{$settings.sla_feedback_normal_hours}" required="required" /></label></div>
+            <div class="block-row"><label><b>Yüksek öncelik (saat)</b><input class="input" type="number" min="1" max="720" name="sla_feedback_high_hours" value="{$settings.sla_feedback_high_hours}" required="required" /></label></div>
+            <div class="block-row"><label><b>Kritik öncelik (saat)</b><input class="input" type="number" min="1" max="720" name="sla_feedback_critical_hours" value="{$settings.sla_feedback_critical_hours}" required="required" /></label></div>
+        </div>
+        <div class="block-footer">
+            <button type="submit" class="button button--primary">Ayarları Kaydet</button>
+            <a class="button" href="{{ link('warext-moderation-audit') }}">Sistem Bilgisine Dön</a>
+        </div>
+    </div>
+</xf:form>]]></template>
 </templates>

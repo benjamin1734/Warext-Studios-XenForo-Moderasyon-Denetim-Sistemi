@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<admin_navigation>
+  <admin_navigation_entry navigation_id="warextModerationAudit" display_order="650" link="warext-moderation-audit" icon="fa-shield-alt" admin_permission_id="warextAudit" debug_only="0" development_only="0" hide_no_children="1" />
+  <admin_navigation_entry navigation_id="warextModerationAuditOverview" parent_navigation_id="warextModerationAudit" display_order="10" link="warext-moderation-audit" admin_permission_id="warextAudit" debug_only="0" development_only="0" hide_no_children="0" />
+  <admin_navigation_entry navigation_id="warextModerationAuditSettings" parent_navigation_id="warextModerationAudit" display_order="20" link="warext-moderation-audit-settings" admin_permission_id="warextAudit" debug_only="0" development_only="0" hide_no_children="0" />
+</admin_navigation>

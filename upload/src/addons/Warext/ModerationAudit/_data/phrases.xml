@@ -9,4 +9,9 @@
   <phrase title="nav.warextAudit" version_id="1000070" version_string="1.0.0 Alpha 7">Denetim</phrase>
   <phrase title="permission_general_warextAuditAppeal" version_id="1000080" version_string="1.0.0 Alpha 8">Kendi denetim vakaları için itiraz oluşturabilir</phrase>
   <phrase title="permission_general_warextAuditSuggest" version_id="1000080" version_string="1.0.0 Alpha 8">Denetim sistemi için öneri oluşturabilir</phrase>
+
+  <phrase title="admin_navigation.warextModerationAudit" version_id="1000101" version_string="1.0.1"><![CDATA[Moderasyon Denetim Sistemi]]></phrase>
+  <phrase title="admin_navigation.warextModerationAuditOverview" version_id="1000101" version_string="1.0.1"><![CDATA[Sistem Bilgisi]]></phrase>
+  <phrase title="admin_navigation.warextModerationAuditSettings" version_id="1000101" version_string="1.0.1"><![CDATA[Ayarlar]]></phrase>
+  <phrase title="admin_permission.warextAudit" version_id="1000101" version_string="1.0.1"><![CDATA[Moderasyon denetim sistemini yönet]]></phrase>
 </phrases>
