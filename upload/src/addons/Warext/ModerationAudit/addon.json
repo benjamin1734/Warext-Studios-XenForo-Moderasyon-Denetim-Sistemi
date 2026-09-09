@@ -1,8 +1,8 @@
 {
     "title": "Warext Studios | XenForo Bağımsız Moderasyon Denetim Sistemi",
-    "description": "Independent moderation audit layer with immutable evidence, blind reviewer assignment, analytics, appeals, suggestions, SLA tracking, escalation and auditable governance for XenForo.",
-    "version_id": 1000090,
-    "version_string": "1.0.0 Alpha 9",
+    "description": "Independent moderation audit system with immutable evidence, blind review, analytics, appeals, suggestions, SLA tracking, escalation and auditable governance for XenForo.",
+    "version_id": 1000100,
+    "version_string": "1.0.0",
     "dev": "Warext Studios",
     "require": {
         "XF": [

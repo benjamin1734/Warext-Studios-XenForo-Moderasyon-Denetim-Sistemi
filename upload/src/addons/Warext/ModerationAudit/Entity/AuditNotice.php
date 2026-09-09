@@ -19,6 +19,11 @@ class AuditNotice extends Entity
                     break;
                 }
             }
+
+            if ((int)$this->getExistingValue('read_date') > 0 && $this->isChanged('read_date'))
+            {
+                $this->error('Okunmuş denetim bildirimi tekrar okunmamış duruma getirilemez.', 'read_date');
+            }
         }
         parent::_preSave();
     }

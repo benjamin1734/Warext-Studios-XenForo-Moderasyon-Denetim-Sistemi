@@ -19,6 +19,18 @@ class AuditEscalation extends Entity
                     break;
                 }
             }
+
+            if ((int)$this->getExistingValue('resolved_date') > 0)
+            {
+                foreach (['resolved_by_user_id', 'resolved_date', 'resolution_note', 'resolution_hash'] as $field)
+                {
+                    if ($this->isChanged($field))
+                    {
+                        $this->error('Çözümlenmiş eskalasyonun kapanış kaydı değiştirilemez.', $field);
+                        break;
+                    }
+                }
+            }
         }
         parent::_preSave();
     }

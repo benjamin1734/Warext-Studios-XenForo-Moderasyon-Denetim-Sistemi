@@ -35,18 +35,6 @@ class Governance extends AbstractController
 
         $visitor = \XF::visitor();
         $isManager = $this->canManage();
-        if ($isManager)
-        {
-            try
-            {
-                $this->governance()->scan();
-            }
-            catch (\Throwable $e)
-            {
-                \XF::logException($e, false, 'Warext ModerationAudit governance dashboard scan: ');
-            }
-        }
-
         $noticeFinder = $this->finder('Warext\ModerationAudit:AuditNotice')
             ->where('user_id', $visitor->user_id)
             ->order('created_date', 'DESC')
@@ -71,12 +59,30 @@ class Governance extends AbstractController
         }
         else
         {
-            $all = $finder->limit(200)->fetch();
-            foreach ($all as $escalation)
+            $userId = (int)$visitor->user_id;
+            $escalationIds = \XF::db()->fetchAllColumn(
+                'SELECT e.escalation_id
+                 FROM xf_warext_audit_escalation AS e
+                 LEFT JOIN xf_warext_audit_case AS c
+                    ON (e.source_type = ? AND c.case_id = e.source_id)
+                 LEFT JOIN xf_warext_audit_feedback AS f
+                    ON (e.source_type = ? AND f.feedback_id = e.source_id)
+                 WHERE c.moderator_user_id = ?
+                    OR f.submitted_by_user_id = ?
+                    OR f.assigned_to_user_id = ?
+                 ORDER BY e.created_date DESC
+                 LIMIT 100',
+                ['case', 'feedback', $userId, $userId, $userId]
+            );
+
+            if ($escalationIds)
             {
-                if ($this->canViewEscalation($escalation, (int)$visitor->user_id))
+                $escalations = $this->finder('Warext\ModerationAudit:AuditEscalation')
+                    ->where('escalation_id', $escalationIds)
+                    ->order('created_date', 'DESC')
+                    ->fetch();
+                foreach ($escalations as $escalation)
                 {
-                    $escalations[] = $escalation;
                     if (!(int)$escalation->resolved_date)
                     {
                         $activeCount++;

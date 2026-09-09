@@ -4,7 +4,7 @@ XenForo 2.3 için bağımsız moderasyon denetim eklentisi. Moderasyon işlemler
 
 ## Sürüm
 
-**1.0.0 Alpha 9**
+**1.0.0**
 
 ## Gereksinimler
 
@@ -13,7 +13,7 @@ XenForo 2.3 için bağımsız moderasyon denetim eklentisi. Moderasyon işlemler
 
 ## Kurulum
 
-Repo kökündeki `Warext-ModerationAudit-1.0.0-Alpha9.zip` dosyasını XenForo yönetim panelinde **Add-ons → Install/upgrade from archive** alanına yükleyin.
+Repo kökündeki `Warext-ModerationAudit-1.0.0.zip` dosyasını XenForo yönetim panelinde **Add-ons → Install/upgrade from archive** alanına yükleyin.
 
 ## Özellikler
 
@@ -39,7 +39,7 @@ Repo kökündeki `Warext-ModerationAudit-1.0.0-Alpha9.zip` dosyasını XenForo y
 
 ## Durum
 
-Alpha 9 geliştirme sürümüdür. PHP 8.4 sözdizimi, XML/JSON, ZIP ve SHA-256 manifest kontrollerinden geçirilmiştir. Canlı XenForo 2.3 kurulumu üzerinde runtime testi henüz tamamlanmamıştır.
+1.0.0 stable kaynak/paket sürümüdür. Minimum PHP 8.1 sözdizimi, PHP/XML/JSON, route-controller, cron-callback, controller-template, izin tanımı, entity-veritabanı şeması, sınıf aliasları, ZIP ve SHA-256 manifest kontrollerinden geçirilmiştir. Lisanslı canlı XenForo 2.3 kurulumu üzerinde runtime testi CI ortamında yapılamadığından bu kontrol ayrıca gerçek kurulumda yapılmalıdır.
 
 
 ## 1.0.0 Alpha 8 — Adım 8/10
@@ -65,3 +65,16 @@ Alpha 9 geliştirme sürümüdür. PHP 8.4 sözdizimi, XML/JSON, ZIP ve SHA-256 
 - Saatlik XenForo cron taraması ve yönetici manuel tarama düğmesi eklendi.
 - Yeni `/denetim-takip/` takip ve eskalasyon merkezi eklendi.
 - Alpha 9 şema sürümü: 6.
+
+
+## 1.0.0 — Adım 10/10
+
+- Final kaynak ve paket sağlamlaştırması tamamlandı.
+- Normal kullanıcıların yüksek/kritik öncelikle kendi SLA sürelerini yapay biçimde kısaltması engellendi.
+- Çözümlenmiş eskalasyon kapanış kayıtları değiştirilemez hale getirildi.
+- Okunmuş denetim bildirimlerinin tekrar okunmamış duruma çevrilmesi engellendi.
+- Takip sayfasının GET isteğinde SLA taraması/veri yazması kaldırıldı; tarama yalnızca cron veya açık yönetici POST işlemiyle çalışır.
+- Normal kullanıcı eskalasyon sorgusu yalnızca ilişkili vaka/başvurular üzerinden veritabanında filtrelenecek şekilde optimize edildi.
+- Vaka ekranındaki itiraz düğmesi kendi işlemi olan ve itiraz yetkisine sahip kullanıcılar için düzeltildi.
+- Route/controller, cron callback, template, permission, entity/DB kolon ve sınıf alias çapraz kontrolleri final doğrulamaya eklendi.
+- Kurulum ZIP'i yalnızca `upload/` ağacını içerir; geliştirme ve CI dosyaları pakete girmez.

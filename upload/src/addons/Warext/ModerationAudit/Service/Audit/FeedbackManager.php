@@ -40,6 +40,13 @@ class FeedbackManager extends AbstractService
         {
             $priority = 'normal';
         }
+        // Normal users must not be able to self-escalate a submission into the
+        // short high/critical management SLA queues. Management can still use
+        // every priority level when creating a record.
+        if (!$actor->hasPermission('general', 'warextAuditManage') && in_array($priority, ['high', 'critical'], true))
+        {
+            $priority = 'normal';
+        }
 
         $db = $this->app->db();
         $db->beginTransaction();
