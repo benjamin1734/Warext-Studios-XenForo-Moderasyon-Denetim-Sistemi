@@ -73,29 +73,7 @@ jobs:
           set -euo pipefail
           TAG="v1.0.4"
           ZIP="Warext-ModerationAudit-1.0.4.zip"
-          cat > /tmp/release-notes.md <<'EOF'
-Warext Studios XenForo Moderasyon Denetim Sistemi 1.0.4.
-
-- Public ana navbar üzerindeki Denetim sekmesi tamamen kaldırıldı.
-- Moderasyon denetimine public tarafta yalnızca Moderator tools menüsünden erişilir.
-- ACP'deki bağımsız Moderasyon Denetim Sistemi bölümü korunur.
-- Normal kullanıcıların ana navigasyonunda denetim sistemi bağlantısı bulunmaz.
-- Super admin otomatik erişimi ve normal yetkili izin sistemi korunur.
-- PHP 8.1 lint, XML, navigation isolation, Moderator tools hook ve ZIP bütünlük kontrolleri geçti.
-
----
-
-## English
-
-Warext Studios XenForo Moderation Audit System 1.0.4.
-
-- The Audit tab was completely removed from the public main navbar.
-- On the public side, moderation auditing is now accessible only from the Moderator tools menu.
-- The independent Moderation Audit System section in the ACP is preserved.
-- Normal users do not see any moderation-audit link in the main navigation.
-- Automatic super-admin access and the normal permission system for authorized staff are preserved.
-- PHP 8.1 lint, XML, navigation isolation, Moderator tools hook and ZIP integrity checks passed.
-EOF
+          echo 'V2FyZXh0IFN0dWRpb3MgWGVuRm9ybyBNb2RlcmFzeW9uIERlbmV0aW0gU2lzdGVtaSAxLjAuNC4KCi0gUHVibGljIGFuYSBuYXZiYXIgw7x6ZXJpbmRla2kgRGVuZXRpbSBzZWttZXNpIHRhbWFtZW4ga2FsZMSxcsSxbGTEsS4KLSBNb2RlcmFzeW9uIGRlbmV0aW1pbmUgcHVibGljIHRhcmFmdGEgeWFsbsSxemNhIE1vZGVyYXRvciB0b29scyBtZW7DvHPDvG5kZW4gZXJpxZ9pbGlyLgotIEFDUCdkZWtpIGJhxJ/EsW1zxLF6IE1vZGVyYXN5b24gRGVuZXRpbSBTaXN0ZW1pIGLDtmzDvG3DvCBrb3J1bnVyLgotIE5vcm1hbCBrdWxsYW7EsWPEsWxhcsSxbiBhbmEgbmF2aWdhc3lvbnVuZGEgZGVuZXRpbSBzaXN0ZW1pIGJhxJ9sYW50xLFzxLEgYnVsdW5tYXouCi0gU3VwZXIgYWRtaW4gb3RvbWF0aWsgZXJpxZ9pbWkgdmUgbm9ybWFsIHlldGtpbGkgaXppbiBzaXN0ZW1pIGtvcnVudXIuCi0gUEhQIDguMSBsaW50LCBYTUwsIG5hdmlnYXRpb24gaXNvbGF0aW9uLCBNb2RlcmF0b3IgdG9vbHMgaG9vayB2ZSBaSVAgYsO8dMO8bmzDvGsga29udHJvbGxlcmkgZ2XDp3RpLgoKLS0tCgojIyBFbmdsaXNoCgpXYXJleHQgU3R1ZGlvcyBYZW5Gb3JvIE1vZGVyYXRpb24gQXVkaXQgU3lzdGVtIDEuMC40LgoKLSBUaGUgQXVkaXQgdGFiIHdhcyBjb21wbGV0ZWx5IHJlbW92ZWQgZnJvbSB0aGUgcHVibGljIG1haW4gbmF2YmFyLgotIE9uIHRoZSBwdWJsaWMgc2lkZSwgbW9kZXJhdGlvbiBhdWRpdGluZyBpcyBub3cgYWNjZXNzaWJsZSBvbmx5IGZyb20gdGhlIE1vZGVyYXRvciB0b29scyBtZW51LgotIFRoZSBpbmRlcGVuZGVudCBNb2RlcmF0aW9uIEF1ZGl0IFN5c3RlbSBzZWN0aW9uIGluIHRoZSBBQ1AgaXMgcHJlc2VydmVkLgotIE5vcm1hbCB1c2VycyBkbyBub3Qgc2VlIGFueSBtb2RlcmF0aW9uLWF1ZGl0IGxpbmsgaW4gdGhlIG1haW4gbmF2aWdhdGlvbi4KLSBBdXRvbWF0aWMgc3VwZXItYWRtaW4gYWNjZXNzIGFuZCB0aGUgbm9ybWFsIHBlcm1pc3Npb24gc3lzdGVtIGZvciBhdXRob3JpemVkIHN0YWZmIGFyZSBwcmVzZXJ2ZWQuCi0gUEhQIDguMSBsaW50LCBYTUwsIG5hdmlnYXRpb24gaXNvbGF0aW9uLCBNb2RlcmF0b3IgdG9vbHMgaG9vayBhbmQgWklQIGludGVncml0eSBjaGVja3MgcGFzc2VkLgo=' | base64 --decode > /tmp/release-notes.md
           if gh release view "$TAG" >/dev/null 2>&1; then
             gh release upload "$TAG" "$ZIP" --clobber
             gh release edit "$TAG" --title "Warext Moderation Audit 1.0.4" --notes-file /tmp/release-notes.md --latest
