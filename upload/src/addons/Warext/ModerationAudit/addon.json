@@ -3,7 +3,8 @@
     "description": "Independent moderation audit system with immutable evidence, blind review, analytics, appeals, suggestions, SLA tracking, escalation and auditable governance for XenForo.",
     "version_id": 1000104,
     "version_string": "1.0.4",
-    "dev": "Warext Studios",
+    "dev": "Warext Studios | Support Discord Server",
+    "dev_url": "https://discord.gg/tgsV5XMcFS",
     "require": {
         "XF": [
             2030000,
