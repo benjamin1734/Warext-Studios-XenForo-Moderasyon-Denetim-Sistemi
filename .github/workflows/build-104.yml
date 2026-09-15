@@ -73,20 +73,32 @@ jobs:
           set -euo pipefail
           TAG="v1.0.4"
           ZIP="Warext-ModerationAudit-1.0.4.zip"
-          NOTES=$(cat <<'EOF'
-          Warext Studios XenForo Moderasyon Denetim Sistemi 1.0.4.
+          cat > /tmp/release-notes.md <<'EOF'
+Warext Studios XenForo Moderasyon Denetim Sistemi 1.0.4.
 
-          - Public ana navbar üzerindeki Denetim sekmesi tamamen kaldırıldı.
-          - Moderasyon denetimine public tarafta yalnızca Moderator tools menüsünden erişilir.
-          - ACP'deki bağımsız Moderasyon Denetim Sistemi bölümü korunur.
-          - Normal kullanıcıların ana navigasyonunda denetim sistemi bağlantısı bulunmaz.
-          - Super admin otomatik erişimi ve normal yetkili izin sistemi korunur.
-          - PHP 8.1 lint, XML, navigation isolation, Moderator tools hook ve ZIP bütünlük kontrolleri geçti.
-          EOF
-          )
+- Public ana navbar üzerindeki Denetim sekmesi tamamen kaldırıldı.
+- Moderasyon denetimine public tarafta yalnızca Moderator tools menüsünden erişilir.
+- ACP'deki bağımsız Moderasyon Denetim Sistemi bölümü korunur.
+- Normal kullanıcıların ana navigasyonunda denetim sistemi bağlantısı bulunmaz.
+- Super admin otomatik erişimi ve normal yetkili izin sistemi korunur.
+- PHP 8.1 lint, XML, navigation isolation, Moderator tools hook ve ZIP bütünlük kontrolleri geçti.
+
+---
+
+## English
+
+Warext Studios XenForo Moderation Audit System 1.0.4.
+
+- The Audit tab was completely removed from the public main navbar.
+- On the public side, moderation auditing is now accessible only from the Moderator tools menu.
+- The independent Moderation Audit System section in the ACP is preserved.
+- Normal users do not see any moderation-audit link in the main navigation.
+- Automatic super-admin access and the normal permission system for authorized staff are preserved.
+- PHP 8.1 lint, XML, navigation isolation, Moderator tools hook and ZIP integrity checks passed.
+EOF
           if gh release view "$TAG" >/dev/null 2>&1; then
             gh release upload "$TAG" "$ZIP" --clobber
-            gh release edit "$TAG" --title "Warext Moderation Audit 1.0.4" --notes "$NOTES" --latest
+            gh release edit "$TAG" --title "Warext Moderation Audit 1.0.4" --notes-file /tmp/release-notes.md --latest
           else
-            gh release create "$TAG" "$ZIP" --target main --title "Warext Moderation Audit 1.0.4" --notes "$NOTES" --latest
+            gh release create "$TAG" "$ZIP" --target main --title "Warext Moderation Audit 1.0.4" --notes-file /tmp/release-notes.md --latest
           fi
