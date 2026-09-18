@@ -1,4 +1,6 @@
-# Warext Studios | XenForo Moderasyon Denetim Sistemi
+# Warext Studios | XenForo Independent Moderation Audit System
+
+## Türkçe
 
 XenForo 2.3 için bağımsız moderasyon denetim eklentisi. Moderasyon işlemlerini değiştirmeden kayıt altına alır; kanıt anlık görüntüleri, kör denetçi ataması, çıkar çatışması yönetimi, çoklu değerlendirme ve yönetim analitiği sunar.
 
@@ -112,9 +114,15 @@ Repo kökündeki `Warext-ModerationAudit-1.0.4.zip` dosyasını XenForo yönetim
 - Normal kullanıcıların ana navigasyonunda moderasyon denetim sistemiyle ilgili herhangi bir menü öğesi bulunmaz.
 - Super admin otomatik erişimi ve normal moderatör/denetçi izin kontrolleri korunur.
 
+## Destek
+
+Sorularınız, hata bildirimleriniz, kurulum desteği ve Warext Studios XenForo eklentileriyle ilgili yardım için destek Discord sunucumuza katılabilirsiniz:
+
+**Discord:** https://discord.gg/tgsV5XMcFS
+
 ---
 
-# English
+## English
 
 Warext Studios XenForo Moderation Audit System is an independent moderation-governance add-on for XenForo 2.3. It records moderation actions without altering XenForo's moderation behavior and provides evidence snapshots, blind reviewer assignment, conflict-of-interest controls, multi-review workflows, and management analytics.
 
@@ -223,3 +231,9 @@ Upload `Warext-ModerationAudit-1.0.4.zip` from the repository root through XenFo
 - Moderation audit is now accessible only through `Moderator tools`, authorized direct URLs, and the dedicated ACP management section.
 - Normal users do not see any moderation-audit navigation item in the main navigation.
 - Automatic super-admin access and normal moderator/reviewer permission checks are preserved.
+
+## Support
+
+For questions, bug reports, installation support, and help with Warext Studios XenForo add-ons, you can join our support Discord server:
+
+**Discord:** https://discord.gg/tgsV5XMcFS
