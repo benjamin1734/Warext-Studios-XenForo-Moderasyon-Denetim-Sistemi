@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<language title="Warext Moderation Audit English (US)" date_format="M j, Y" time_format="g:i A" decimal_point="." thousands_separator="," language_code="en-US" text_direction="LTR">
+  <phrase title="permission_interface_warextAudit" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1000011" version_string="1.0.0 Alpha 1"><![CDATA[Independent moderation audit]]></phrase>
+  <phrase title="permission_general_warextAuditView" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1000011" version_string="1.0.0 Alpha 1"><![CDATA[Can view the audit center]]></phrase>
+  <phrase title="permission_general_warextAuditReview" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1000011" version_string="1.0.0 Alpha 1"><![CDATA[Can review audit cases]]></phrase>
+  <phrase title="permission_general_warextAuditReports" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1000011" version_string="1.0.0 Alpha 1"><![CDATA[Can view audit reports]]></phrase>
+  <phrase title="permission_general_warextAuditSensitive" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1000011" version_string="1.0.0 Alpha 1"><![CDATA[Can view sensitive audit snapshots]]></phrase>
+  <phrase title="permission_general_warextAuditManage" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1000011" version_string="1.0.0 Alpha 1"><![CDATA[Can manage audit system settings]]></phrase>
+  <phrase title="nav.warextAudit" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1000070" version_string="1.0.0 Alpha 7"><![CDATA[Audit]]></phrase>
+  <phrase title="permission_general_warextAuditAppeal" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1000080" version_string="1.0.0 Alpha 8"><![CDATA[Can create appeals for own audit cases]]></phrase>
+  <phrase title="permission_general_warextAuditSuggest" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1000080" version_string="1.0.0 Alpha 8"><![CDATA[Can create suggestions for the audit system]]></phrase>
+  <phrase title="admin_navigation.warextModerationAudit" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1000101" version_string="1.0.1"><![CDATA[Moderation Audit System]]></phrase>
+  <phrase title="admin_navigation.warextModerationAuditOverview" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1000101" version_string="1.0.1"><![CDATA[System Information]]></phrase>
+  <phrase title="admin_navigation.warextModerationAuditSettings" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1000101" version_string="1.0.1"><![CDATA[Settings]]></phrase>
+  <phrase title="admin_permission.warextAudit" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1000101" version_string="1.0.1"><![CDATA[Manage moderation audit system]]></phrase>
+  <phrase title="warext_audit_moderator_tools" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1000102" version_string="1.0.2"><![CDATA[Moderation Audit]]></phrase>
+  <phrase title="warext_audit_i18n_moderator_log_warning" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[moderator_log, warning...]]></phrase>
+  <phrase title="warext_audit_i18n_delete_ban" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[delete, ban...]]></phrase>
+  <phrase title="warext_audit_i18n_recusal_reason" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Recusal reason]]></phrase>
+  <phrase title="warext_audit_i18n_conflict_of_interest_reason" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Conflict-of-interest reason]]></phrase>
+  <phrase title="warext_audit_i18n_username" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Username]]></phrase>
+  <phrase title="warext_audit_i18n_internal_note_optional" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Internal note (optional)]]></phrase>
+  <phrase title="warext_audit_i18n_audit_case_id" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Audit case ID]]></phrase>
+  <phrase title="warext_audit_i18n_subject" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Subject]]></phrase>
+  <phrase title="warext_audit_i18n_priority" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Priority]]></phrase>
+  <phrase title="warext_audit_i18n_description" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Description]]></phrase>
+  <phrase title="warext_audit_i18n_create_submission" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Create submission]]></phrase>
+  <phrase title="warext_audit_i18n_new_status" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[New status]]></phrase>
+  <phrase title="warext_audit_i18n_assigned_user_id" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Assigned user ID]]></phrase>
+  <phrase title="warext_audit_i18n_management_response" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Management response]]></phrase>
+  <phrase title="warext_audit_i18n_save_response" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Save response]]></phrase>
+  <phrase title="warext_audit_i18n_resolution_note" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Resolution note]]></phrase>
+  <phrase title="warext_audit_i18n_independent_moderation_audit" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Independent Moderation Audit]]></phrase>
+  <phrase title="warext_audit_i18n_tracking_escalation" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Tracking / Escalation]]></phrase>
+  <phrase title="warext_audit_i18n_appeal_suggestion" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Appeal / Suggestion]]></phrase>
+  <phrase title="warext_audit_i18n_reports" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Reports]]></phrase>
+  <phrase title="warext_audit_i18n_reviewer_pool" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Reviewer pool]]></phrase>
+  <phrase title="warext_audit_i18n_pending" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Pending]]></phrase>
+  <phrase title="warext_audit_i18n_assigned_under_review" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Assigned / under review]]></phrase>
+  <phrase title="warext_audit_i18n_critical" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Critical]]></phrase>
+  <phrase title="warext_audit_i18n_active_total" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Active total]]></phrase>
+  <phrase title="warext_audit_i18n_only_cases_assigned_to_you_are_shown_blind_review_pr" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Only cases assigned to you are shown. Blind review prevents the identity/opinions of the audited staff member and other reviewers from influencing your assessment.]]></phrase>
+  <phrase title="warext_audit_i18n_filters" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Filters]]></phrase>
+  <phrase title="warext_audit_i18n_status" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Status]]></phrase>
+  <phrase title="warext_audit_i18n_all" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[All]]></phrase>
+  <phrase title="warext_audit_i18n_risk" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Risk]]></phrase>
+  <phrase title="warext_audit_i18n_source" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Source]]></phrase>
+  <phrase title="warext_audit_i18n_action" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Action]]></phrase>
+  <phrase title="warext_audit_i18n_staff_user_id" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Staff user ID]]></phrase>
+  <phrase title="warext_audit_i18n_target_user_id" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Target user ID]]></phrase>
+  <phrase title="warext_audit_i18n_filter" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Filter]]></phrase>
+  <phrase title="warext_audit_i18n_clear" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Clear]]></phrase>
+  <phrase title="warext_audit_i18n_no_audit_case_matched_these_filters" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[No audit case matched these filters.]]></phrase>
+  <phrase title="warext_audit_i18n_back_to_audit_center" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[← Back to audit center]]></phrase>
+  <phrase title="warext_audit_i18n_appeal_this_case" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Appeal this case]]></phrase>
+  <phrase title="warext_audit_i18n_hide_sensitive_evidence" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Hide sensitive evidence]]></phrase>
+  <phrase title="warext_audit_i18n_show_sensitive_evidence" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Show sensitive evidence]]></phrase>
+  <phrase title="warext_audit_i18n_the_audit_system_does_not_change_moderation_actions_" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[The audit system does not change moderation actions. Reviews only create audit records.]]></phrase>
+  <phrase title="warext_audit_i18n_blind_review_active" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Blind review active:]]></phrase>
+  <phrase title="warext_audit_i18n_sensitive_original_evidence_is_stored_separately" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Sensitive/original evidence is stored separately.]]></phrase>
+  <phrase title="warext_audit_i18n_you_can_view_it_with_the_button_above_when_needed" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[You can view it with the button above when needed.]]></phrase>
+  <phrase title="warext_audit_i18n_this_account_does_not_have_permission_to_view_sensit" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[This account does not have permission to view sensitive evidence.]]></phrase>
+  <phrase title="warext_audit_i18n_case_summary" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Case summary]]></phrase>
+  <phrase title="warext_audit_i18n_case" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Case]]></phrase>
+  <phrase title="warext_audit_i18n_required_reviewers" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Required reviewers]]></phrase>
+  <phrase title="warext_audit_i18n_action_time" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Action time]]></phrase>
+  <phrase title="warext_audit_i18n_action_parties" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Action parties]]></phrase>
+  <phrase title="warext_audit_i18n_staff_member" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Staff member]]></phrase>
+  <phrase title="warext_audit_i18n_target" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Target]]></phrase>
+  <phrase title="warext_audit_i18n_content" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Content]]></phrase>
+  <phrase title="warext_audit_i18n_rule_key" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Rule key]]></phrase>
+  <phrase title="warext_audit_i18n_reason" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Reason]]></phrase>
+  <phrase title="warext_audit_i18n_action_and_reviewed_content" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Action and reviewed content]]></phrase>
+  <phrase title="warext_audit_i18n_evidence_integrity_verified" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[✓ Evidence integrity verified]]></phrase>
+  <phrase title="warext_audit_i18n_integrity_error" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[INTEGRITY ERROR]]></phrase>
+  <phrase title="warext_audit_i18n_status_change" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Status change:]]></phrase>
+  <phrase title="warext_audit_i18n_action_reason" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Action reason:]]></phrase>
+  <phrase title="warext_audit_i18n_no_saved_message_text_exists_for_this_content_type" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[No saved message text exists for this content type.]]></phrase>
+  <phrase title="warext_audit_i18n_report_reason_and_review_records" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Report reason and review records]]></phrase>
+  <phrase title="warext_audit_i18n_status_change_without_text_content" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Status change without text content.]]></phrase>
+  <phrase title="warext_audit_i18n_show_nearby_messages_in_content_context" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Show nearby messages in content context]]></phrase>
+  <phrase title="warext_audit_i18n_reviewed_content" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Reviewed content]]></phrase>
+  <phrase title="warext_audit_i18n_no_readable_content_evidence_was_found_for_this_acti" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[No readable content evidence was found for this action. The technical evidence record is preserved in the background.]]></phrase>
+  <phrase title="warext_audit_i18n_no_viewable_evidence" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[No viewable evidence.]]></phrase>
+  <phrase title="warext_audit_i18n_technical_details" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Technical details]]></phrase>
+  <phrase title="warext_audit_i18n_this_area_is_only_for_system_verification_you_do_not" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[This area is only for system verification; you do not need to read raw JSON to make an audit decision.]]></phrase>
+  <phrase title="warext_audit_i18n_technical_metadata" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Technical metadata]]></phrase>
+  <phrase title="warext_audit_i18n_sha_256" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[SHA-256:]]></phrase>
+  <phrase title="warext_audit_i18n_reviewer_assessment" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Reviewer assessment]]></phrase>
+  <phrase title="warext_audit_i18n_you_are_editing_your_current_assessment_the_previous" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[You are editing your current assessment. The previous version remains in the revision history.]]></phrase>
+  <phrase title="warext_audit_i18n_overall_decision" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Overall decision]]></phrase>
+  <phrase title="warext_audit_i18n_select" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Select...]]></phrase>
+  <phrase title="warext_audit_i18n_rule_application" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Rule application]]></phrase>
+  <phrase title="warext_audit_i18n_penalty_proportionality" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Penalty / proportionality]]></phrase>
+  <phrase title="warext_audit_i18n_staff_communication" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Staff communication]]></phrase>
+  <phrase title="warext_audit_i18n_confidence_level" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Confidence level (%)]]></phrase>
+  <phrase title="warext_audit_i18n_save_assessment" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Save assessment]]></phrase>
+  <phrase title="warext_audit_i18n_a_reason_of_at_least_30_characters_is_required" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[A reason of at least 30 characters is required.]]></phrase>
+  <phrase title="warext_audit_i18n_conflict_of_interest_recusal" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Conflict of interest / recusal]]></phrase>
+  <phrase title="warext_audit_i18n_if_friendship_a_business_relationship_a_personal_dis" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[If friendship, a business relationship, a personal dispute, or another reason may affect your impartiality, recuse yourself from the case. The system will automatically look for a replacement reviewer.]]></phrase>
+  <phrase title="warext_audit_i18n_recuse_from_case" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Recuse from case]]></phrase>
+  <phrase title="warext_audit_i18n_assignments" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Assignments]]></phrase>
+  <phrase title="warext_audit_i18n_no_assignments" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[No assignments.]]></phrase>
+  <phrase title="warext_audit_i18n_saved_assessments" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Saved assessments]]></phrase>
+  <phrase title="warext_audit_i18n_invalid_excluded" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Invalid / excluded]]></phrase>
+  <phrase title="warext_audit_i18n_rule" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Rule:]]></phrase>
+  <phrase title="warext_audit_i18n_penalty" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Penalty:]]></phrase>
+  <phrase title="warext_audit_i18n_communication" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Communication:]]></phrase>
+  <phrase title="warext_audit_i18n_no_assessment_yet" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[No assessment yet.]]></phrase>
+  <phrase title="warext_audit_i18n_independence_management" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Independence management]]></phrase>
+  <phrase title="warext_audit_i18n_re_run_assignment_pool" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Re-run assignment pool]]></phrase>
+  <phrase title="warext_audit_i18n_conflict_of_interest_records" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Conflict-of-interest records]]></phrase>
+  <phrase title="warext_audit_i18n_this_history_is_read_only_each_entry_represents_the_" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[This history is read-only. Each entry represents the assessment as saved at that time and has SHA-256 integrity verification.]]></phrase>
+  <phrase title="warext_audit_i18n_assessment_summary" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Assessment summary]]></phrase>
+  <phrase title="warext_audit_i18n_reviewer" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Reviewer]]></phrase>
+  <phrase title="warext_audit_i18n_current_decision" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Current decision]]></phrase>
+  <phrase title="warext_audit_i18n_confidence" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Confidence]]></phrase>
+  <phrase title="warext_audit_i18n_total_revisions" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Total revisions]]></phrase>
+  <phrase title="warext_audit_i18n_revision_history" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Revision history]]></phrase>
+  <phrase title="warext_audit_i18n_sha_256_verified" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[SHA-256 verified]]></phrase>
+  <phrase title="warext_audit_i18n_decision" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Decision:]]></phrase>
+  <phrase title="warext_audit_i18n_confidence_1" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Confidence:]]></phrase>
+  <phrase title="warext_audit_i18n_hash" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Hash:]]></phrase>
+  <phrase title="warext_audit_i18n_no_revision_record_found" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[No revision record found.]]></phrase>
+  <phrase title="warext_audit_i18n_independent_reviewer_pool" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Independent Reviewer Pool]]></phrase>
+  <phrase title="warext_audit_i18n_active_xenforo_administrators_moderators_and_account" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Active XenForo administrators/moderators and accounts managing this pool cannot be independent reviewers. Reviewer accounts must also have Audit View + Review permissions.]]></phrase>
+  <phrase title="warext_audit_i18n_assign_pending_cases_up_to_500" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Assign pending cases (up to 500)]]></phrase>
+  <phrase title="warext_audit_i18n_add_reactivate_reviewer" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Add / reactivate reviewer]]></phrase>
+  <phrase title="warext_audit_i18n_add_to_pool" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Add to pool]]></phrase>
+  <phrase title="warext_audit_i18n_reviewers" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Reviewers]]></phrase>
+  <phrase title="warext_audit_i18n_ineligible" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Ineligible]]></phrase>
+  <phrase title="warext_audit_i18n_last_assignment" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Last assignment:]]></phrase>
+  <phrase title="warext_audit_i18n_active" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Active]]></phrase>
+  <phrase title="warext_audit_i18n_pause" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Pause]]></phrase>
+  <phrase title="warext_audit_i18n_suspend" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Suspend]]></phrase>
+  <phrase title="warext_audit_i18n_update" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Update]]></phrase>
+  <phrase title="warext_audit_i18n_the_reviewer_pool_is_empty_automatic_assignment_will" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[The reviewer pool is empty. Automatic assignment will not run.]]></phrase>
+  <phrase title="warext_audit_i18n_audit_reports" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Audit Reports]]></phrase>
+  <phrase title="warext_audit_i18n_create_new_report" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Create new report]]></phrase>
+  <phrase title="warext_audit_i18n_generate_previous_week" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Generate previous week]]></phrase>
+  <phrase title="warext_audit_i18n_generate_previous_month" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Generate previous month]]></phrase>
+  <phrase title="warext_audit_i18n_custom_period" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Custom period]]></phrase>
+  <phrase title="warext_audit_i18n_report_history" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Report history]]></phrase>
+  <phrase title="warext_audit_i18n_created" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Created:]]></phrase>
+  <phrase title="warext_audit_i18n_no_report_has_been_generated_yet" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[No report has been generated yet.]]></phrase>
+  <phrase title="warext_audit_i18n_back_to_reports" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[← Back to reports]]></phrase>
+  <phrase title="warext_audit_i18n_report_integrity_verification_failed_saved_report_da" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Report integrity verification failed. Saved report data may have been modified.]]></phrase>
+  <phrase title="warext_audit_i18n_sha_256_report_integrity_verified_status" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[SHA-256 report integrity verified. Status:]]></phrase>
+  <phrase title="warext_audit_i18n_moderation_action" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Moderation action]]></phrase>
+  <phrase title="warext_audit_i18n_audit_coverage" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Audit coverage]]></phrase>
+  <phrase title="warext_audit_i18n_accuracy_score" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Accuracy score]]></phrase>
+  <phrase title="warext_audit_i18n_problematic_action_rate" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Problematic action rate]]></phrase>
+  <phrase title="warext_audit_i18n_overall_distribution" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Overall distribution]]></phrase>
+  <phrase title="warext_audit_i18n_penalty_proportionality_2" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Penalty/proportionality]]></phrase>
+  <phrase title="warext_audit_i18n_communication_3" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Communication]]></phrase>
+  <phrase title="warext_audit_i18n_comparison_with_previous_equivalent_period" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Comparison with previous equivalent period]]></phrase>
+  <phrase title="warext_audit_i18n_quality_by_staff_member" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Quality by staff member]]></phrase>
+  <phrase title="warext_audit_i18n_coverage" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Coverage]]></phrase>
+  <phrase title="warext_audit_i18n_accuracy" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Accuracy]]></phrase>
+  <phrase title="warext_audit_i18n_issue_rate" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Issue rate]]></phrase>
+  <phrase title="warext_audit_i18n_rule_4" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Rule]]></phrase>
+  <phrase title="warext_audit_i18n_penalty_5" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Penalty]]></phrase>
+  <phrase title="warext_audit_i18n_priority_problematic_cases" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Priority problematic cases]]></phrase>
+  <phrase title="warext_audit_i18n_the_finalized_report_summary_and_sha_256_hash_cannot" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[The finalized report summary and SHA-256 hash cannot be changed later.]]></phrase>
+  <phrase title="warext_audit_i18n_finalize_and_lock_report" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Finalize and lock report]]></phrase>
+  <phrase title="warext_audit_i18n_appeal_and_suggestion_center" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Appeal and Suggestion Center]]></phrase>
+  <phrase title="warext_audit_i18n_audit" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[← Audit]]></phrase>
+  <phrase title="warext_audit_i18n_new_appeal" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[New appeal]]></phrase>
+  <phrase title="warext_audit_i18n_new_suggestion" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[New suggestion]]></phrase>
+  <phrase title="warext_audit_i18n_the_original_text_of_appeals_and_suggestions_cannot_" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[The original text of appeals and suggestions cannot be changed later. Management responses and status changes are stored as separate, integrity-verifiable event records.]]></phrase>
+  <phrase title="warext_audit_i18n_all_types" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[All types]]></phrase>
+  <phrase title="warext_audit_i18n_appeal" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Appeal]]></phrase>
+  <phrase title="warext_audit_i18n_suggestion" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Suggestion]]></phrase>
+  <phrase title="warext_audit_i18n_all_statuses" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[All statuses]]></phrase>
+  <phrase title="warext_audit_i18n_no_submission_found" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[No submission found.]]></phrase>
+  <phrase title="warext_audit_i18n_appeal_and_suggestion_center_6" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[← Appeal and Suggestion Center]]></phrase>
+  <phrase title="warext_audit_i18n_an_appeal_can_only_be_opened_for_an_audit_case_relat" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[An appeal can only be opened for an audit case related to your own moderation action. Opening an appeal does not automatically change the current audit decision.]]></phrase>
+  <phrase title="warext_audit_i18n_suggestions_are_for_general_system_improvements_and_" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Suggestions are for general system improvements and do not need to be linked to an audit case.]]></phrase>
+  <phrase title="warext_audit_i18n_submission" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Submission]]></phrase>
+  <phrase title="warext_audit_i18n_type" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Type]]></phrase>
+  <phrase title="warext_audit_i18n_submitted_by" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Submitted by]]></phrase>
+  <phrase title="warext_audit_i18n_created_7" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Created]]></phrase>
+  <phrase title="warext_audit_i18n_immutable_event_history" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Immutable event history]]></phrase>
+  <phrase title="warext_audit_i18n_integrity_error_8" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Integrity error]]></phrase>
+  <phrase title="warext_audit_i18n_management_response_9" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Management response]]></phrase>
+  <phrase title="warext_audit_i18n_audit_tracking_and_escalation" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Audit Tracking and Escalation]]></phrase>
+  <phrase title="warext_audit_i18n_audit_center" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[← Audit center]]></phrase>
+  <phrase title="warext_audit_i18n_run_sla_scan" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Run SLA scan]]></phrase>
+  <phrase title="warext_audit_i18n_active_escalations" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Active escalations]]></phrase>
+  <phrase title="warext_audit_i18n_unread_notifications" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Unread notifications]]></phrase>
+  <phrase title="warext_audit_i18n_sla_violations_are_not_deleted_the_original_escalati" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[SLA violations are not deleted. The original escalation record is verified with SHA-256; resolving it also leaves a hashed closure trail.]]></phrase>
+  <phrase title="warext_audit_i18n_my_notifications" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[My notifications]]></phrase>
+  <phrase title="warext_audit_i18n_read" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Read]]></phrase>
+  <phrase title="warext_audit_i18n_no_notifications" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[No notifications.]]></phrase>
+  <phrase title="warext_audit_i18n_escalation_history" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Escalation history]]></phrase>
+  <phrase title="warext_audit_i18n_record_verified" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Record verified]]></phrase>
+  <phrase title="warext_audit_i18n_record_integrity_error" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Record integrity error]]></phrase>
+  <phrase title="warext_audit_i18n_resolution_verified" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Resolution verified]]></phrase>
+  <phrase title="warext_audit_i18n_resolution_integrity_error" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Resolution integrity error]]></phrase>
+  <phrase title="warext_audit_i18n_resolve_escalation" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Resolve escalation]]></phrase>
+  <phrase title="warext_audit_i18n_no_viewable_escalation_record" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[No viewable escalation record.]]></phrase>
+  <phrase title="warext_audit_i18n_version" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Version:]]></phrase>
+  <phrase title="warext_audit_i18n_schema_version" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Schema version:]]></phrase>
+  <phrase title="warext_audit_i18n_requirements" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Requirements:]]></phrase>
+  <phrase title="warext_audit_i18n_xenforo_2_3_0_php_8_1" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[XenForo 2.3.0+ / PHP 8.1+]]></phrase>
+  <phrase title="warext_audit_i18n_audit_cases" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Audit cases:]]></phrase>
+  <phrase title="warext_audit_i18n_appeals_and_suggestions" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Appeals and suggestions:]]></phrase>
+  <phrase title="warext_audit_i18n_active_escalations_10" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Active escalations:]]></phrase>
+  <phrase title="warext_audit_i18n_edit_settings" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Edit Settings]]></phrase>
+  <phrase title="warext_audit_i18n_active_sla_settings" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Active SLA Settings]]></phrase>
+  <phrase title="warext_audit_i18n_moderation_audit_system_settings" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Moderation Audit System - Settings]]></phrase>
+  <phrase title="warext_audit_i18n_case_sla_durations" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Case SLA Durations]]></phrase>
+  <phrase title="warext_audit_i18n_normal_risk_hours" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Normal risk (hours)]]></phrase>
+  <phrase title="warext_audit_i18n_high_risk_hours" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[High risk (hours)]]></phrase>
+  <phrase title="warext_audit_i18n_critical_risk_hours" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Critical risk (hours)]]></phrase>
+  <phrase title="warext_audit_i18n_appeal_suggestion_sla_durations" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Appeal / Suggestion SLA Durations]]></phrase>
+  <phrase title="warext_audit_i18n_low_priority_hours" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Low priority (hours)]]></phrase>
+  <phrase title="warext_audit_i18n_normal_priority_hours" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Normal priority (hours)]]></phrase>
+  <phrase title="warext_audit_i18n_high_priority_hours" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[High priority (hours)]]></phrase>
+  <phrase title="warext_audit_i18n_critical_priority_hours" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Critical priority (hours)]]></phrase>
+  <phrase title="warext_audit_i18n_save_settings" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Save Settings]]></phrase>
+  <phrase title="warext_audit_i18n_back_to_system_information" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Back to System Information]]></phrase>
+  <phrase title="warext_audit_i18n_audit_cases_11" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Audit cases]]></phrase>
+  <phrase title="warext_audit_i18n_my_assignments" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[My assignments]]></phrase>
+  <phrase title="warext_audit_i18n_sensitive_original" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Sensitive / original]]></phrase>
+  <phrase title="warext_audit_i18n_masked" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Masked]]></phrase>
+  <phrase title="warext_audit_i18n_real_identities" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Real identities]]></phrase>
+  <phrase title="warext_audit_i18n_anonymous_view" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Anonymous view]]></phrase>
+  <phrase title="warext_audit_i18n_all_submissions" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[All submissions]]></phrase>
+  <phrase title="warext_audit_i18n_my_submissions" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[My submissions]]></phrase>
+</language>
