@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<language title="Warext Moderation Audit Türkçe (TR)" date_format="j F Y" time_format="H:i" decimal_point="," thousands_separator="." language_code="tr-TR" text_direction="LTR">
+  <phrase title="permission_interface_warextAudit" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1000011" version_string="1.0.0 Alpha 1"><![CDATA[Bağımsız moderasyon denetimi]]></phrase>
+  <phrase title="permission_general_warextAuditView" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1000011" version_string="1.0.0 Alpha 1"><![CDATA[Denetim merkezini görüntüleyebilir]]></phrase>
+  <phrase title="permission_general_warextAuditReview" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1000011" version_string="1.0.0 Alpha 1"><![CDATA[Denetim vakalarını değerlendirebilir]]></phrase>
+  <phrase title="permission_general_warextAuditReports" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1000011" version_string="1.0.0 Alpha 1"><![CDATA[Denetim raporlarını görüntüleyebilir]]></phrase>
+  <phrase title="permission_general_warextAuditSensitive" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1000011" version_string="1.0.0 Alpha 1"><![CDATA[Hassas denetim anlık görüntülerini görüntüleyebilir]]></phrase>
+  <phrase title="permission_general_warextAuditManage" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1000011" version_string="1.0.0 Alpha 1"><![CDATA[Denetim sistemi yönetim ayarlarını kullanabilir]]></phrase>
+  <phrase title="nav.warextAudit" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1000070" version_string="1.0.0 Alpha 7"><![CDATA[Denetim]]></phrase>
+  <phrase title="permission_general_warextAuditAppeal" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1000080" version_string="1.0.0 Alpha 8"><![CDATA[Kendi denetim vakaları için itiraz oluşturabilir]]></phrase>
+  <phrase title="permission_general_warextAuditSuggest" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1000080" version_string="1.0.0 Alpha 8"><![CDATA[Denetim sistemi için öneri oluşturabilir]]></phrase>
+  <phrase title="admin_navigation.warextModerationAudit" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1000101" version_string="1.0.1"><![CDATA[Moderasyon Denetim Sistemi]]></phrase>
+  <phrase title="admin_navigation.warextModerationAuditOverview" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1000101" version_string="1.0.1"><![CDATA[Sistem Bilgisi]]></phrase>
+  <phrase title="admin_navigation.warextModerationAuditSettings" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1000101" version_string="1.0.1"><![CDATA[Ayarlar]]></phrase>
+  <phrase title="admin_permission.warextAudit" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1000101" version_string="1.0.1"><![CDATA[Moderasyon denetim sistemini yönet]]></phrase>
+  <phrase title="warext_audit_moderator_tools" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1000102" version_string="1.0.2"><![CDATA[Moderasyon Denetimi]]></phrase>
+  <phrase title="warext_audit_i18n_moderator_log_warning" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[moderator_log, warning...]]></phrase>
+  <phrase title="warext_audit_i18n_delete_ban" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[delete, ban...]]></phrase>
+  <phrase title="warext_audit_i18n_recusal_reason" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Çekilme gerekçesi]]></phrase>
+  <phrase title="warext_audit_i18n_conflict_of_interest_reason" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Çıkar çatışması gerekçesi]]></phrase>
+  <phrase title="warext_audit_i18n_username" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Kullanıcı adı]]></phrase>
+  <phrase title="warext_audit_i18n_internal_note_optional" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[İç not (opsiyonel)]]></phrase>
+  <phrase title="warext_audit_i18n_audit_case_id" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Denetim vaka ID]]></phrase>
+  <phrase title="warext_audit_i18n_subject" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Konu]]></phrase>
+  <phrase title="warext_audit_i18n_priority" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Öncelik]]></phrase>
+  <phrase title="warext_audit_i18n_description" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Açıklama]]></phrase>
+  <phrase title="warext_audit_i18n_create_submission" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Başvuruyu oluştur]]></phrase>
+  <phrase title="warext_audit_i18n_new_status" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Yeni durum]]></phrase>
+  <phrase title="warext_audit_i18n_assigned_user_id" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Atanan kullanıcı ID]]></phrase>
+  <phrase title="warext_audit_i18n_management_response" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Yönetim cevabı]]></phrase>
+  <phrase title="warext_audit_i18n_save_response" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Dönüşü kaydet]]></phrase>
+  <phrase title="warext_audit_i18n_resolution_note" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Çözüm notu]]></phrase>
+  <phrase title="warext_audit_i18n_independent_moderation_audit" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Bağımsız Moderasyon Denetimi]]></phrase>
+  <phrase title="warext_audit_i18n_tracking_escalation" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Takip / Eskalasyon]]></phrase>
+  <phrase title="warext_audit_i18n_appeal_suggestion" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[İtiraz / Öneri]]></phrase>
+  <phrase title="warext_audit_i18n_reports" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Raporlar]]></phrase>
+  <phrase title="warext_audit_i18n_reviewer_pool" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Denetçi havuzu]]></phrase>
+  <phrase title="warext_audit_i18n_pending" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Bekleyen]]></phrase>
+  <phrase title="warext_audit_i18n_assigned_under_review" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Atanmış / incelenen]]></phrase>
+  <phrase title="warext_audit_i18n_critical" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Kritik]]></phrase>
+  <phrase title="warext_audit_i18n_active_total" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Aktif toplam]]></phrase>
+  <phrase title="warext_audit_i18n_only_cases_assigned_to_you_are_shown_blind_review_pr" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Yalnızca sana atanmış vakalar gösterilir. Kör değerlendirme nedeniyle denetlenen yetkili ve diğer denetçilerin kimliği/görüşleri değerlendirmene etki etmez.]]></phrase>
+  <phrase title="warext_audit_i18n_filters" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Filtreler]]></phrase>
+  <phrase title="warext_audit_i18n_status" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Durum]]></phrase>
+  <phrase title="warext_audit_i18n_all" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Tümü]]></phrase>
+  <phrase title="warext_audit_i18n_risk" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Risk]]></phrase>
+  <phrase title="warext_audit_i18n_source" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Kaynak]]></phrase>
+  <phrase title="warext_audit_i18n_action" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[İşlem]]></phrase>
+  <phrase title="warext_audit_i18n_staff_user_id" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Yetkili kullanıcı ID]]></phrase>
+  <phrase title="warext_audit_i18n_target_user_id" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Hedef kullanıcı ID]]></phrase>
+  <phrase title="warext_audit_i18n_filter" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Filtrele]]></phrase>
+  <phrase title="warext_audit_i18n_clear" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Temizle]]></phrase>
+  <phrase title="warext_audit_i18n_no_audit_case_matched_these_filters" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Bu filtrelere uyan denetim vakası bulunamadı.]]></phrase>
+  <phrase title="warext_audit_i18n_back_to_audit_center" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[← Denetim merkezine dön]]></phrase>
+  <phrase title="warext_audit_i18n_appeal_this_case" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Bu vaka için itiraz]]></phrase>
+  <phrase title="warext_audit_i18n_hide_sensitive_evidence" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Hassas kanıtları gizle]]></phrase>
+  <phrase title="warext_audit_i18n_show_sensitive_evidence" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Hassas kanıtları göster]]></phrase>
+  <phrase title="warext_audit_i18n_the_audit_system_does_not_change_moderation_actions_" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Denetim sistemi moderasyon işlemini değiştirmez. Değerlendirmeler yalnızca denetim kaydı üretir.]]></phrase>
+  <phrase title="warext_audit_i18n_blind_review_active" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Kör değerlendirme aktif:]]></phrase>
+  <phrase title="warext_audit_i18n_sensitive_original_evidence_is_stored_separately" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Hassas/orijinal kanıt ayrı tutuluyor.]]></phrase>
+  <phrase title="warext_audit_i18n_you_can_view_it_with_the_button_above_when_needed" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Gerekirse yukarıdaki düğmeyle görüntüleyebilirsin.]]></phrase>
+  <phrase title="warext_audit_i18n_this_account_does_not_have_permission_to_view_sensit" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Bu hesabın hassas kanıt izni yok.]]></phrase>
+  <phrase title="warext_audit_i18n_case_summary" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Vaka özeti]]></phrase>
+  <phrase title="warext_audit_i18n_case" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Vaka]]></phrase>
+  <phrase title="warext_audit_i18n_required_reviewers" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Gerekli denetçi]]></phrase>
+  <phrase title="warext_audit_i18n_action_time" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[İşlem zamanı]]></phrase>
+  <phrase title="warext_audit_i18n_action_parties" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[İşlem tarafları]]></phrase>
+  <phrase title="warext_audit_i18n_staff_member" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Yetkili]]></phrase>
+  <phrase title="warext_audit_i18n_target" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Hedef]]></phrase>
+  <phrase title="warext_audit_i18n_content" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[İçerik]]></phrase>
+  <phrase title="warext_audit_i18n_rule_key" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Kural anahtarı]]></phrase>
+  <phrase title="warext_audit_i18n_reason" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Gerekçe]]></phrase>
+  <phrase title="warext_audit_i18n_action_and_reviewed_content" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[İşlem ve incelenen içerik]]></phrase>
+  <phrase title="warext_audit_i18n_evidence_integrity_verified" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[✓ Kanıt bütünlüğü doğrulandı]]></phrase>
+  <phrase title="warext_audit_i18n_integrity_error" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[BÜTÜNLÜK HATASI]]></phrase>
+  <phrase title="warext_audit_i18n_status_change" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Durum değişikliği:]]></phrase>
+  <phrase title="warext_audit_i18n_action_reason" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[İşlem gerekçesi:]]></phrase>
+  <phrase title="warext_audit_i18n_no_saved_message_text_exists_for_this_content_type" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Bu içerik türünde kaydedilmiş mesaj metni bulunmuyor.]]></phrase>
+  <phrase title="warext_audit_i18n_report_reason_and_review_records" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Rapor nedeni ve inceleme kayıtları]]></phrase>
+  <phrase title="warext_audit_i18n_status_change_without_text_content" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Metin içermeyen durum değişikliği.]]></phrase>
+  <phrase title="warext_audit_i18n_show_nearby_messages_in_content_context" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[İçerik bağlamındaki yakın mesajları göster]]></phrase>
+  <phrase title="warext_audit_i18n_reviewed_content" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[İncelenen içerik]]></phrase>
+  <phrase title="warext_audit_i18n_no_readable_content_evidence_was_found_for_this_acti" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Bu işlem için okunabilir içerik kanıtı bulunamadı. Teknik kanıt kaydı arka planda korunuyor.]]></phrase>
+  <phrase title="warext_audit_i18n_no_viewable_evidence" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Görüntülenebilir kanıt yok.]]></phrase>
+  <phrase title="warext_audit_i18n_technical_details" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Teknik detaylar]]></phrase>
+  <phrase title="warext_audit_i18n_this_area_is_only_for_system_verification_you_do_not" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Bu alan yalnızca sistem doğrulaması içindir; denetim kararında ham JSON okuman gerekmez.]]></phrase>
+  <phrase title="warext_audit_i18n_technical_metadata" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Teknik metadata]]></phrase>
+  <phrase title="warext_audit_i18n_sha_256" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[SHA-256:]]></phrase>
+  <phrase title="warext_audit_i18n_reviewer_assessment" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Denetçi değerlendirmesi]]></phrase>
+  <phrase title="warext_audit_i18n_you_are_editing_your_current_assessment_the_previous" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Mevcut değerlendirmeni düzenliyorsun. Eski sürüm revizyon geçmişinde korunur.]]></phrase>
+  <phrase title="warext_audit_i18n_overall_decision" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Genel karar]]></phrase>
+  <phrase title="warext_audit_i18n_select" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Seç...]]></phrase>
+  <phrase title="warext_audit_i18n_rule_application" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Kural uygulaması]]></phrase>
+  <phrase title="warext_audit_i18n_penalty_proportionality" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Ceza / orantı]]></phrase>
+  <phrase title="warext_audit_i18n_staff_communication" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Yetkili iletişimi]]></phrase>
+  <phrase title="warext_audit_i18n_confidence_level" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Güven seviyesi (%)]]></phrase>
+  <phrase title="warext_audit_i18n_save_assessment" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Değerlendirmeyi kaydet]]></phrase>
+  <phrase title="warext_audit_i18n_a_reason_of_at_least_30_characters_is_required" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[En az 30 karakter gerekçe zorunlu.]]></phrase>
+  <phrase title="warext_audit_i18n_conflict_of_interest_recusal" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Çıkar çatışması / çekilme]]></phrase>
+  <phrase title="warext_audit_i18n_if_friendship_a_business_relationship_a_personal_dis" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Arkadaşlık, ticari ilişki, kişisel tartışma veya başka bir sebeple tarafsızlığından şüphe ediyorsan vakadan çekil. Sistem otomatik olarak yedek denetçi arar.]]></phrase>
+  <phrase title="warext_audit_i18n_recuse_from_case" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Vakadan çekil]]></phrase>
+  <phrase title="warext_audit_i18n_assignments" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Atamalar]]></phrase>
+  <phrase title="warext_audit_i18n_no_assignments" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Atama yok.]]></phrase>
+  <phrase title="warext_audit_i18n_saved_assessments" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Kaydedilmiş değerlendirmeler]]></phrase>
+  <phrase title="warext_audit_i18n_invalid_excluded" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Geçersiz / sayım dışı]]></phrase>
+  <phrase title="warext_audit_i18n_rule" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Kural:]]></phrase>
+  <phrase title="warext_audit_i18n_penalty" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Ceza:]]></phrase>
+  <phrase title="warext_audit_i18n_communication" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[İletişim:]]></phrase>
+  <phrase title="warext_audit_i18n_no_assessment_yet" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Henüz değerlendirme yok.]]></phrase>
+  <phrase title="warext_audit_i18n_independence_management" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Bağımsızlık yönetimi]]></phrase>
+  <phrase title="warext_audit_i18n_re_run_assignment_pool" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Atama havuzunu yeniden çalıştır]]></phrase>
+  <phrase title="warext_audit_i18n_conflict_of_interest_records" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Çıkar çatışması kayıtları]]></phrase>
+  <phrase title="warext_audit_i18n_this_history_is_read_only_each_entry_represents_the_" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Bu geçmiş salt okunurdur. Her kayıt kaydedildiği andaki değerlendirmeyi temsil eder ve SHA-256 bütünlük doğrulamasına sahiptir.]]></phrase>
+  <phrase title="warext_audit_i18n_assessment_summary" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Değerlendirme özeti]]></phrase>
+  <phrase title="warext_audit_i18n_reviewer" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Denetçi]]></phrase>
+  <phrase title="warext_audit_i18n_current_decision" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Güncel karar]]></phrase>
+  <phrase title="warext_audit_i18n_confidence" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Güven]]></phrase>
+  <phrase title="warext_audit_i18n_total_revisions" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Toplam revizyon]]></phrase>
+  <phrase title="warext_audit_i18n_revision_history" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Revizyon geçmişi]]></phrase>
+  <phrase title="warext_audit_i18n_sha_256_verified" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[SHA-256 doğrulandı]]></phrase>
+  <phrase title="warext_audit_i18n_decision" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Karar:]]></phrase>
+  <phrase title="warext_audit_i18n_confidence_1" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Güven:]]></phrase>
+  <phrase title="warext_audit_i18n_hash" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Hash:]]></phrase>
+  <phrase title="warext_audit_i18n_no_revision_record_found" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Revizyon kaydı bulunamadı.]]></phrase>
+  <phrase title="warext_audit_i18n_independent_reviewer_pool" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Bağımsız Denetçi Havuzu]]></phrase>
+  <phrase title="warext_audit_i18n_active_xenforo_administrators_moderators_and_account" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Aktif XenForo yönetici/moderatörleri ve bu havuzu yöneten hesaplar bağımsız denetçi olamaz. Denetçi hesabında ayrıca Denetim Görüntüleme + Değerlendirme izinleri bulunmalıdır.]]></phrase>
+  <phrase title="warext_audit_i18n_assign_pending_cases_up_to_500" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Bekleyen vakaları dağıt (en fazla 500)]]></phrase>
+  <phrase title="warext_audit_i18n_add_reactivate_reviewer" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Denetçi ekle / yeniden etkinleştir]]></phrase>
+  <phrase title="warext_audit_i18n_add_to_pool" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Havuza ekle]]></phrase>
+  <phrase title="warext_audit_i18n_reviewers" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Denetçiler]]></phrase>
+  <phrase title="warext_audit_i18n_ineligible" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Uygun değil]]></phrase>
+  <phrase title="warext_audit_i18n_last_assignment" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Son atama:]]></phrase>
+  <phrase title="warext_audit_i18n_active" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Aktif]]></phrase>
+  <phrase title="warext_audit_i18n_pause" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Duraklat]]></phrase>
+  <phrase title="warext_audit_i18n_suspend" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Askıya al]]></phrase>
+  <phrase title="warext_audit_i18n_update" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Güncelle]]></phrase>
+  <phrase title="warext_audit_i18n_the_reviewer_pool_is_empty_automatic_assignment_will" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Denetçi havuzu boş. Otomatik atama yapılmaz.]]></phrase>
+  <phrase title="warext_audit_i18n_audit_reports" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Denetim Raporları]]></phrase>
+  <phrase title="warext_audit_i18n_create_new_report" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Yeni rapor oluştur]]></phrase>
+  <phrase title="warext_audit_i18n_generate_previous_week" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Önceki haftayı oluştur]]></phrase>
+  <phrase title="warext_audit_i18n_generate_previous_month" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Önceki ayı oluştur]]></phrase>
+  <phrase title="warext_audit_i18n_custom_period" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Özel dönem]]></phrase>
+  <phrase title="warext_audit_i18n_report_history" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Rapor geçmişi]]></phrase>
+  <phrase title="warext_audit_i18n_created" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Oluşturma:]]></phrase>
+  <phrase title="warext_audit_i18n_no_report_has_been_generated_yet" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Henüz rapor oluşturulmadı.]]></phrase>
+  <phrase title="warext_audit_i18n_back_to_reports" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[← Raporlara dön]]></phrase>
+  <phrase title="warext_audit_i18n_report_integrity_verification_failed_saved_report_da" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Rapor bütünlük doğrulaması başarısız. Kaydedilmiş rapor verisi değiştirilmiş olabilir.]]></phrase>
+  <phrase title="warext_audit_i18n_sha_256_report_integrity_verified_status" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[SHA-256 rapor bütünlüğü doğrulandı. Durum:]]></phrase>
+  <phrase title="warext_audit_i18n_moderation_action" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Moderasyon işlemi]]></phrase>
+  <phrase title="warext_audit_i18n_audit_coverage" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Denetim kapsamı]]></phrase>
+  <phrase title="warext_audit_i18n_accuracy_score" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Doğruluk skoru]]></phrase>
+  <phrase title="warext_audit_i18n_problematic_action_rate" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Sorunlu işlem oranı]]></phrase>
+  <phrase title="warext_audit_i18n_overall_distribution" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Genel dağılım]]></phrase>
+  <phrase title="warext_audit_i18n_penalty_proportionality_2" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Ceza/orantı]]></phrase>
+  <phrase title="warext_audit_i18n_communication_3" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[İletişim]]></phrase>
+  <phrase title="warext_audit_i18n_comparison_with_previous_equivalent_period" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Önceki eş dönem karşılaştırması]]></phrase>
+  <phrase title="warext_audit_i18n_quality_by_staff_member" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Yetkili bazlı kalite]]></phrase>
+  <phrase title="warext_audit_i18n_coverage" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Kapsam]]></phrase>
+  <phrase title="warext_audit_i18n_accuracy" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Doğruluk]]></phrase>
+  <phrase title="warext_audit_i18n_issue_rate" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Sorun oranı]]></phrase>
+  <phrase title="warext_audit_i18n_rule_4" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Kural]]></phrase>
+  <phrase title="warext_audit_i18n_penalty_5" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Ceza]]></phrase>
+  <phrase title="warext_audit_i18n_priority_problematic_cases" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Öncelikli sorunlu vakalar]]></phrase>
+  <phrase title="warext_audit_i18n_the_finalized_report_summary_and_sha_256_hash_cannot" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Sonuçlandırılan raporun özeti ve SHA-256 hash'i daha sonra değiştirilemez.]]></phrase>
+  <phrase title="warext_audit_i18n_finalize_and_lock_report" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Raporu sonuçlandır ve kilitle]]></phrase>
+  <phrase title="warext_audit_i18n_appeal_and_suggestion_center" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[İtiraz ve Öneri Merkezi]]></phrase>
+  <phrase title="warext_audit_i18n_audit" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[← Denetim]]></phrase>
+  <phrase title="warext_audit_i18n_new_appeal" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Yeni itiraz]]></phrase>
+  <phrase title="warext_audit_i18n_new_suggestion" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Yeni öneri]]></phrase>
+  <phrase title="warext_audit_i18n_the_original_text_of_appeals_and_suggestions_cannot_" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[İtiraz ve önerilerin özgün metni sonradan değiştirilemez. Yönetim cevapları ve durum değişiklikleri ayrı, bütünlüğü doğrulanabilir olay kayıtları olarak saklanır.]]></phrase>
+  <phrase title="warext_audit_i18n_all_types" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Tüm türler]]></phrase>
+  <phrase title="warext_audit_i18n_appeal" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[İtiraz]]></phrase>
+  <phrase title="warext_audit_i18n_suggestion" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Öneri]]></phrase>
+  <phrase title="warext_audit_i18n_all_statuses" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Tüm durumlar]]></phrase>
+  <phrase title="warext_audit_i18n_no_submission_found" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Başvuru bulunamadı.]]></phrase>
+  <phrase title="warext_audit_i18n_appeal_and_suggestion_center_6" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[← İtiraz ve Öneri Merkezi]]></phrase>
+  <phrase title="warext_audit_i18n_an_appeal_can_only_be_opened_for_an_audit_case_relat" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[İtiraz yalnızca kendi moderasyon işleminle ilişkili denetim vakası için açılabilir. İtiraz açılması mevcut denetim kararını otomatik olarak değiştirmez.]]></phrase>
+  <phrase title="warext_audit_i18n_suggestions_are_for_general_system_improvements_and_" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Öneriler genel sistem iyileştirmeleri içindir ve bir denetim vakasına bağlı olmak zorunda değildir.]]></phrase>
+  <phrase title="warext_audit_i18n_submission" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Başvuru]]></phrase>
+  <phrase title="warext_audit_i18n_type" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Tür]]></phrase>
+  <phrase title="warext_audit_i18n_submitted_by" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Gönderen]]></phrase>
+  <phrase title="warext_audit_i18n_created_7" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Oluşturuldu]]></phrase>
+  <phrase title="warext_audit_i18n_immutable_event_history" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Değiştirilemez olay geçmişi]]></phrase>
+  <phrase title="warext_audit_i18n_integrity_error_8" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Bütünlük hatası]]></phrase>
+  <phrase title="warext_audit_i18n_management_response_9" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Yönetim dönüşü]]></phrase>
+  <phrase title="warext_audit_i18n_audit_tracking_and_escalation" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Denetim Takip ve Eskalasyon]]></phrase>
+  <phrase title="warext_audit_i18n_audit_center" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[← Denetim merkezi]]></phrase>
+  <phrase title="warext_audit_i18n_run_sla_scan" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[SLA taramasını çalıştır]]></phrase>
+  <phrase title="warext_audit_i18n_active_escalations" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Aktif eskalasyon]]></phrase>
+  <phrase title="warext_audit_i18n_unread_notifications" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Okunmamış bildirim]]></phrase>
+  <phrase title="warext_audit_i18n_sla_violations_are_not_deleted_the_original_escalati" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[SLA ihlalleri silinmez. Eskalasyonun özgün kaydı SHA-256 ile doğrulanır; çözüm işlemi ayrıca hash'li bir kapanış izi bırakır.]]></phrase>
+  <phrase title="warext_audit_i18n_my_notifications" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Bildirimlerim]]></phrase>
+  <phrase title="warext_audit_i18n_read" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Okundu]]></phrase>
+  <phrase title="warext_audit_i18n_no_notifications" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Bildirim bulunmuyor.]]></phrase>
+  <phrase title="warext_audit_i18n_escalation_history" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Eskalasyon geçmişi]]></phrase>
+  <phrase title="warext_audit_i18n_record_verified" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Kayıt doğrulandı]]></phrase>
+  <phrase title="warext_audit_i18n_record_integrity_error" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Kayıt bütünlüğü hatalı]]></phrase>
+  <phrase title="warext_audit_i18n_resolution_verified" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Çözüm doğrulandı]]></phrase>
+  <phrase title="warext_audit_i18n_resolution_integrity_error" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Çözüm bütünlüğü hatalı]]></phrase>
+  <phrase title="warext_audit_i18n_resolve_escalation" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Eskalasyonu çöz]]></phrase>
+  <phrase title="warext_audit_i18n_no_viewable_escalation_record" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Görüntülenebilir eskalasyon kaydı yok.]]></phrase>
+  <phrase title="warext_audit_i18n_version" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Sürüm:]]></phrase>
+  <phrase title="warext_audit_i18n_schema_version" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Şema sürümü:]]></phrase>
+  <phrase title="warext_audit_i18n_requirements" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Gereksinimler:]]></phrase>
+  <phrase title="warext_audit_i18n_xenforo_2_3_0_php_8_1" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[XenForo 2.3.0+ / PHP 8.1+]]></phrase>
+  <phrase title="warext_audit_i18n_audit_cases" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Denetim vakaları:]]></phrase>
+  <phrase title="warext_audit_i18n_appeals_and_suggestions" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[İtiraz ve öneriler:]]></phrase>
+  <phrase title="warext_audit_i18n_active_escalations_10" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Aktif eskalasyon:]]></phrase>
+  <phrase title="warext_audit_i18n_edit_settings" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Ayarları Düzenle]]></phrase>
+  <phrase title="warext_audit_i18n_active_sla_settings" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Aktif SLA Ayarları]]></phrase>
+  <phrase title="warext_audit_i18n_moderation_audit_system_settings" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Moderasyon Denetim Sistemi - Ayarlar]]></phrase>
+  <phrase title="warext_audit_i18n_case_sla_durations" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Vaka SLA Süreleri]]></phrase>
+  <phrase title="warext_audit_i18n_normal_risk_hours" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Normal risk (saat)]]></phrase>
+  <phrase title="warext_audit_i18n_high_risk_hours" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Yüksek risk (saat)]]></phrase>
+  <phrase title="warext_audit_i18n_critical_risk_hours" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Kritik risk (saat)]]></phrase>
+  <phrase title="warext_audit_i18n_appeal_suggestion_sla_durations" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[İtiraz / Öneri SLA Süreleri]]></phrase>
+  <phrase title="warext_audit_i18n_low_priority_hours" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Düşük öncelik (saat)]]></phrase>
+  <phrase title="warext_audit_i18n_normal_priority_hours" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Normal öncelik (saat)]]></phrase>
+  <phrase title="warext_audit_i18n_high_priority_hours" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Yüksek öncelik (saat)]]></phrase>
+  <phrase title="warext_audit_i18n_critical_priority_hours" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Kritik öncelik (saat)]]></phrase>
+  <phrase title="warext_audit_i18n_save_settings" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Ayarları Kaydet]]></phrase>
+  <phrase title="warext_audit_i18n_back_to_system_information" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Sistem Bilgisine Dön]]></phrase>
+  <phrase title="warext_audit_i18n_audit_cases_11" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Denetim vakaları]]></phrase>
+  <phrase title="warext_audit_i18n_my_assignments" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Atamalarım]]></phrase>
+  <phrase title="warext_audit_i18n_sensitive_original" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Hassas / orijinal]]></phrase>
+  <phrase title="warext_audit_i18n_masked" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Maskelenmiş]]></phrase>
+  <phrase title="warext_audit_i18n_real_identities" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Gerçek kimlikler]]></phrase>
+  <phrase title="warext_audit_i18n_anonymous_view" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Anonim görünüm]]></phrase>
+  <phrase title="warext_audit_i18n_all_submissions" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Tüm başvurular]]></phrase>
+  <phrase title="warext_audit_i18n_my_submissions" addon_id="Warext/ModerationAudit" global_cache="0" version_id="1010000" version_string="1.1.0"><![CDATA[Başvurularım]]></phrase>
+</language>
