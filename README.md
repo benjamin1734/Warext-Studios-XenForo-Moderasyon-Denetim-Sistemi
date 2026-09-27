@@ -242,3 +242,9 @@ Sorularınız, hata bildirimleriniz, kurulum desteği ve Warext Studios XenForo 
 ## Language support / Dil desteği
 
 Version 1.1.0 adds native Turkish/English language packs and moves the audit interface to XenForo phrases. Import the XML files under `languages/` and use XenForo's normal language selector. See `LANGUAGE.md`.
+
+
+## 1.1.1 language completion
+
+- Remaining dynamic audit labels, fallbacks, counts and SLA summaries now use XenForo phrases.
+- Turkish and English XML language packs are published with the release.
