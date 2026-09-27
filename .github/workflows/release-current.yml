@@ -55,8 +55,8 @@ jobs:
           VERSION='${{ steps.meta.outputs.version }}'
           ZIP='${{ steps.meta.outputs.zip }}'
           if gh release view "$TAG" >/dev/null 2>&1; then
-            gh release edit "$TAG" --title "Warext Moderation Audit $VERSION" --notes "Turkish/English language completion and phrase-based dynamic audit UI."
+            gh release edit "$TAG" --title "Warext Moderation Audit $VERSION" --notes "Developer metadata refresh: Warext Studios support Discord link is exposed in XenForo add-on details. Turkish/English language packs are included."
             gh release upload "$TAG" "$ZIP" languages/Turkish.xml languages/English.xml --clobber
           else
-            gh release create "$TAG" "$ZIP" languages/Turkish.xml languages/English.xml --title "Warext Moderation Audit $VERSION" --notes "Turkish/English language completion and phrase-based dynamic audit UI." --latest
+            gh release create "$TAG" "$ZIP" languages/Turkish.xml languages/English.xml --title "Warext Moderation Audit $VERSION" --notes "Developer metadata refresh: Warext Studios support Discord link is exposed in XenForo add-on details. Turkish/English language packs are included." --latest
           fi
