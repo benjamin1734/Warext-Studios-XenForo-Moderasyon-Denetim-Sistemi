@@ -11,7 +11,7 @@
 </div>
 
 <div class="blockMessage blockMessage--important warextAudit-readOnly">
-    Bu alan yalnızca denetim içindir. Buradan mesaj silme, uyarı verme, yasaklama veya başka bir moderasyon işlemi yapılamaz.
+    {{ phrase('warext_audit_i18n_read_only_notice') }}
 </div>
 
 <xf:if is="$canManageAudit">
@@ -49,7 +49,7 @@
 
 <div class="block">
     <div class="block-container">
-        <h2 class="block-header">{{ $canManageAudit ? 'Denetim vakaları' : 'Atamalarım' }} <span class="block-desc">{$total} sonuç</span></h2>
+        <h2 class="block-header">{{ $canManageAudit ? phrase('warext_audit_i18n_audit_cases_11') : phrase('warext_audit_i18n_my_assignments') }} <span class="block-desc">{{ phrase('warext_audit_i18n_results_x', {'count': $total}) }}</span></h2>
         <div class="block-body">
             <xf:if is="$rows">
                 <div class="warextAudit-caseList">
@@ -59,7 +59,7 @@
                                 <div class="warextAudit-caseTitle"><strong>#{$row.case_id}</strong><span>{$row.action_label}</span><xf:if is="$row.content_type"><span class="warextAudit-muted">{$row.content_type} #{$row.content_id}</span></xf:if></div>
                                 <div class="warextAudit-caseMeta"><span>Yetkili: {$row.moderator_name}</span><span>Hedef: {$row.target_name}</span><span>Kaynak: {$row.source_type}</span><span><xf:date time="$row.action_date" /></span></div>
                             </div>
-                            <div class="warextAudit-caseBadges"><span class="warextAudit-badge warextAudit-badge--{$row.risk}">{$row.risk_label}</span><span class="warextAudit-badge warextAudit-badge--status">{$row.status_label}</span><xf:if is="$row.required_reviews > 1"><span class="warextAudit-badge">{$row.required_reviews} denetçi</span></xf:if></div>
+                            <div class="warextAudit-caseBadges"><span class="warextAudit-badge warextAudit-badge--{$row.risk}">{$row.risk_label}</span><span class="warextAudit-badge warextAudit-badge--status">{$row.status_label}</span><xf:if is="$row.required_reviews > 1"><span class="warextAudit-badge">{{ phrase('warext_audit_i18n_reviewers_x', {'count': $row.required_reviews}) }}</span></xf:if></div>
                         </a>
                     </xf:foreach>
                 </div>
@@ -69,7 +69,7 @@
 </div>
 <xf:pagenav page="$page" perpage="$perPage" total="$total" link="denetim" params="$linkParams" />]]></template>
 
-  <template type="public" title="warext_audit_case" version_id="1000103" version_string="1.0.3"><![CDATA[<xf:title>Denetim Vakası #{$caseView.case_id}</xf:title>
+  <template type="public" title="warext_audit_case" version_id="1000103" version_string="1.0.3"><![CDATA[<xf:title>{{ phrase('warext_audit_i18n_case_x', {'id': $caseView.case_id}) }}</xf:title>
 <xf:css src="warext_audit.less" />
 <div class="warextAudit-toolbar"><a class="button" href="{{ link('denetim') }}">{{ phrase('warext_audit_i18n_back_to_audit_center') }}</a><xf:if is="$canManageAudit OR (($xf.visitor.is_super_admin OR $xf.visitor.hasPermission('general', 'warextAuditAppeal')) AND $caseView.moderator_user_id == $xf.visitor.user_id)"><a class="button" href="{{ link('denetim-geribildirim/olustur', null, {'type':'appeal','case_id':$caseView.case_id}) }}">{{ phrase('warext_audit_i18n_appeal_this_case') }}</a></xf:if><xf:if is="($xf.visitor.is_super_admin OR $xf.visitor.hasPermission('general', 'warextAuditReports'))"><a class="button" href="{{ link('denetim/raporlar') }}">{{ phrase('warext_audit_i18n_reports') }}</a></xf:if>
     <xf:if is="$canManageAudit"><a class="button" href="{{ link('denetim/havuz') }}">{{ phrase('warext_audit_i18n_reviewer_pool') }}</a></xf:if><xf:if is="$hasSensitiveSnapshots AND $canViewSensitive"><xf:if is="$showSensitive"><a class="button" href="{{ link('denetim/vaka', null, {'case_id':$caseView.case_id}) }}">{{ phrase('warext_audit_i18n_hide_sensitive_evidence') }}</a><xf:else /><a class="button button--link" href="{{ link('denetim/vaka', null, {'case_id':$caseView.case_id, 'sensitive':1}) }}">{{ phrase('warext_audit_i18n_show_sensitive_evidence') }}</a></xf:if></xf:if></div>
@@ -105,7 +105,7 @@
                 <xf:if is="$snapshot.evidence.content">
                     <div class="warextAudit-contentCard">
                         <div class="warextAudit-contentMeta">
-                            <strong>{{ $snapshot.evidence.content.username ?: 'Bilinmeyen kullanıcı' }}</strong>
+                            <strong>{{ $snapshot.evidence.content.username ?: phrase('warext_audit_i18n_unknown_user') }}</strong>
                             <xf:if is="$snapshot.evidence.content.post_date"><span><xf:date time="$snapshot.evidence.content.post_date" /></span></xf:if>
                             <xf:if is="$snapshot.evidence.content.comment_date"><span><xf:date time="$snapshot.evidence.content.comment_date" /></span></xf:if>
                         </div>
@@ -113,7 +113,7 @@
                         <xf:if is="$snapshot.evidence.content.message"><div class="warextAudit-contentMessage">{$snapshot.evidence.content.message}</div><xf:else /><div class="warextAudit-muted">{{ phrase('warext_audit_i18n_no_saved_message_text_exists_for_this_content_type') }}</div></xf:if>
                     </div>
                 <xf:elseif is="$snapshot.evidence.user" />
-                    <div class="warextAudit-contentCard"><div class="warextAudit-contentMeta"><strong>{{ $snapshot.evidence.user.username ?: $caseView.target_name }}</strong></div><div class="warextAudit-contentMessage">{{ $caseView.reason ?: 'Kullanıcı hakkında uygulanan moderasyon işlemi.' }}</div></div>
+                    <div class="warextAudit-contentCard"><div class="warextAudit-contentMeta"><strong>{{ $snapshot.evidence.user.username ?: $caseView.target_name }}</strong></div><div class="warextAudit-contentMessage">{{ $caseView.reason ?: phrase('warext_audit_i18n_default_moderation_reason') }}</div></div>
                 </xf:if>
 
                 <xf:if is="$snapshot.evidence.report_comments">
@@ -153,7 +153,7 @@
 <details class="block warextAudit-technical"><summary class="block-header">{{ phrase('warext_audit_i18n_technical_details') }}</summary><div class="block-container"><div class="block-body">
     <div class="blockMessage">{{ phrase('warext_audit_i18n_this_area_is_only_for_system_verification_you_do_not') }}</div>
     <h3>{{ phrase('warext_audit_i18n_technical_metadata') }}</h3><pre class="warextAudit-json">{$metadata.pretty}</pre>
-    <xf:foreach loop="$snapshots" value="$snapshot"><h3>Snapshot #{$snapshot.snapshot_id} · {$snapshot.snapshot_type}</h3><div class="warextAudit-snapshotMeta"><span>{{ $snapshot.is_sensitive ? 'Hassas / orijinal' : 'Maskelenmiş' }}</span><span>SHA-256: <code>{$snapshot.data_hash}</code></span></div><pre class="warextAudit-json">{$snapshot.pretty}</pre></xf:foreach>
+    <xf:foreach loop="$snapshots" value="$snapshot"><h3>Snapshot #{$snapshot.snapshot_id} · {$snapshot.snapshot_type}</h3><div class="warextAudit-snapshotMeta"><span>{{ $snapshot.is_sensitive ? phrase('warext_audit_i18n_sensitive_original') : phrase('warext_audit_i18n_masked') }}</span><span>SHA-256: <code>{$snapshot.data_hash}</code></span></div><pre class="warextAudit-json">{$snapshot.pretty}</pre></xf:foreach>
 </div></div></details>
 </xf:if>
 
@@ -174,7 +174,7 @@
 
 <xf:if is="$conflicts"><div class="block"><div class="block-container"><h2 class="block-header">{{ phrase('warext_audit_i18n_conflict_of_interest_records') }}</h2><div class="block-body"><ul class="warextAudit-simpleList"><xf:foreach loop="$conflicts" value="$conflict"><li><b>{{ $canManageAudit ? ($conflict.Auditor ? $conflict.Auditor.username : ('#' . $conflict.auditor_user_id)) : 'Kendi kaydın' }}</b><span>{$conflict.conflict_type}: {$conflict.reason}</span></li></xf:foreach></ul></div></div></div></xf:if>]]></template>
 
-  <template type="public" title="warext_audit_review_revisions" version_id="1000061" version_string="1.0.0 Alpha 6"><![CDATA[<xf:title>Değerlendirme Revizyonları #{$reviewView.review_id}</xf:title>
+  <template type="public" title="warext_audit_review_revisions" version_id="1000061" version_string="1.0.0 Alpha 6"><![CDATA[<xf:title>{{ phrase('warext_audit_i18n_review_revisions_x', {'id': $reviewView.review_id}) }}</xf:title>
 <xf:css src="warext_audit.less" />
 <div class="warextAudit-toolbar"><a class="button" href="{{ link('denetim/vaka', null, {'case_id':$caseView.case_id}) }}">← Vaka #{$caseView.case_id}</a></div>
 <div class="blockMessage blockMessage--important">{{ phrase('warext_audit_i18n_this_history_is_read_only_each_entry_represents_the_') }}</div>
@@ -287,7 +287,7 @@
 <xf:form action="{{ link('denetim/rapor-olustur') }}" class="warextAudit-inlineForm"><input type="hidden" name="kind" value="previous_month" /><button class="button button--primary">{{ phrase('warext_audit_i18n_generate_previous_month') }}</button></xf:form>
 <xf:form action="{{ link('denetim/rapor-olustur') }}" class="warextAudit-inlineForm warextAudit-customRange"><input type="hidden" name="kind" value="custom" /><input class="input" type="date" name="start_date" required="required" /><input class="input" type="date" name="end_date" required="required" /><button class="button">{{ phrase('warext_audit_i18n_custom_period') }}</button></xf:form>
 </div></div></div></xf:if>
-<div class="block"><div class="block-container"><h2 class="block-header">Rapor geçmişi <span class="block-desc">{$total} rapor</span></h2><div class="block-body">
+<div class="block"><div class="block-container"><h2 class="block-header">{{ phrase('warext_audit_i18n_report_history') }} <span class="block-desc">{{ phrase('warext_audit_i18n_reports_x', {'count': $total}) }}</span></h2><div class="block-body">
 <xf:if is="$reports"><div class="warextAudit-reportList"><xf:foreach loop="$reports" value="$report"><a class="warextAudit-caseRow" href="{{ link('denetim/rapor', null, {'report_id':$report.report_id}) }}"><div><strong>#{$report.report_id}</strong> · {$report.period_type}<div class="warextAudit-caseMeta"><span><xf:date time="$report.period_start" /> – <xf:date time="$report.period_end" /></span><span>Oluşturma: <xf:date time="$report.generated_date" /></span></div></div><span class="warextAudit-badge">{$report.status}</span></a></xf:foreach></div><xf:else /><div class="blockMessage">{{ phrase('warext_audit_i18n_no_report_has_been_generated_yet') }}</div></xf:if>
 </div></div></div><xf:pagenav page="$page" perpage="$perPage" total="$total" link="denetim/raporlar" />]]></template>
   <template type="public" title="warext_audit_report" version_id="1000070" version_string="1.0.0 Alpha 7"><![CDATA[<xf:title>Denetim Raporu #{$report.report_id}</xf:title>
@@ -317,12 +317,12 @@
     <select name="status" class="input"><option value="">{{ phrase('warext_audit_i18n_all_statuses') }}</option><xf:foreach loop="$statusLabels" key="$value" value="$label"><option value="{$value}" {{ $status == $value ? 'selected' : '' }}>{$label}</option></xf:foreach></select>
     <button class="button" type="submit">{{ phrase('warext_audit_i18n_filter') }}</button>
 </form></div></div></div>
-<div class="block"><div class="block-container"><h2 class="block-header">{{ $isManager ? 'Tüm başvurular' : 'Başvurularım' }} <span class="block-desc">{$total} kayıt</span></h2><div class="block-body">
+<div class="block"><div class="block-container"><h2 class="block-header">{{ $isManager ? phrase('warext_audit_i18n_all_submissions') : phrase('warext_audit_i18n_my_submissions') }} <span class="block-desc">{{ phrase('warext_audit_i18n_records_x', {'count': $total}) }}</span></h2><div class="block-body">
 <xf:if is="$feedback"><div class="structItemContainer"><xf:foreach loop="$feedback" value="$item"><div class="structItem structItem--thread"><div class="structItem-cell structItem-cell--main"><div class="structItem-title"><a href="{{ link('denetim-geribildirim/goruntule', null, {'feedback_id':$item.feedback_id}) }}">#{$item.feedback_id} {$item.subject}</a></div><div class="structItem-minor"><span>{{ $item.feedback_type == 'appeal' ? 'İtiraz' : 'Öneri' }}</span> · <span>Durum: {$item.status}</span> · <span>Öncelik: {$item.priority}</span><xf:if is="$item.case_id"> · <span>Vaka #{$item.case_id}</span></xf:if><xf:if is="$isManager"> · <span>Gönderen: {$item.Submitter.username}</span></xf:if> · <xf:date time="$item.created_date" /></div></div></div></xf:foreach></div><xf:else /><div class="blockMessage">{{ phrase('warext_audit_i18n_no_submission_found') }}</div></xf:if>
 </div></div></div>
 <xf:pagenav page="$page" perpage="$perPage" total="$total" link="denetim-geribildirim" />]]></template>
 
-  <template type="public" title="warext_audit_feedback_create" version_id="1000080" version_string="1.0.0 Alpha 8"><![CDATA[<xf:title>{{ $type == 'appeal' ? 'Yeni itiraz' : 'Yeni öneri' }}</xf:title>
+  <template type="public" title="warext_audit_feedback_create" version_id="1000080" version_string="1.0.0 Alpha 8"><![CDATA[<xf:title>{{ $type == 'appeal' ? phrase('warext_audit_i18n_new_appeal') : phrase('warext_audit_i18n_new_suggestion') }}</xf:title>
 <xf:css src="warext_audit.less" />
 <div class="buttonGroup"><a class="button" href="{{ link('denetim-geribildirim') }}">{{ phrase('warext_audit_i18n_appeal_and_suggestion_center_6') }}</a><xf:if is="$canAppeal"><a class="button" href="{{ link('denetim-geribildirim/olustur', null, {'type':'appeal'}) }}">{{ phrase('warext_audit_i18n_appeal') }}</a></xf:if><xf:if is="$canSuggest"><a class="button" href="{{ link('denetim-geribildirim/olustur', null, {'type':'suggestion'}) }}">{{ phrase('warext_audit_i18n_suggestion') }}</a></xf:if></div>
 <xf:if is="$type == 'appeal'"><div class="blockMessage blockMessage--important">{{ phrase('warext_audit_i18n_an_appeal_can_only_be_opened_for_an_audit_case_relat') }}</div><xf:else /><div class="blockMessage">{{ phrase('warext_audit_i18n_suggestions_are_for_general_system_improvements_and_') }}</div></xf:if>
@@ -391,8 +391,8 @@
     <div class="block-container">
         <div class="block-header">{{ phrase('warext_audit_i18n_active_sla_settings') }}</div>
         <div class="block-body">
-            <div class="block-row">Vaka: Normal {$settings.sla_case_normal_hours} saat · Yüksek risk {$settings.sla_case_elevated_hours} saat · Kritik {$settings.sla_case_critical_hours} saat</div>
-            <div class="block-row">Başvuru: Düşük {$settings.sla_feedback_low_hours} saat · Normal {$settings.sla_feedback_normal_hours} saat · Yüksek {$settings.sla_feedback_high_hours} saat · Kritik {$settings.sla_feedback_critical_hours} saat</div>
+            <div class="block-row">{{ phrase('warext_audit_i18n_case_sla_x', {'normal': $settings.sla_case_normal_hours, 'elevated': $settings.sla_case_elevated_hours, 'critical': $settings.sla_case_critical_hours}) }}</div>
+            <div class="block-row">{{ phrase('warext_audit_i18n_feedback_sla_x', {'low': $settings.sla_feedback_low_hours, 'normal': $settings.sla_feedback_normal_hours, 'high': $settings.sla_feedback_high_hours, 'critical': $settings.sla_feedback_critical_hours}) }}</div>
         </div>
     </div>
 </div>]]></template>
