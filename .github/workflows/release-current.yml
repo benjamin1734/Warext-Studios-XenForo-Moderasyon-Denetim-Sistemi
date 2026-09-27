@@ -1,0 +1,62 @@
+name: Publish current Moderation Audit release
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'upload/**'
+      - 'languages/**'
+      - 'LANGUAGE.md'
+      - 'README.md'
+      - '.github/workflows/release-current.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+      - name: Read version
+        id: meta
+        run: |
+          VERSION=$(php -r '$d=json_decode(file_get_contents("upload/src/addons/Warext/ModerationAudit/addon.json"), true); echo $d["version_string"];')
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "tag=v$VERSION" >> "$GITHUB_OUTPUT"
+          echo "zip=Warext-ModerationAudit-$VERSION.zip" >> "$GITHUB_OUTPUT"
+      - name: Validate source
+        run: |
+          find upload/src/addons/Warext/ModerationAudit -name '*.php' -print0 | xargs -0 -n1 php -l
+          python3 - <<'PY'
+          from pathlib import Path
+          import json, xml.etree.ElementTree as ET
+          root=Path('upload/src/addons/Warext/ModerationAudit')
+          json.loads((root/'addon.json').read_text(encoding='utf-8'))
+          for p in (root/'_data').glob('*.xml'): ET.parse(p)
+          for p in Path('languages').glob('*.xml'): ET.parse(p)
+          print('Validation OK')
+          PY
+      - name: Build package
+        run: |
+          ZIP='${{ steps.meta.outputs.zip }}'
+          rm -f "$ZIP"
+          zip -qr "$ZIP" upload README.md LANGUAGE.md
+          unzip -tq "$ZIP"
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG='${{ steps.meta.outputs.tag }}'
+          VERSION='${{ steps.meta.outputs.version }}'
+          ZIP='${{ steps.meta.outputs.zip }}'
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release edit "$TAG" --title "Warext Moderation Audit $VERSION" --notes "Turkish/English language completion and phrase-based dynamic audit UI."
+            gh release upload "$TAG" "$ZIP" languages/Turkish.xml languages/English.xml --clobber
+          else
+            gh release create "$TAG" "$ZIP" languages/Turkish.xml languages/English.xml --title "Warext Moderation Audit $VERSION" --notes "Turkish/English language completion and phrase-based dynamic audit UI." --latest
+          fi
