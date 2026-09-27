@@ -230,4 +230,15 @@
   <phrase title="warext_audit_i18n_anonymous_view" version_id="1010000" version_string="1.1.0"><![CDATA[Anonim görünüm]]></phrase>
   <phrase title="warext_audit_i18n_all_submissions" version_id="1010000" version_string="1.1.0"><![CDATA[Tüm başvurular]]></phrase>
   <phrase title="warext_audit_i18n_my_submissions" version_id="1010000" version_string="1.1.0"><![CDATA[Başvurularım]]></phrase>
+  <phrase title="warext_audit_i18n_read_only_notice" version_id="1010010" version_string="1.1.1"><![CDATA[Bu alan yalnızca denetim içindir. Buradan mesaj silme, uyarı verme, yasaklama veya başka bir moderasyon işlemi yapılamaz.]]></phrase>
+  <phrase title="warext_audit_i18n_results_x" version_id="1010010" version_string="1.1.1"><![CDATA[{count} sonuç]]></phrase>
+  <phrase title="warext_audit_i18n_reviewers_x" version_id="1010010" version_string="1.1.1"><![CDATA[{count} denetçi]]></phrase>
+  <phrase title="warext_audit_i18n_case_x" version_id="1010010" version_string="1.1.1"><![CDATA[Denetim Vakası #{id}]]></phrase>
+  <phrase title="warext_audit_i18n_unknown_user" version_id="1010010" version_string="1.1.1"><![CDATA[Bilinmeyen kullanıcı]]></phrase>
+  <phrase title="warext_audit_i18n_default_moderation_reason" version_id="1010010" version_string="1.1.1"><![CDATA[Kullanıcı hakkında uygulanan moderasyon işlemi.]]></phrase>
+  <phrase title="warext_audit_i18n_review_revisions_x" version_id="1010010" version_string="1.1.1"><![CDATA[Değerlendirme Revizyonları #{id}]]></phrase>
+  <phrase title="warext_audit_i18n_reports_x" version_id="1010010" version_string="1.1.1"><![CDATA[{count} rapor]]></phrase>
+  <phrase title="warext_audit_i18n_records_x" version_id="1010010" version_string="1.1.1"><![CDATA[{count} kayıt]]></phrase>
+  <phrase title="warext_audit_i18n_case_sla_x" version_id="1010010" version_string="1.1.1"><![CDATA[Vaka: Normal {normal} saat · Yüksek risk {elevated} saat · Kritik {critical} saat]]></phrase>
+  <phrase title="warext_audit_i18n_feedback_sla_x" version_id="1010010" version_string="1.1.1"><![CDATA[Başvuru: Düşük {low} saat · Normal {normal} saat · Yüksek {high} saat · Kritik {critical} saat]]></phrase>
 </phrases>
